@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #131410;
+  color: #e5e2db;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(135, 215, 173, 0.35);
+  color: #ffffff;
+}
+
+.glass-card {
+  border: 1px solid rgba(166, 208, 188, 0.16);
+  background: rgba(32, 32, 28, 0.42);
+  box-shadow: inset 1px 1px 0 rgba(212, 255, 234, 0.06);
+  backdrop-filter: blur(28px);
+}
+
+.glow-field {
+  background-image:
+    radial-gradient(ellipse at 100% 0%, rgba(0, 56, 36, 0.8) 10%, transparent 48%),
+    radial-gradient(ellipse at 0% 100%, rgba(0, 98, 65, 0.74) 10%, transparent 50%),
+    radial-gradient(ellipse at 0% 0%, rgba(37, 165, 90, 0.58) 10%, transparent 48%),
+    radial-gradient(ellipse at 100% 100%, rgba(135, 215, 173, 0.44) 10%, transparent 48%),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 33, 22, 0.82) 10%, transparent 54%);
+  background-position: 50% 50%;
+  background-size: 300% 200%;
+  filter: blur(100px);
+  inset: -32px;
+}
+
+.glow-vignette {
+  background:
+    radial-gradient(circle at center, transparent 24%, rgba(19, 20, 16, 0.74) 74%, #131410 96%),
+    linear-gradient(180deg, rgba(19, 20, 16, 0.18), #131410 92%);
+}
+
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+}
+
+.admin-grid {
+  background-image:
+    linear-gradient(rgba(135, 215, 173, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(135, 215, 173, 0.06) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
