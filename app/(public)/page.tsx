@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowRight, Leaf, Sparkles, Zap } from "lucide-react";
 import { LinkButton } from "@/components/ui/Button";
+import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { getFeaturedMenuItems, getSiteInfo } from "@/lib/data";
 import { formatCurrency } from "@/lib/utils";
@@ -85,11 +86,9 @@ export default async function HomePage() {
           <div className="grid gap-8 md:grid-cols-3">
             {featured.map((item) => (
               <GlassCard key={item.id} className="overflow-hidden rounded-2xl">
-                <Image
+                <FallbackImage
                   src={item.imageUrl}
                   alt={item.name}
-                  width={700}
-                  height={560}
                   className="h-56 w-full object-cover"
                 />
                 <div className="space-y-3 p-5">

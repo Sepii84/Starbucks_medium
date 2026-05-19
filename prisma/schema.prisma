@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Role {
@@ -52,16 +53,17 @@ model MenuCategory {
 }
 
 model MenuItem {
-  id          String       @id @default(cuid())
+  id          String   @id @default(cuid())
   name        String
-  slug        String       @unique
+  slug        String   @unique
   description String
-  price       Decimal      @db.Decimal(10, 2)
+  price       Decimal  @db.Decimal(10, 2)
   imageUrl    String
   categoryId  String
-  isAvailable Boolean      @default(true)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  isAvailable Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   category   MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   orderItems OrderItem[]

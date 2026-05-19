@@ -13,5 +13,6 @@ export type PublicMenuItem = {
   price: number;
   imageUrl: string;
   isAvailable: boolean;
+  isFeatured: boolean;
   category: PublicCategory;
 };

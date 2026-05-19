@@ -29,7 +29,8 @@ export default async function AdminMenuPage() {
       price: Number(item.price),
       imageUrl: item.imageUrl,
       categoryId: item.categoryId,
-      isAvailable: item.isAvailable
+      isAvailable: item.isAvailable,
+      isFeatured: item.isFeatured
     }))
   );
 

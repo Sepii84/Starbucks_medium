@@ -38,6 +38,7 @@ export async function getPublicMenu() {
     orderBy: { name: "asc" },
     include: {
       items: {
+        where: { isAvailable: true },
         orderBy: { name: "asc" },
         include: { category: true }
       }
@@ -53,7 +54,7 @@ export async function getFeaturedMenuItems(limit = 3) {
   return prisma.menuItem.findMany({
     where: { isAvailable: true },
     include: { category: true },
-    orderBy: { createdAt: "asc" },
+    orderBy: [{ isFeatured: "desc" }, { createdAt: "asc" }],
     take: limit
   });
 }

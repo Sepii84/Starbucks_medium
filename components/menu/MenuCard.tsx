@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { Lock, Sparkles } from "lucide-react";
 import { AddToBagButton } from "@/components/menu/AddToBagButton";
 import type { PublicMenuItem } from "@/components/menu/types";
 import { LinkButton } from "@/components/ui/Button";
+import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { formatCurrency } from "@/lib/utils";
 
@@ -17,11 +17,9 @@ export function MenuCard({
     <article className="group flex h-full flex-col">
       <GlassCard className="relative mb-5 aspect-[4/5] overflow-hidden rounded-2xl p-4">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container/60" />
-        <Image
+        <FallbackImage
           src={item.imageUrl}
           alt={item.name}
-          width={720}
-          height={900}
           className="h-full w-full rounded-xl object-cover transition duration-500 group-hover:scale-105"
         />
         <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-white/10 bg-surface/75 px-3 py-2 text-primary backdrop-blur-md">
@@ -42,9 +40,16 @@ export function MenuCard({
       <div className="flex flex-1 flex-col gap-4">
         <div>
           <div className="flex items-start justify-between gap-4">
-            <h3 className="font-display text-xl font-semibold uppercase text-on-surface">
-              {item.name}
-            </h3>
+            <div>
+              <h3 className="font-display text-xl font-semibold uppercase text-on-surface">
+                {item.name}
+              </h3>
+              {item.isFeatured && (
+                <p className="mt-1 font-mono text-[10px] font-bold uppercase text-primary">
+                  Featured
+                </p>
+              )}
+            </div>
             <p className="shrink-0 font-display text-lg font-light text-primary">
               {formatCurrency(item.price)}
             </p>

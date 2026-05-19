@@ -1,12 +1,21 @@
 import { MenuBrowser } from "@/components/menu/MenuBrowser";
 import type { PublicMenuItem } from "@/components/menu/types";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { getCurrentUser } from "@/lib/auth";
 import { getPublicMenu } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function MenuPage() {
-  const [user, categories] = await Promise.all([getCurrentUser(), getPublicMenu()]);
+  const user = await getCurrentUser().catch(() => null);
+  const menuResult = await getPublicMenu()
+    .then((categories) => ({ categories, error: null as string | null }))
+    .catch((error) => ({
+      categories: [],
+      error: error instanceof Error ? error.message : "Unknown database error"
+    }));
+  const categories = menuResult.categories;
   const categoryList = categories.map((category) => ({
     id: category.id,
     name: category.name,
@@ -22,6 +31,7 @@ export default async function MenuPage() {
       price: Number(item.price),
       imageUrl: item.imageUrl,
       isAvailable: item.isAvailable,
+      isFeatured: item.isFeatured,
       category: {
         id: category.id,
         name: category.name,
@@ -30,6 +40,10 @@ export default async function MenuPage() {
       }
     }))
   );
+  const showDevelopmentHint = process.env.NODE_ENV === "development";
+  const emptyDatabaseMessage = !process.env.DATABASE_URL
+    ? "DATABASE_URL is missing. Create `.env` in the project root and add a valid PostgreSQL connection string."
+    : "No menu items found. If you are developing locally, run:";
 
   return (
     <section className="px-5 py-14 md:px-16">
@@ -46,7 +60,41 @@ export default async function MenuPage() {
             once you are signed in.
           </p>
         </div>
-        <MenuBrowser categories={categoryList} items={items} role={user?.role ?? null} />
+        {menuResult.error ? (
+          <GlassCard className="p-6">
+            <h2 className="font-display text-2xl font-semibold">Menu database is not ready</h2>
+            <p className="mt-3 text-on-surface-variant">
+              {showDevelopmentHint
+                ? "Check your PostgreSQL connection, run migrations, and seed the menu."
+                : "The menu is temporarily unavailable. Please check back soon."}
+            </p>
+            {showDevelopmentHint && (
+              <pre className="mt-5 overflow-x-auto rounded-lg border border-white/10 bg-black/30 p-4 text-sm text-primary">
+                {`npm run prisma:migrate
+npm run prisma:seed
+npm run db:check`}
+              </pre>
+            )}
+          </GlassCard>
+        ) : items.length === 0 ? (
+          <GlassCard className="p-6">
+            <h2 className="font-display text-2xl font-semibold">No menu items found</h2>
+            <p className="mt-3 text-on-surface-variant">
+              {showDevelopmentHint
+                ? emptyDatabaseMessage
+                : "The menu is temporarily unavailable. Please check back soon."}
+            </p>
+            {showDevelopmentHint && process.env.DATABASE_URL && (
+              <pre className="mt-5 overflow-x-auto rounded-lg border border-white/10 bg-black/30 p-4 text-sm text-primary">
+                {`npm run prisma:migrate
+npm run prisma:seed
+npm run db:check`}
+              </pre>
+            )}
+          </GlassCard>
+        ) : (
+          <MenuBrowser categories={categoryList} items={items} role={user?.role ?? null} />
+        )}
       </div>
     </section>
   );

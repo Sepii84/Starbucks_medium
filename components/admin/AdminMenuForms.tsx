@@ -29,6 +29,7 @@ type MenuItem = {
   imageUrl: string;
   categoryId: string;
   isAvailable: boolean;
+  isFeatured: boolean;
 };
 
 function CategorySelect({
@@ -90,6 +91,10 @@ export function CreateMenuItemForm({ categories }: { categories: Category[] }) {
       <label className="flex items-center gap-3 text-sm text-on-surface-variant">
         <input name="isAvailable" type="checkbox" defaultChecked />
         Available on public menu
+      </label>
+      <label className="flex items-center gap-3 text-sm text-on-surface-variant">
+        <input name="isFeatured" type="checkbox" />
+        Featured item
       </label>
       <Button disabled={pending} type="submit">
         {pending ? "Creating..." : "Add Menu Item"}
@@ -163,6 +168,10 @@ export function EditMenuItemForm({
       <label className="flex items-center gap-3 text-sm text-on-surface-variant">
         <input name="isAvailable" type="checkbox" defaultChecked={item.isAvailable} />
         Available on public menu
+      </label>
+      <label className="flex items-center gap-3 text-sm text-on-surface-variant">
+        <input name="isFeatured" type="checkbox" defaultChecked={item.isFeatured} />
+        Featured item
       </label>
       <Button disabled={pending} type="submit" variant="secondary">
         {pending ? "Saving..." : "Save Item"}

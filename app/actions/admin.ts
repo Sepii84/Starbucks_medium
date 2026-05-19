@@ -34,7 +34,8 @@ function menuFormData(formData: FormData) {
     price: String(formData.get("price") ?? ""),
     imageUrl: String(formData.get("imageUrl") ?? ""),
     categoryId: String(formData.get("categoryId") ?? ""),
-    isAvailable: formData.get("isAvailable") === "on"
+    isAvailable: formData.get("isAvailable") === "on",
+    isFeatured: formData.get("isFeatured") === "on"
   };
 }
 
@@ -55,7 +56,8 @@ export async function createMenuItemAction(_: ActionState, formData: FormData): 
         price: parsed.data.price,
         imageUrl: parsed.data.imageUrl,
         categoryId: parsed.data.categoryId,
-        isAvailable: parsed.data.isAvailable
+        isAvailable: parsed.data.isAvailable,
+        isFeatured: parsed.data.isFeatured
       }
     });
   } catch (error) {
@@ -85,7 +87,8 @@ export async function updateMenuItemAction(_: ActionState, formData: FormData): 
         price: parsed.data.price,
         imageUrl: parsed.data.imageUrl,
         categoryId: parsed.data.categoryId,
-        isAvailable: parsed.data.isAvailable
+        isAvailable: parsed.data.isAvailable,
+        isFeatured: parsed.data.isFeatured
       }
     });
   } catch (error) {

@@ -26,25 +26,53 @@ npm install
 cp .env.example .env
 ```
 
-3. Run Prisma migration and generate the client:
+On Windows Command Prompt:
+
+```bat
+copy .env.example .env
+```
+
+Edit `DATABASE_URL` and `DIRECT_URL` in `.env` before continuing.
+
+3. Generate the Prisma client:
+
+```bash
+npm run prisma:generate
+```
+
+4. Run the Prisma migration:
 
 ```bash
 npm run prisma:migrate
 ```
 
-4. Seed the database:
+5. Seed the database:
 
 ```bash
 npm run prisma:seed
 ```
 
-5. Start development:
+The seed is idempotent. It creates the admin/user accounts, site info, 17 menu categories, and the full Starbucks-inspired demo menu from `prisma/seed.ts` without duplicating rows on repeated runs.
+
+Branding note: this is a Starbucks-inspired development demo. For commercial deployment, rename the brand/menu items and replace trademarked references or images unless proper permission exists.
+
+6. Verify database counts:
+
+```bash
+npm run db:check
+```
+
+If `npm run db:check` shows menu items greater than `0`, the database is seeded. If `/menu` is still empty after that, the problem is in the menu page fetch/filter/rendering. If `npm run db:check` shows `0` menu items, the seed did not run correctly.
+
+7. Start development:
 
 ```bash
 npm run dev
 ```
 
 Open `http://localhost:3011`.
+
+In development, `GET /api/dev/menu-count` returns menu category/item counts for quick debugging.
 
 On Windows PowerShell, if an npm script exits immediately with no output, run it through `cmd /c`, for example `cmd /c npm run dev`.
 

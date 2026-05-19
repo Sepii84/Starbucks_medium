@@ -34,6 +34,17 @@ export function MenuBrowser({
     });
   }, [category, items, query]);
 
+  const grouped = useMemo(
+    () =>
+      categories
+        .map((menuCategory) => ({
+          category: menuCategory,
+          items: filtered.filter((item) => item.category.id === menuCategory.id)
+        }))
+        .filter((group) => group.items.length > 0),
+    [categories, filtered]
+  );
+
   return (
     <div className="space-y-10">
       <div className="glass-card sticky top-24 z-20 rounded-xl p-4">
@@ -83,9 +94,28 @@ export function MenuBrowser({
       </div>
 
       {filtered.length ? (
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((item) => (
-            <MenuCard key={item.id} item={item} role={role} />
+        <div className="space-y-14">
+          {grouped.map((group) => (
+            <section key={group.category.id} className="scroll-mt-40">
+              <div className="mb-6">
+                <p className="font-mono text-[11px] font-bold uppercase text-primary">
+                  {group.items.length} items
+                </p>
+                <h2 className="mt-2 font-display text-2xl font-semibold uppercase md:text-3xl">
+                  {group.category.name}
+                </h2>
+                {group.category.description && (
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-on-surface-variant">
+                    {group.category.description}
+                  </p>
+                )}
+              </div>
+              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                {group.items.map((item) => (
+                  <MenuCard key={item.id} item={item} role={role} />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       ) : (

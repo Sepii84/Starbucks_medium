@@ -52,9 +52,16 @@ export const menuItemSchema = z.object({
   slug: z.string().optional(),
   description: z.string().min(8, "Description is required."),
   price: z.coerce.number().positive("Price must be greater than zero."),
-  imageUrl: z.string().url("Use a valid image URL."),
+  imageUrl: z
+    .string()
+    .min(1, "Image URL or path is required.")
+    .refine(
+      (value) => value.startsWith("/") || z.string().url().safeParse(value).success,
+      "Use a valid image URL or local path."
+    ),
   categoryId: z.string().min(1, "Choose a category."),
-  isAvailable: z.coerce.boolean().default(false)
+  isAvailable: z.coerce.boolean().default(false),
+  isFeatured: z.coerce.boolean().default(false)
 });
 
 export const categorySchema = z.object({

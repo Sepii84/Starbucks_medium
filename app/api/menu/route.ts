@@ -37,7 +37,8 @@ export async function POST(request: NextRequest) {
       price: parsed.data.price,
       imageUrl: parsed.data.imageUrl,
       categoryId: parsed.data.categoryId,
-      isAvailable: parsed.data.isAvailable
+      isAvailable: parsed.data.isAvailable,
+      isFeatured: parsed.data.isFeatured
     }
   });
 

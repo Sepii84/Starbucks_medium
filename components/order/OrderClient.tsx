@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
@@ -8,6 +7,7 @@ import { createOrderAction, type CreateOrderResult } from "@/app/actions/order";
 import { useCart } from "@/components/order/CartProvider";
 import { Button, LinkButton } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { inputClasses, labelClasses } from "@/components/ui/Form";
 import { cn, formatCurrency } from "@/lib/utils";
@@ -95,11 +95,9 @@ export function OrderClient({
       <div className="space-y-4">
         {items.map((item) => (
           <GlassCard key={item.menuItemId} className="flex gap-4 p-4">
-            <Image
+            <FallbackImage
               src={item.imageUrl}
               alt={item.name}
-              width={96}
-              height={96}
               className="h-24 w-24 rounded-lg object-cover"
             />
             <div className="flex min-w-0 flex-1 flex-col justify-between gap-3">
@@ -248,7 +246,7 @@ export function OrderClient({
             <span className="text-primary">{formatCurrency(subtotal)}</span>
           </div>
           <div className="mt-3 rounded-lg bg-primary/10 p-3 text-sm text-on-surface-variant">
-            <span className="text-primary">{count} items</span> · {orderType.replace("_", " ")} ·{" "}
+            <span className="text-primary">{count} items</span> - {orderType.replace("_", " ")} -{" "}
             {summaryLabel}
           </div>
           <p className="mt-3 text-xs text-on-surface-variant">
