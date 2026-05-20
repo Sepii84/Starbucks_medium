@@ -82,6 +82,20 @@ In development, `GET /api/dev/menu-count` returns menu category/item counts for 
 
 The project includes a local `.npmrc` so npm scripts run through PowerShell consistently on Windows paths with spaces.
 
+## Product Images
+
+Generated menu, gift-card, and site images live under `public/images`. The repeatable image workflow is:
+
+```bash
+npm run images:manifest
+npm run images:generate
+npm run images:apply
+npm run images:verify
+npm run images:zip
+```
+
+Use `--force` to regenerate existing files, `--limit=10` for a small batch, or `--only=menu`, `--only=gift-cards`, or `--only=site` to focus one asset type. The final zip is written to `generated-assets/product-images.zip`.
+
 ## Seed Credentials
 
 Admin:

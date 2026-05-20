@@ -100,7 +100,7 @@ export default async function GiftCardsPage() {
                     className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]"
                   >
                     <FallbackImage
-                      src={template.imageUrl ?? "/images/menu/placeholder-drink.jpg"}
+                      src={template.imageUrl ?? ""}
                       alt={template.name}
                       className="h-36 w-full object-cover"
                     />

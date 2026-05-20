@@ -49,7 +49,7 @@ export default async function HomePage() {
             <div className="absolute h-[115%] w-[115%] rounded-full bg-primary/10 blur-3xl" />
             <GlassCard className="relative aspect-[4/5] w-full max-w-md overflow-hidden rounded-[2rem] p-4">
               <Image
-                src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80"
+                src="/images/site/home-hero-coffee.png"
                 alt="Futuristic coffee cup on a dark counter"
                 width={720}
                 height={900}
@@ -108,7 +108,7 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-2 md:items-center">
           <GlassCard className="relative overflow-hidden rounded-[2rem]">
             <Image
-              src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=900&q=80"
+              src="/images/site/home-sanctuary-interior.png"
               alt="Luxury coffee shop interior"
               width={900}
               height={900}

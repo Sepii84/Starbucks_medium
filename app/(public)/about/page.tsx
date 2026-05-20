@@ -29,7 +29,7 @@ export default async function AboutPage() {
         </div>
         <GlassCard className="overflow-hidden rounded-[2rem]">
           <Image
-            src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=900&q=80"
+            src="/images/site/about-coffee-bar.png"
             alt="Coffee shop bar"
             width={900}
             height={1100}

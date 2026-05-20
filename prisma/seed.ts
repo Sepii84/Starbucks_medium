@@ -1,6 +1,7 @@
 import { PrismaClient, Role } from "@prisma/client";
 import * as nextEnv from "@next/env";
 import bcrypt from "bcryptjs";
+import { pathToFileURL } from "node:url";
 
 nextEnv.loadEnvConfig(process.cwd());
 
@@ -17,12 +18,12 @@ const prisma = new PrismaClient(
     : undefined
 );
 
-type MenuSeedCategory = {
+export type MenuSeedCategory = {
   category: string;
   items: string[];
 };
 
-const MENU_DATA: MenuSeedCategory[] = [
+export const MENU_DATA: MenuSeedCategory[] = [
   {
     category: "Featured Summer Menu",
     items: [
@@ -314,32 +315,7 @@ const MENU_DATA: MenuSeedCategory[] = [
   }
 ];
 
-const FOOD_CATEGORIES = new Set(["Breakfast", "Bakery", "Treats", "Lunch"]);
-const FOOD_KEYWORDS = [
-  "sandwich",
-  "pocket",
-  "focaccia",
-  "cake pop",
-  "croissant",
-  "danish",
-  "muffin",
-  "scone",
-  "cake",
-  "loaf",
-  "cookie",
-  "bar",
-  "bagel",
-  "brownie",
-  "madeleines",
-  "biscotti",
-  "grahams",
-  "bites",
-  "bakes",
-  "spread",
-  "protein box"
-];
-
-function slugify(name: string): string {
+export function slugify(name: string): string {
   return name
     .toLowerCase()
     .trim()
@@ -381,24 +357,7 @@ function placeholderPrice(name: string, category: string): number {
   return Number((cents / 100).toFixed(2));
 }
 
-function placeholderImage(name: string, category: string): string {
-  const normalizedName = name.toLowerCase();
-
-  if (category.startsWith("At Home Coffee")) {
-    return "/images/menu/placeholder-coffee-bag.jpg";
-  }
-
-  if (
-    FOOD_CATEGORIES.has(category) ||
-    FOOD_KEYWORDS.some((keyword) => normalizedName.includes(keyword))
-  ) {
-    return "/images/menu/placeholder-food.jpg";
-  }
-
-  return "/images/menu/placeholder-drink.jpg";
-}
-
-function itemSlug(name: string, category: string, nameCounts: Map<string, number>): string {
+export function itemSlug(name: string, category: string, nameCounts: Map<string, number>): string {
   const baseSlug = slugify(name);
 
   if ((nameCounts.get(baseSlug) ?? 0) <= 1) {
@@ -516,7 +475,7 @@ async function seedMenuItems(categoryRecords: Map<string, string>) {
           name,
           description: `${name} from the ${group.category} menu.`,
           price: placeholderPrice(name, group.category),
-          imageUrl: placeholderImage(name, group.category),
+          imageUrl: `/images/menu/${slug}.png`,
           categoryId,
           isAvailable: true,
           isFeatured
@@ -526,7 +485,7 @@ async function seedMenuItems(categoryRecords: Map<string, string>) {
           slug,
           description: `${name} from the ${group.category} menu.`,
           price: placeholderPrice(name, group.category),
-          imageUrl: placeholderImage(name, group.category),
+          imageUrl: `/images/menu/${slug}.png`,
           categoryId,
           isAvailable: true,
           isFeatured
@@ -570,7 +529,7 @@ const REWARD_RULES = [
   { itemName: "Java Chip Frappuccino", pointsRequired: 180 }
 ];
 
-const GIFT_CARD_TEMPLATES = [
+export const GIFT_CARD_TEMPLATES = [
   { name: "$10 Gift Card", amount: 10 },
   { name: "$25 Gift Card", amount: 25 },
   { name: "$50 Gift Card", amount: 50 },
@@ -617,14 +576,14 @@ async function seedGiftCards() {
       update: {
         description: `${template.name} for Starbucks Medium wallet gifting.`,
         amount: template.amount,
-        imageUrl: "/images/menu/placeholder-drink.jpg",
+        imageUrl: `/images/gift-cards/${template.amount}-dollar-gift-card.png`,
         isActive: true
       },
       create: {
         name: template.name,
         description: `${template.name} for Starbucks Medium wallet gifting.`,
         amount: template.amount,
-        imageUrl: "/images/menu/placeholder-drink.jpg",
+        imageUrl: `/images/gift-cards/${template.amount}-dollar-gift-card.png`,
         isActive: true
       }
     });
@@ -702,13 +661,23 @@ async function main() {
   });
 }
 
-main()
-  .catch((error) => {
-    console.error("Seed failed:", error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    console.log("Disconnecting Prisma...");
-    await prisma.$disconnect();
-    console.log("Prisma disconnected.");
+const isDirectRun = process.argv[1]
+  ? import.meta.url === pathToFileURL(process.argv[1]).href
+  : false;
+
+if (isDirectRun) {
+  main()
+    .catch((error) => {
+      console.error("Seed failed:", error);
+      process.exitCode = 1;
+    })
+    .finally(async () => {
+      console.log("Disconnecting Prisma...");
+      await prisma.$disconnect();
+      console.log("Prisma disconnected.");
+    });
+} else {
+  prisma.$disconnect().catch(() => {
+    // Importing seed data for tooling should not keep a Prisma connection open.
   });
+}

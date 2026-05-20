@@ -11,7 +11,13 @@
     "prisma:migrate": "node node_modules/prisma/build/index.js migrate dev",
     "prisma:seed": "node node_modules/prisma/build/index.js db seed",
     "prisma:studio": "node node_modules/prisma/build/index.js studio",
-    "db:check": "tsx scripts/check-db.ts"
+    "db:check": "tsx scripts/check-db.ts",
+    "images:manifest": "tsx scripts/generate-image-manifest.ts",
+    "images:generate": "tsx scripts/generate-images.ts",
+    "images:apply": "tsx scripts/apply-image-paths.ts",
+    "images:verify": "tsx scripts/verify-images.ts",
+    "images:zip": "tsx scripts/zip-generated-assets.ts",
+    "images:all": "npm run images:manifest && npm run images:generate && npm run images:apply && npm run images:verify && npm run images:zip"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
@@ -33,6 +39,8 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "prisma": "^5.22.0",
+    "sharp": "^0.34.5",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.16",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
