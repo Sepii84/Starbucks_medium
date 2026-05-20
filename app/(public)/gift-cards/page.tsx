@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { CreditCard, Gift, Mail, WalletCards } from "lucide-react";
 import { GiftCardPurchaseForm } from "@/components/gift-cards/GiftCardPurchaseForm";
+import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { LinkButton } from "@/components/ui/Button";
 import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -63,7 +64,8 @@ export default async function GiftCardsPage() {
   ];
 
   return (
-    <section className="px-5 py-14 md:px-16">
+    <PublicPageFrame>
+      <section className="px-5 py-14 md:px-16">
       <div className="mx-auto max-w-7xl space-y-10">
         <div className="max-w-3xl">
           <p className="font-mono text-[11px] font-bold uppercase text-primary">
@@ -152,6 +154,7 @@ export default async function GiftCardsPage() {
           </GlassCard>
         </div>
       </div>
-    </section>
+      </section>
+    </PublicPageFrame>
   );
 }

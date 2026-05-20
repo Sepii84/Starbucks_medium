@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { ArrowRight, Leaf, Sparkles, Zap } from "lucide-react";
+import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { LinkButton } from "@/components/ui/Button";
 import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -19,7 +20,7 @@ export default async function HomePage() {
   const [featured, siteInfo] = await Promise.all([getFeaturedMenuItems(3), getSiteInfo()]);
 
   return (
-    <>
+    <PublicPageFrame siteInfo={siteInfo}>
       <section className="relative min-h-[88vh] overflow-hidden px-5 md:px-16">
         <div className="mx-auto grid min-h-[88vh] max-w-7xl items-center gap-12 py-12 md:grid-cols-2">
           <div className="space-y-8">
@@ -155,6 +156,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-    </>
+    </PublicPageFrame>
   );
 }

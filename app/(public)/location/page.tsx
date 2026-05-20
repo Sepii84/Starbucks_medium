@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { LinkButton } from "@/components/ui/Button";
 import { getSiteInfo } from "@/lib/data";
@@ -16,7 +17,8 @@ export default async function LocationPage() {
   const siteInfo = await getSiteInfo();
 
   return (
-    <section className="px-5 py-14 md:px-16">
+    <PublicPageFrame siteInfo={siteInfo}>
+      <section className="px-5 py-14 md:px-16">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 max-w-3xl">
           <p className="font-mono text-[11px] font-bold uppercase text-primary">Location</p>
@@ -66,6 +68,7 @@ export default async function LocationPage() {
           </GlassCard>
         </div>
       </div>
-    </section>
+      </section>
+    </PublicPageFrame>
   );
 }

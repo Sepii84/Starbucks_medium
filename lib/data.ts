@@ -22,11 +22,15 @@ export async function getSiteInfo() {
     return fallbackSiteInfo;
   }
 
-  const siteInfo = await prisma.siteInfo.findFirst({
-    orderBy: { updatedAt: "desc" }
-  });
+  try {
+    const siteInfo = await prisma.siteInfo.findFirst({
+      orderBy: { updatedAt: "desc" }
+    });
 
-  return normalizePublicSiteInfo(siteInfo ?? fallbackSiteInfo);
+    return normalizePublicSiteInfo(siteInfo ?? fallbackSiteInfo);
+  } catch {
+    return fallbackSiteInfo;
+  }
 }
 
 function normalizePublicSiteInfo<T extends { email: string }>(siteInfo: T): T {

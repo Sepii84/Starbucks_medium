@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Metadata } from "next";
+import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { getSiteInfo } from "@/lib/data";
 
@@ -33,7 +34,8 @@ export default async function AboutPage() {
   const siteInfo = await getSiteInfo();
 
   return (
-    <section className="px-5 py-14 md:px-16">
+    <PublicPageFrame siteInfo={siteInfo}>
+      <section className="px-5 py-14 md:px-16">
       <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
         <div className="space-y-6">
           <p className="font-mono text-[11px] font-bold uppercase text-primary">About us</p>
@@ -64,6 +66,7 @@ export default async function AboutPage() {
           />
         </GlassCard>
       </div>
-    </section>
+      </section>
+    </PublicPageFrame>
   );
 }

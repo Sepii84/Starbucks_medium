@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Award, BadgeCheck, Gift, Sparkles } from "lucide-react";
+import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { RewardRedeemForm } from "@/components/rewards/RewardRedeemForm";
 import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -66,7 +67,8 @@ export default async function RewardsPage() {
   ];
 
   return (
-    <section className="px-5 py-14 md:px-16">
+    <PublicPageFrame>
+      <section className="px-5 py-14 md:px-16">
       <div className="mx-auto max-w-7xl space-y-10">
         <div className="max-w-3xl">
           <p className="font-mono text-[11px] font-bold uppercase text-primary">
@@ -188,6 +190,7 @@ export default async function RewardsPage() {
           )}
         </div>
       </div>
-    </section>
+      </section>
+    </PublicPageFrame>
   );
 }
