@@ -32,6 +32,7 @@ export type ImageManifest = {
 export type ImageScriptOptions = {
   force: boolean;
   limit?: number;
+  match?: string;
   only?: Set<ImageTargetType>;
 };
 
@@ -95,6 +96,11 @@ export function parseImageArgs(argv = process.argv.slice(2)): ImageScriptOptions
       if (Number.isInteger(limit) && limit > 0) {
         options.limit = limit;
       }
+    } else if (arg.startsWith("--match=")) {
+      const match = arg.replace("--match=", "").trim().toLowerCase();
+      if (match) {
+        options.match = match;
+      }
     } else if (arg.startsWith("--only=")) {
       const values = arg
         .replace("--only=", "")
@@ -123,6 +129,15 @@ export function filterManifest(entries: ImageManifestEntry[], options: ImageScri
 
   if (options.only?.size) {
     filtered = filtered.filter((entry) => options.only?.has(entry.type));
+  }
+
+  if (options.match) {
+    filtered = filtered.filter((entry) =>
+      [entry.name, entry.slug, entry.category ?? ""]
+        .join(" ")
+        .toLowerCase()
+        .includes(options.match ?? "")
+    );
   }
 
   if (options.limit) {
@@ -418,6 +433,10 @@ export function menuPrompt(name: string, category: string) {
     return `A premium commercial product photo of ${name} as a whole-bean coffee bag, elegant unbranded packaging, dark green premium cafe styling, crisp centered square composition, no copyrighted branding, no logo, no watermark.`;
   }
 
+  if (type === "instant-pack") {
+    return `A premium commercial product photo of ${name} as instant coffee sachets in elegant unbranded packaging, dark green premium cafe styling, crisp centered square composition, no whole-bean label, no copyrighted branding, no logo, no watermark.`;
+  }
+
   return `A premium commercial product photo of ${name}, ${flavor}, realistic cafe menu photography style, clean centered drink composition, dark neutral luxury backdrop with subtle emerald accent lighting, high detail, square format, no visible copyrighted branding, no logo, no watermark.`;
 }
 
@@ -427,6 +446,7 @@ export function giftCardPrompt(name: string, amount: number) {
 
 export function inferVisualType(name: string, category: string) {
   const lower = `${name} ${category}`.toLowerCase();
+  if (category.includes("VIA Instant") || lower.includes("via instant")) return "instant-pack";
   if (category.startsWith("At Home Coffee")) return "coffee-bag";
   if (category === "Bottled Beverages") return "bottle";
   if (

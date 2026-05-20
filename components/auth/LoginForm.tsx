@@ -16,21 +16,39 @@ export function LoginForm({
   const [state, action, pending] = useActionState(loginAction, emptyActionState);
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} className="space-y-5" aria-describedby="login-form-message">
       <input type="hidden" name="next" value={next ?? ""} />
-      <FormMessage message={state.message ?? message} ok={state.ok} />
+      <div id="login-form-message">
+        <FormMessage message={state.message ?? message} ok={state.ok} />
+      </div>
       <div>
         <label className={labelClasses} htmlFor="email">
           Email
         </label>
-        <input className={inputClasses} id="email" name="email" type="email" required />
+        <input
+          aria-invalid={Boolean(state.errors?.email)}
+          autoComplete="email"
+          className={inputClasses}
+          id="email"
+          name="email"
+          type="email"
+          required
+        />
         <FieldError messages={state.errors?.email} />
       </div>
       <div>
         <label className={labelClasses} htmlFor="password">
           Password
         </label>
-        <input className={inputClasses} id="password" name="password" type="password" required />
+        <input
+          aria-invalid={Boolean(state.errors?.password)}
+          autoComplete="current-password"
+          className={inputClasses}
+          id="password"
+          name="password"
+          type="password"
+          required
+        />
         <FieldError messages={state.errors?.password} />
       </div>
       <Button className="w-full" disabled={pending} type="submit">

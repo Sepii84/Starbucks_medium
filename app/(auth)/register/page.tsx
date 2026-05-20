@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { GlassCard } from "@/components/ui/GlassCard";
+
+export const metadata: Metadata = {
+  title: "Register | Starbucks Medium",
+  description:
+    "Create a Starbucks Medium demo user account for ordering, rewards, wallet, and gift cards."
+};
 
 export default function RegisterPage() {
   return (

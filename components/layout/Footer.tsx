@@ -27,6 +27,7 @@ export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
             <div className="flex gap-3">
               {siteInfo.instagramUrl && (
                 <Link
+                  aria-label="Instagram"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-primary transition hover:border-primary/40"
                   href={siteInfo.instagramUrl}
                 >
@@ -35,6 +36,7 @@ export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
               )}
               {siteInfo.twitterUrl && (
                 <Link
+                  aria-label="Twitter"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-primary transition hover:border-primary/40"
                   href={siteInfo.twitterUrl}
                 >
@@ -102,7 +104,7 @@ export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
           </div>
         </div>
         <div className="mt-14 flex flex-col gap-4 border-t border-white/5 pt-8 font-mono text-[10px] uppercase text-on-surface-variant/70 md:flex-row md:items-center md:justify-between">
-          <p>© 2026 Starbucks Medium. All rights reserved.</p>
+          <p>&copy; 2026 Starbucks Medium. All rights reserved.</p>
           <p>Secure ordering, crafted for calm mornings and late nights.</p>
         </div>
       </div>

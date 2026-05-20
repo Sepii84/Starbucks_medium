@@ -116,6 +116,7 @@ function renderSvg(entry: ImageManifestEntry) {
   if (visualType === "food") return renderFood(entry);
   if (visualType === "bottle") return renderBottle(entry);
   if (visualType === "coffee-bag") return renderCoffeeBag(entry);
+  if (visualType === "instant-pack") return renderInstantCoffee(entry);
   return renderDrink(entry);
 }
 
@@ -261,7 +262,30 @@ function renderCoffeeBag(entry: ImageManifestEntry) {
       <path d="M424 694 C482 664, 566 666, 624 696" fill="none" stroke="${accent}" stroke-width="12" stroke-linecap="round"/>
       <path d="M392 246 C440 210, 586 210, 632 246" fill="none" stroke="#d6ffe8" stroke-width="16" opacity="0.35"/>
     </g>
-    ${caption(entry.name, "Whole Bean")}`);
+    ${caption(entry.name, entry.category ?? "Whole Bean")}`);
+}
+
+function renderInstantCoffee(entry: ImageManifestEntry) {
+  const accent = "#7cff88";
+  return svg(`
+    ${background(entry.slug, accent)}
+    <g filter="url(#softShadow)">
+      <rect x="314" y="278" width="396" height="512" rx="44" fill="#10221a" stroke="#bffff0" stroke-width="5" opacity="0.98"/>
+      <path d="M314 348 C410 300, 610 300, 710 348 L710 426 C594 382, 432 382, 314 426 Z" fill="#1f4535"/>
+      <rect x="374" y="438" width="276" height="170" rx="28" fill="#edf7e8"/>
+      <path d="M416 518 C474 458, 566 458, 608 526 C560 564, 470 562, 416 518 Z" fill="#12271e"/>
+      <path d="M470 518 C500 480, 552 482, 558 530 C522 548, 492 546, 470 518 Z" fill="${accent}" opacity="0.88"/>
+      <rect x="388" y="646" width="248" height="28" rx="14" fill="${accent}" opacity="0.78"/>
+      <rect x="390" y="694" width="246" height="24" rx="12" fill="#dfffee" opacity="0.48"/>
+      <g opacity="0.74">
+        <rect x="210" y="420" width="128" height="310" rx="24" fill="#1a342a" stroke="#8df0b8" stroke-width="3"/>
+        <rect x="686" y="424" width="128" height="310" rx="24" fill="#1a342a" stroke="#8df0b8" stroke-width="3"/>
+        <path d="M230 470 L318 470" stroke="#dfffee" stroke-width="9" opacity="0.5"/>
+        <path d="M706 474 L794 474" stroke="#dfffee" stroke-width="9" opacity="0.5"/>
+      </g>
+      <text x="512" y="382" text-anchor="middle" fill="#eafff3" font-size="34" font-family="Arial, sans-serif" font-weight="800" letter-spacing="5">VIA INSTANT</text>
+    </g>
+    ${caption(entry.name, entry.category ?? "VIA Instant")}`);
 }
 
 function renderFood(entry: ImageManifestEntry) {

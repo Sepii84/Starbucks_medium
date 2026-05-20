@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { GlassCard } from "@/components/ui/GlassCard";
+
+export const metadata: Metadata = {
+  title: "Login | Starbucks Medium",
+  description:
+    "Sign in to Starbucks Medium to access ordering, wallet, rewards, gift cards, or the admin dashboard."
+};
 
 export default async function LoginPage({
   searchParams

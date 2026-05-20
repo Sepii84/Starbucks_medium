@@ -8,6 +8,12 @@ import type { SessionUser } from "@/lib/auth";
 export function Navbar({ user }: { user: SessionUser | null }) {
   return (
     <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-surface/35 px-5 py-4 shadow-2xl backdrop-blur-3xl md:px-16">
+      <a
+        href="#main-content"
+        className="focus-ring sr-only rounded-full bg-background px-4 py-3 text-sm text-primary focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >
+        Skip to content
+      </a>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-5">
         <Link href="/" className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary shadow-glow">
@@ -18,7 +24,10 @@ export function Navbar({ user }: { user: SessionUser | null }) {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 font-mono text-[11px] font-bold uppercase text-on-surface-variant md:flex">
+        <nav
+          aria-label="Primary navigation"
+          className="hidden items-center gap-8 font-mono text-[11px] font-bold uppercase text-on-surface-variant md:flex"
+        >
           <Link className="transition hover:text-primary" href="/">
             Home
           </Link>

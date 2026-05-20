@@ -22,10 +22,14 @@ export async function PublicChrome({
 
   return (
     <AppBackground>
-      <Navbar user={user} />
-      <main className="min-h-screen pt-20">{children}</main>
-      <Footer siteInfo={siteInfo} />
-      <MobileNav user={user} />
+      <div className="flex min-h-screen flex-col">
+        <Navbar user={user} />
+        <MobileNav user={user} />
+        <main id="main-content" className="flex-1 pt-20">
+          {children}
+        </main>
+        <Footer siteInfo={siteInfo} />
+      </div>
     </AppBackground>
   );
 }

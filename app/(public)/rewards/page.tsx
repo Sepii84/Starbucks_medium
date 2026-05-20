@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Award, BadgeCheck, Gift, Sparkles } from "lucide-react";
 import { RewardRedeemForm } from "@/components/rewards/RewardRedeemForm";
@@ -8,6 +9,12 @@ import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Rewards | Starbucks Medium",
+  description:
+    "See available reward items, track points, and redeem rewards in the Starbucks Medium demo."
+};
 
 export default async function RewardsPage() {
   const [user, rewardRules] = await Promise.all([

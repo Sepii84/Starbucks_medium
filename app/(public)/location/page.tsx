@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { LinkButton } from "@/components/ui/Button";
 import { getSiteInfo } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Location | Starbucks Medium",
+  description:
+    "Find the Starbucks Medium demo location, opening hours, contact details, and map preview."
+};
 
 export default async function LocationPage() {
   const siteInfo = await getSiteInfo();

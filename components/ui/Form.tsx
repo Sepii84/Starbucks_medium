@@ -21,6 +21,7 @@ export function FormMessage({
 
   return (
     <div
+      role={ok ? "status" : "alert"}
       className={cn(
         "rounded-lg border px-4 py-3 text-sm",
         ok

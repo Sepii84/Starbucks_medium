@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { CreditCard, Gift, Mail, WalletCards } from "lucide-react";
 import { GiftCardPurchaseForm } from "@/components/gift-cards/GiftCardPurchaseForm";
+import { LinkButton } from "@/components/ui/Button";
 import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { getCurrentUser } from "@/lib/auth";
@@ -8,6 +10,12 @@ import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Gift Cards | Starbucks Medium",
+  description:
+    "Buy in-person pickup gift cards or send demo wallet credit to another registered Starbucks Medium user."
+};
 
 export default async function GiftCardsPage() {
   const [user, templates] = await Promise.all([
@@ -49,7 +57,7 @@ export default async function GiftCardsPage() {
     },
     {
       label: "Website delivery",
-      value: "User email",
+      value: "Registered users",
       icon: Mail
     }
   ];
@@ -69,6 +77,16 @@ export default async function GiftCardsPage() {
             user inside the website. Gift cards use fake in-website wallet balance,
             never real payment processing.
           </p>
+          {!isUser && (
+            <div className="mt-5 flex flex-wrap gap-3">
+              <LinkButton href="/login?message=Please sign in to buy or send gift cards.&next=/gift-cards">
+                Log in to send or buy a gift card
+              </LinkButton>
+              <LinkButton href="/register" variant="secondary">
+                Create an account to use wallet and gift cards
+              </LinkButton>
+            </div>
+          )}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -125,7 +143,8 @@ export default async function GiftCardsPage() {
             <h2 className="font-display text-2xl font-semibold">Buy or send</h2>
             <p className="mt-3 text-sm leading-6 text-on-surface-variant">
               In-person cards create a pickup code. Website-email cards move the
-              amount directly into the recipient's wallet balance.
+              amount directly into the recipient's wallet balance. Recipient must
+              have a registered account on this site.
             </p>
             <div className="mt-6">
               <GiftCardPurchaseForm templates={simpleTemplates} loggedIn={isUser} />

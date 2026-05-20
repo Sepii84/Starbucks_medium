@@ -37,7 +37,10 @@ function NavItem({
 
 export function MobileNav({ user }: { user: SessionUser | null }) {
   return (
-    <nav className="fixed bottom-0 z-50 w-full border-t border-tertiary/10 bg-surface-container/50 px-2 pb-3 pt-2 shadow-[0_-8px_32px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:hidden">
+    <nav
+      aria-label="Mobile primary navigation"
+      className="fixed bottom-0 z-50 w-full border-t border-tertiary/10 bg-surface-container/50 px-2 pb-3 pt-2 shadow-[0_-8px_32px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:hidden"
+    >
       <div className="flex h-16 items-center justify-around gap-1">
         <NavItem href="/" label="Home" icon={Home} />
         <NavItem href="/menu" label="Menu" icon={Menu} />

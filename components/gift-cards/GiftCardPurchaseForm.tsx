@@ -32,6 +32,15 @@ export function GiftCardPurchaseForm({
   if (!loggedIn) {
     return (
       <div className="space-y-4">
+        <div className="rounded-xl border border-primary/20 bg-primary/10 p-4 text-sm leading-6 text-on-surface-variant">
+          <p className="font-mono text-[10px] font-bold uppercase text-primary">
+            Login required
+          </p>
+          <p className="mt-2">
+            Sign in to buy a gift card for in-person pickup or send one to another
+            registered user. Recipient must have a registered account on this site.
+          </p>
+        </div>
         <div className="grid gap-3 md:grid-cols-2">
           <OptionCard
             active
@@ -43,11 +52,17 @@ export function GiftCardPurchaseForm({
             active={false}
             icon={Send}
             title="Send to user"
-            description="Deliver website credit to a registered user email."
+            description="Deliver website credit to another registered user's email."
           />
         </div>
-        <LinkButton href="/login?message=Please sign in to buy gift cards." className="w-full">
-          Login to buy gift cards
+        <LinkButton
+          href="/login?message=Please sign in to buy or send gift cards.&next=/gift-cards"
+          className="w-full"
+        >
+          Log in to send or buy a gift card
+        </LinkButton>
+        <LinkButton href="/register" variant="secondary" className="w-full">
+          Create an account to use wallet and gift cards
         </LinkButton>
       </div>
     );
@@ -66,9 +81,12 @@ export function GiftCardPurchaseForm({
       )}
 
       <div>
-        <label className={labelClasses}>Gift card option</label>
+        <label className={labelClasses} htmlFor="gift-card-template">
+          Gift card option
+        </label>
         <select
           className={inputClasses}
+          id="gift-card-template"
           name="templateId"
           value={templateId}
           onChange={(event) => setTemplateId(event.target.value)}
@@ -84,10 +102,11 @@ export function GiftCardPurchaseForm({
 
       <input type="hidden" name="deliveryType" value={deliveryType} />
       <div>
-        <label className={labelClasses}>Delivery type</label>
+        <p className={labelClasses}>Delivery type</p>
         <div className="mt-2 grid gap-3 md:grid-cols-2">
           <button
             type="button"
+            aria-pressed={deliveryType === "IN_PERSON"}
             onClick={() => setDeliveryType("IN_PERSON")}
             className="text-left"
           >
@@ -100,6 +119,7 @@ export function GiftCardPurchaseForm({
           </button>
           <button
             type="button"
+            aria-pressed={deliveryType === "WEBSITE_EMAIL"}
             onClick={() => setDeliveryType("WEBSITE_EMAIL")}
             className="text-left"
           >
@@ -115,20 +135,35 @@ export function GiftCardPurchaseForm({
 
       {deliveryType === "WEBSITE_EMAIL" && (
         <div>
-          <label className={labelClasses}>Recipient email</label>
+          <label className={labelClasses} htmlFor="recipientEmail">
+            Recipient email
+          </label>
           <input
             className={inputClasses}
+            id="recipientEmail"
             name="recipientEmail"
             placeholder="registered-user@example.com"
             type="email"
+            autoComplete="email"
           />
+          <p className="mt-2 text-xs text-on-surface-variant">
+            Recipient must have a registered account on this site.
+          </p>
           <FieldError messages={state.errors?.recipientEmail} />
         </div>
       )}
 
       <div>
-        <label className={labelClasses}>Optional message</label>
-        <textarea className={inputClasses} name="message" rows={3} maxLength={240} />
+        <label className={labelClasses} htmlFor="gift-card-message">
+          Optional message
+        </label>
+        <textarea
+          className={inputClasses}
+          id="gift-card-message"
+          name="message"
+          rows={3}
+          maxLength={240}
+        />
         <FieldError messages={state.errors?.message} />
       </div>
 

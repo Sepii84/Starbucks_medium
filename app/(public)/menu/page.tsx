@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { MenuBrowser } from "@/components/menu/MenuBrowser";
 import type { PublicMenuItem } from "@/components/menu/types";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -6,6 +7,12 @@ import { getPublicMenu } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: "Menu | Starbucks Medium",
+  description:
+    "Browse the live Starbucks Medium demo menu with database-driven categories, product cards, and ordering for signed-in users."
+};
 
 export default async function MenuPage() {
   const user = await getCurrentUser().catch(() => null);
@@ -56,7 +63,7 @@ export default async function MenuPage() {
             Order the glow
           </h1>
           <p className="mt-5 text-lg leading-8 text-on-surface-variant">
-            Browse the full bar, filter by category, and add available drinks to your bag
+            Browse the full menu, filter by category, and add available items to your bag
             once you are signed in.
           </p>
         </div>

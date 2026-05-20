@@ -1,8 +1,33 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { getSiteInfo } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "About | Starbucks Medium",
+  description:
+    "Learn about the Starbucks Medium demo coffee shop experience, from premium café craft to live digital ordering."
+};
+
+const featureBlocks = [
+  {
+    title: "Craft roast",
+    description:
+      "Carefully selected blends, warm flavor profiles, and a premium cafe experience built around quality and consistency."
+  },
+  {
+    title: "Live ordering",
+    description:
+      "Browse the live menu, choose your favorites, and place orders through a smooth digital flow."
+  },
+  {
+    title: "Admin managed",
+    description:
+      "Menu items, availability, rewards, gift cards, and orders are managed through a dedicated admin system."
+  }
+];
 
 export default async function AboutPage() {
   const siteInfo = await getSiteInfo();
@@ -17,11 +42,13 @@ export default async function AboutPage() {
           </h1>
           <p className="text-lg leading-8 text-on-surface-variant">{siteInfo.aboutText}</p>
           <div className="grid gap-4 sm:grid-cols-3">
-            {["Craft roast", "Live ordering", "Admin managed"].map((item) => (
-              <GlassCard key={item} className="p-5">
-                <p className="font-mono text-[11px] font-bold uppercase text-primary">{item}</p>
+            {featureBlocks.map((item) => (
+              <GlassCard key={item.title} className="p-5">
+                <p className="font-mono text-[11px] font-bold uppercase text-primary">
+                  {item.title}
+                </p>
                 <p className="mt-3 text-sm text-on-surface-variant">
-                  Tuned for a polished coffee experience from browse to pickup.
+                  {item.description}
                 </p>
               </GlassCard>
             ))}

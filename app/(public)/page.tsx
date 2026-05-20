@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { ArrowRight, Leaf, Sparkles, Zap } from "lucide-react";
 import { LinkButton } from "@/components/ui/Button";
 import { FallbackImage } from "@/components/ui/FallbackImage";
@@ -7,6 +8,12 @@ import { getFeaturedMenuItems, getSiteInfo } from "@/lib/data";
 import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Starbucks Medium | Premium Coffee Ordering Demo",
+  description:
+    "Explore a dark luxury coffee ordering demo with live menu browsing, rewards, gift cards, and smooth pickup flows."
+};
 
 export default async function HomePage() {
   const [featured, siteInfo] = await Promise.all([getFeaturedMenuItems(3), getSiteInfo()]);
@@ -133,7 +140,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-3 gap-4">
               {[
                 { icon: Leaf, label: "Botanical", value: "100%" },
-                { icon: Zap, label: "Fast Orders", value: "24/7" },
+                { icon: Zap, label: "Fast Pickup", value: "Daily" },
                 { icon: Sparkles, label: "Fresh Menu", value: "Live" }
               ].map((stat) => (
                 <GlassCard key={stat.label} className="p-4">

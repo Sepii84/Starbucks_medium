@@ -9,7 +9,7 @@ const fallbackSiteInfo = {
     "A dark luxury coffee sanctuary serving botanical drinks, classic espresso, and precise online ordering.",
   address: "118 Emerald Ave, Seattle, WA",
   phone: "+1 (206) 555-0147",
-  email: "hello@starbucksmedium.local",
+  email: "hello@starbucksmedium.com",
   openingHours: "Mon-Sun 7:00 AM - 10:00 PM",
   instagramUrl: "https://instagram.com",
   twitterUrl: "https://twitter.com",
@@ -26,7 +26,18 @@ export async function getSiteInfo() {
     orderBy: { updatedAt: "desc" }
   });
 
-  return siteInfo ?? fallbackSiteInfo;
+  return normalizePublicSiteInfo(siteInfo ?? fallbackSiteInfo);
+}
+
+function normalizePublicSiteInfo<T extends { email: string }>(siteInfo: T): T {
+  if (!siteInfo.email.endsWith(".local")) {
+    return siteInfo;
+  }
+
+  return {
+    ...siteInfo,
+    email: "hello@starbucksmedium.com"
+  };
 }
 
 export async function getPublicMenu() {

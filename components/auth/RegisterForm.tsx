@@ -10,40 +10,71 @@ export function RegisterForm() {
   const [state, action, pending] = useActionState(registerAction, emptyActionState);
 
   return (
-    <form action={action} className="space-y-5">
-      <FormMessage message={state.message} ok={state.ok} />
+    <form action={action} className="space-y-5" aria-describedby="register-form-message">
+      <div id="register-form-message">
+        <FormMessage message={state.message} ok={state.ok} />
+      </div>
       <div>
         <label className={labelClasses} htmlFor="name">
           Name
         </label>
-        <input className={inputClasses} id="name" name="name" required />
+        <input
+          aria-invalid={Boolean(state.errors?.name)}
+          autoComplete="name"
+          className={inputClasses}
+          id="name"
+          name="name"
+          required
+        />
         <FieldError messages={state.errors?.name} />
       </div>
       <div>
         <label className={labelClasses} htmlFor="email">
           Email
         </label>
-        <input className={inputClasses} id="email" name="email" type="email" required />
+        <input
+          aria-invalid={Boolean(state.errors?.email)}
+          autoComplete="email"
+          className={inputClasses}
+          id="email"
+          name="email"
+          type="email"
+          required
+        />
         <FieldError messages={state.errors?.email} />
       </div>
       <div>
         <label className={labelClasses} htmlFor="password">
           Password
         </label>
-        <input className={inputClasses} id="password" name="password" type="password" required />
+        <input
+          aria-invalid={Boolean(state.errors?.password)}
+          autoComplete="new-password"
+          className={inputClasses}
+          id="password"
+          name="password"
+          type="password"
+          required
+        />
         <FieldError messages={state.errors?.password} />
       </div>
       <div>
         <label className={labelClasses} htmlFor="phone">
           Phone
         </label>
-        <input className={inputClasses} id="phone" name="phone" />
+        <input className={inputClasses} id="phone" name="phone" autoComplete="tel" />
       </div>
       <div>
         <label className={labelClasses} htmlFor="address">
           Address
         </label>
-        <textarea className={inputClasses} id="address" name="address" rows={3} />
+        <textarea
+          autoComplete="street-address"
+          className={inputClasses}
+          id="address"
+          name="address"
+          rows={3}
+        />
       </div>
       <Button className="w-full" disabled={pending} type="submit">
         {pending ? "Creating..." : "Create User Account"}

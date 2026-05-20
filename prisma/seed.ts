@@ -504,7 +504,7 @@ async function seedSiteInfo() {
       "Dark luxury coffee, botanical drinks, online ordering, and calm neon hospitality.",
     address: "118 Emerald Ave, Seattle, WA 98101",
     phone: "+1 (206) 555-0147",
-    email: "hello@starbucksmedium.local",
+    email: "hello@starbucksmedium.com",
     openingHours: "Mon-Sun 7:00 AM - 10:00 PM",
     instagramUrl: "https://instagram.com/starbucksmedium",
     twitterUrl: "https://twitter.com/starbucksmedium",
