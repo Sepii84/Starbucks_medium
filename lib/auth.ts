@@ -9,7 +9,15 @@ export const SESSION_COOKIE = "starbucks_medium_session";
 
 export type SessionUser = Pick<
   User,
-  "id" | "name" | "email" | "role" | "phone" | "address" | "isActive"
+  | "id"
+  | "name"
+  | "email"
+  | "role"
+  | "phone"
+  | "address"
+  | "rewardPoints"
+  | "walletBalance"
+  | "isActive"
 >;
 
 export type SessionPayload = {
@@ -117,6 +125,8 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       role: true,
       phone: true,
       address: true,
+      rewardPoints: true,
+      walletBalance: true,
       isActive: true
     }
   });

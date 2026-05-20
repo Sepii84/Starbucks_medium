@@ -1,9 +1,16 @@
 "use server";
 
+import { PaymentMethod, RewardTransactionType, WalletTransactionType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { createOrderSchema } from "@/lib/validations";
+
+class UserFacingError extends Error {}
+
+function money(value: number) {
+  return Number(value.toFixed(2));
+}
 
 export type CreateOrderResult =
   | {
@@ -69,47 +76,118 @@ export async function createOrderAction(input: unknown): Promise<CreateOrderResu
     .map((item) => `${item.quantity}x ${item.menuItem.name}`)
     .join(", ");
 
-  const order = await prisma.$transaction(async (tx) => {
-    const created = await tx.order.create({
-      data: {
-        userId: user.id,
-        customerName: parsed.data.customerName,
-        orderType: parsed.data.orderType,
-        tableNumber:
-          parsed.data.orderType === "DINE_IN" ? parsed.data.tableNumber?.trim() : null,
-        deliveryAddress:
-          parsed.data.orderType === "DINE_IN" ? null : parsed.data.deliveryAddress?.trim(),
-        totalPrice,
-        items: {
-          create: orderItems.map((item) => ({
-            menuItemId: item.menuItem.id,
-            quantity: item.quantity,
-            unitPrice: item.unitPrice,
-            subtotal: item.subtotal
-          }))
+  let order;
+
+  try {
+    order = await prisma.$transaction(async (tx) => {
+      const currentUser = await tx.user.findUnique({
+        where: { id: user.id },
+        select: { walletBalance: true, rewardPoints: true, name: true }
+      });
+
+      if (!currentUser) {
+        throw new UserFacingError("User account was not found.");
+      }
+
+      const paymentMethod = parsed.data.paymentMethod;
+      const paidWithWallet = paymentMethod === PaymentMethod.WALLET;
+      const walletBalanceAfter = money(Number(currentUser.walletBalance) - totalPrice);
+
+      if (paidWithWallet && walletBalanceAfter < 0) {
+        throw new UserFacingError("Your wallet balance is too low for this order.");
+      }
+
+      const rewardPointsEarned = Math.floor(totalPrice);
+
+      const created = await tx.order.create({
+        data: {
+          userId: user.id,
+          customerName: parsed.data.customerName,
+          orderType: parsed.data.orderType,
+          tableNumber:
+            parsed.data.orderType === "DINE_IN" ? parsed.data.tableNumber?.trim() : null,
+          deliveryAddress:
+            parsed.data.orderType === "DINE_IN" ? null : parsed.data.deliveryAddress?.trim(),
+          paymentMethod,
+          totalPrice,
+          items: {
+            create: orderItems.map((item) => ({
+              menuItemId: item.menuItem.id,
+              quantity: item.quantity,
+              unitPrice: item.unitPrice,
+              subtotal: item.subtotal
+            }))
+          }
         }
-      }
-    });
+      });
 
-    await tx.notification.create({
-      data: {
-        type: "ORDER_CREATED",
-        message: `${parsed.data.customerName} ordered ${itemSummary}`,
-        orderId: created.id
-      }
-    });
+      if (paidWithWallet) {
+        await tx.user.update({
+          where: { id: user.id },
+          data: {
+            walletBalance: walletBalanceAfter,
+            rewardPoints: { increment: rewardPointsEarned }
+          }
+        });
 
-    return created;
-  });
+        await tx.walletTransaction.create({
+          data: {
+            userId: user.id,
+            type: WalletTransactionType.ORDER_PAYMENT,
+            amount: -totalPrice,
+            balanceAfter: walletBalanceAfter,
+            orderId: created.id,
+            description: `Wallet payment for order #${created.id.slice(-8).toUpperCase()}.`
+          }
+        });
+      } else if (rewardPointsEarned > 0) {
+        await tx.user.update({
+          where: { id: user.id },
+          data: { rewardPoints: { increment: rewardPointsEarned } }
+        });
+      }
+
+      if (rewardPointsEarned > 0) {
+        await tx.rewardTransaction.create({
+          data: {
+            userId: user.id,
+            type: RewardTransactionType.EARNED,
+            points: rewardPointsEarned,
+            orderId: created.id,
+            description: `Earned ${rewardPointsEarned} points from order #${created.id
+              .slice(-8)
+              .toUpperCase()}.`
+          }
+        });
+      }
+
+      await tx.notification.create({
+        data: {
+          type: "ORDER_CREATED",
+          message: `${parsed.data.customerName} placed an order and earned ${rewardPointsEarned} points. Items: ${itemSummary}`,
+          orderId: created.id
+        }
+      });
+
+      return created;
+    });
+  } catch (error) {
+    return {
+      ok: false,
+      message: error instanceof UserFacingError ? error.message : "Could not place order."
+    };
+  }
 
   revalidatePath("/admin");
   revalidatePath("/admin/orders");
   revalidatePath("/admin/notifications");
   revalidatePath("/order");
+  revalidatePath("/wallet");
+  revalidatePath("/rewards");
 
   return {
     ok: true,
     orderId: order.id,
-    message: "Order placed. The bar has been notified."
+    message: "Order placed. The bar has been notified and reward points were updated."
   };
 }

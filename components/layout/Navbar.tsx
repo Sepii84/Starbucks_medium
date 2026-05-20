@@ -1,4 +1,4 @@
-import { Coffee, LogOut, Shield, UserCircle } from "lucide-react";
+import { Award, Coffee, Gift, LogOut, Shield, UserCircle, WalletCards } from "lucide-react";
 import Link from "next/link";
 import { logoutAction } from "@/app/actions/auth";
 import { BagLink } from "@/components/layout/BagLink";
@@ -25,10 +25,24 @@ export function Navbar({ user }: { user: SessionUser | null }) {
           <Link className="transition hover:text-primary" href="/menu">
             Menu
           </Link>
+          <Link className="inline-flex items-center gap-2 transition hover:text-primary" href="/rewards">
+            <Award size={14} />
+            Rewards
+          </Link>
+          <Link className="inline-flex items-center gap-2 transition hover:text-primary" href="/gift-cards">
+            <Gift size={14} />
+            Gift Cards
+          </Link>
           {user?.role === "USER" ? (
-            <Link className="transition hover:text-primary" href="/account">
-              Account
-            </Link>
+            <>
+              <Link className="inline-flex items-center gap-2 transition hover:text-primary" href="/wallet">
+                <WalletCards size={14} />
+                Wallet
+              </Link>
+              <Link className="transition hover:text-primary" href="/account">
+                Account
+              </Link>
+            </>
           ) : (
             <>
               <Link className="transition hover:text-primary" href="/about">

@@ -71,6 +71,7 @@ export default async function AdminOrdersPage() {
                         : order.deliveryAddress}
                     </p>
                     <p className="mt-2">Customer: {order.customerName}</p>
+                    <p className="mt-2">Payment: {order.paymentMethod.replace("_", " ")}</p>
                   </div>
                   <AdminOrderStatusForm id={order.id} status={order.status} />
                 </div>

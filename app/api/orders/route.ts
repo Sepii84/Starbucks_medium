@@ -1,8 +1,12 @@
-import { Role } from "@prisma/client";
+import { PaymentMethod, RewardTransactionType, Role, WalletTransactionType } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { apiUser, jsonError } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
 import { createOrderSchema } from "@/lib/validations";
+
+function money(value: number) {
+  return Number(value.toFixed(2));
+}
 
 export async function GET() {
   const { user, response } = await apiUser();
@@ -63,7 +67,26 @@ export async function POST(request: NextRequest) {
   const totalPrice = Number(items.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2));
   const summary = items.map((item) => `${item.quantity}x ${item.menuItem.name}`).join(", ");
 
-  const order = await prisma.$transaction(async (tx) => {
+  try {
+    const order = await prisma.$transaction(async (tx) => {
+    const currentUser = await tx.user.findUnique({
+      where: { id: user.id },
+      select: { walletBalance: true, name: true }
+    });
+
+    if (!currentUser) {
+      throw new Error("User account was not found.");
+    }
+
+    const paidWithWallet = parsed.data.paymentMethod === PaymentMethod.WALLET;
+    const walletBalanceAfter = money(Number(currentUser.walletBalance) - totalPrice);
+
+    if (paidWithWallet && walletBalanceAfter < 0) {
+      throw new Error("Your wallet balance is too low for this order.");
+    }
+
+    const rewardPointsEarned = Math.floor(totalPrice);
+
     const created = await tx.order.create({
       data: {
         userId: user.id,
@@ -73,6 +96,7 @@ export async function POST(request: NextRequest) {
           parsed.data.orderType === "DINE_IN" ? parsed.data.tableNumber?.trim() : null,
         deliveryAddress:
           parsed.data.orderType === "DINE_IN" ? null : parsed.data.deliveryAddress?.trim(),
+        paymentMethod: parsed.data.paymentMethod,
         totalPrice,
         items: {
           create: items.map((item) => ({
@@ -85,16 +109,59 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    if (paidWithWallet) {
+      await tx.user.update({
+        where: { id: user.id },
+        data: {
+          walletBalance: walletBalanceAfter,
+          rewardPoints: { increment: rewardPointsEarned }
+        }
+      });
+
+      await tx.walletTransaction.create({
+        data: {
+          userId: user.id,
+          type: WalletTransactionType.ORDER_PAYMENT,
+          amount: -totalPrice,
+          balanceAfter: walletBalanceAfter,
+          orderId: created.id,
+          description: `Wallet payment for order #${created.id.slice(-8).toUpperCase()}.`
+        }
+      });
+    } else if (rewardPointsEarned > 0) {
+      await tx.user.update({
+        where: { id: user.id },
+        data: { rewardPoints: { increment: rewardPointsEarned } }
+      });
+    }
+
+    if (rewardPointsEarned > 0) {
+      await tx.rewardTransaction.create({
+        data: {
+          userId: user.id,
+          type: RewardTransactionType.EARNED,
+          points: rewardPointsEarned,
+          orderId: created.id,
+          description: `Earned ${rewardPointsEarned} points from order #${created.id
+            .slice(-8)
+            .toUpperCase()}.`
+        }
+      });
+    }
+
     await tx.notification.create({
       data: {
         type: "ORDER_CREATED",
-        message: `${parsed.data.customerName} ordered ${summary}`,
+        message: `${parsed.data.customerName} placed an order and earned ${rewardPointsEarned} points. Items: ${summary}`,
         orderId: created.id
       }
     });
 
     return created;
-  });
+    });
 
-  return NextResponse.json({ order }, { status: 201 });
+    return NextResponse.json({ order }, { status: 201 });
+  } catch (error) {
+    return jsonError(error instanceof Error ? error.message : "Could not place order.", 409);
+  }
 }

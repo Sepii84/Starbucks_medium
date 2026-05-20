@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "prisma db seed",
-    "prisma:studio": "prisma studio",
+    "prisma:generate": "node node_modules/prisma/build/index.js generate",
+    "prisma:migrate": "node node_modules/prisma/build/index.js migrate dev",
+    "prisma:seed": "node node_modules/prisma/build/index.js db seed",
+    "prisma:studio": "node node_modules/prisma/build/index.js studio",
     "db:check": "tsx scripts/check-db.ts"
   },
   "dependencies": {

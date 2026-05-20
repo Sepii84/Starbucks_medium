@@ -3,6 +3,8 @@
 import {
   Bell,
   Coffee,
+  Award,
+  Gift,
   Globe2,
   Home,
   LogOut,
@@ -11,6 +13,7 @@ import {
   ShoppingBag,
   UserCircle,
   Users,
+  WalletCards,
   X
 } from "lucide-react";
 import Link from "next/link";
@@ -18,13 +21,15 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { logoutAction } from "@/app/actions/auth";
 import { NotificationBell } from "@/components/admin/NotificationBell";
-import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/admin", label: "Dashboard", icon: Home },
   { href: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { href: "/admin/menu", label: "Menu Management", icon: Coffee },
+  { href: "/admin/rewards", label: "Rewards", icon: Award },
+  { href: "/admin/gift-cards", label: "Gift Cards", icon: Gift },
+  { href: "/admin/wallet", label: "Wallet", icon: WalletCards },
   { href: "/admin/site-info", label: "Website Information", icon: Globe2 },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/notifications", label: "Notifications", icon: Bell },
@@ -41,8 +46,12 @@ function SidebarContent({
   const pathname = usePathname();
 
   return (
-    <div className="flex h-full flex-col">
-      <Link href="/admin" className="mb-8 flex items-center gap-3" onClick={onNavigate}>
+    <div className="flex h-full min-h-0 flex-col overflow-hidden">
+      <Link
+        href="/admin"
+        className="flex shrink-0 items-center gap-3 px-5 pb-8 pt-5"
+        onClick={onNavigate}
+      >
         <span className="flex h-11 w-11 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary shadow-glow">
           <Shield size={20} />
         </span>
@@ -56,7 +65,7 @@ function SidebarContent({
         </span>
       </Link>
 
-      <nav className="space-y-2">
+      <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto px-5 pb-5">
         {links.map((link) => {
           const active = pathname === link.href;
           return (
@@ -85,7 +94,7 @@ function SidebarContent({
         })}
       </nav>
 
-      <div className="mt-auto space-y-3 border-t border-white/10 pt-5">
+      <div className="shrink-0 space-y-3 border-t border-white/10 p-5 pb-6">
         <Link
           href="/admin/notifications"
           onClick={onNavigate}
@@ -95,10 +104,13 @@ function SidebarContent({
           <NotificationBell count={unreadCount} />
         </Link>
         <form action={logoutAction}>
-          <Button className="w-full" type="submit" variant="ghost">
-            <LogOut size={16} />
+          <button
+            type="submit"
+            className="focus-ring flex min-h-12 w-full items-center justify-center gap-3 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-100 transition hover:border-red-300/50 hover:bg-red-500/20"
+          >
+            <LogOut size={18} />
             Logout
-          </Button>
+          </button>
         </form>
       </div>
     </div>
@@ -110,7 +122,7 @@ export function AdminSidebar({ unreadCount }: { unreadCount: number }) {
 
   return (
     <>
-      <div className="fixed left-0 top-0 z-50 hidden h-screen w-72 border-r border-white/10 bg-surface/60 p-5 backdrop-blur-3xl lg:block">
+      <div className="fixed left-0 top-0 z-50 hidden h-screen w-72 overflow-hidden border-r border-white/10 bg-surface/60 backdrop-blur-3xl lg:block">
         <SidebarContent unreadCount={unreadCount} />
       </div>
 
@@ -135,8 +147,8 @@ export function AdminSidebar({ unreadCount }: { unreadCount: number }) {
 
       {open && (
         <div className="fixed inset-0 z-[60] bg-black/70 lg:hidden">
-          <div className="h-full w-[86vw] max-w-sm border-r border-white/10 bg-surface p-5">
-            <div className="mb-4 flex justify-end">
+          <div className="flex h-full w-[86vw] max-w-sm flex-col overflow-hidden border-r border-white/10 bg-surface">
+            <div className="flex shrink-0 justify-end px-5 pb-3 pt-5">
               <button
                 type="button"
                 className="focus-ring rounded-full border border-white/10 p-2 text-primary"
@@ -146,7 +158,9 @@ export function AdminSidebar({ unreadCount }: { unreadCount: number }) {
                 <X size={20} />
               </button>
             </div>
-            <SidebarContent unreadCount={unreadCount} onNavigate={() => setOpen(false)} />
+            <div className="min-h-0 flex-1">
+              <SidebarContent unreadCount={unreadCount} onNavigate={() => setOpen(false)} />
+            </div>
           </div>
         </div>
       )}

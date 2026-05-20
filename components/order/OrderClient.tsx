@@ -13,6 +13,7 @@ import { inputClasses, labelClasses } from "@/components/ui/Form";
 import { cn, formatCurrency } from "@/lib/utils";
 
 type OrderType = "DINE_IN" | "TAKEAWAY" | "DELIVERY";
+type PaymentMethod = "PAY_AT_COUNTER" | "WALLET";
 
 export function OrderClient({
   user
@@ -20,10 +21,12 @@ export function OrderClient({
   user: {
     name: string;
     address?: string | null;
+    walletBalance: number;
   };
 }) {
   const { items, count, subtotal, increase, decrease, remove, clear } = useCart();
   const [orderType, setOrderType] = useState<OrderType>("DINE_IN");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("PAY_AT_COUNTER");
   const [customerName, setCustomerName] = useState(user.name);
   const [tableNumber, setTableNumber] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState(user.address ?? "");
@@ -44,6 +47,7 @@ export function OrderClient({
       const response = await createOrderAction({
         customerName,
         orderType,
+        paymentMethod,
         tableNumber,
         deliveryAddress,
         items: items.map((item) => ({
@@ -194,6 +198,30 @@ export function OrderClient({
             </div>
           </div>
 
+          <div>
+            <label className={labelClasses}>Payment method</label>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              {(["PAY_AT_COUNTER", "WALLET"] as PaymentMethod[]).map((method) => (
+                <button
+                  key={method}
+                  type="button"
+                  onClick={() => setPaymentMethod(method)}
+                  className={cn(
+                    "focus-ring rounded-full border px-3 py-3 font-mono text-[10px] font-bold uppercase transition",
+                    paymentMethod === method
+                      ? "border-primary bg-primary text-on-primary"
+                      : "border-white/10 bg-white/[0.03] text-on-surface-variant hover:text-primary"
+                  )}
+                >
+                  {method === "PAY_AT_COUNTER" ? "Pay at counter" : "Wallet"}
+                </button>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-on-surface-variant">
+              Wallet balance: <span className="text-primary">{formatCurrency(user.walletBalance)}</span>
+            </p>
+          </div>
+
           {orderType === "DINE_IN" ? (
             <div>
               <label className={labelClasses} htmlFor="tableNumber">
@@ -248,6 +276,12 @@ export function OrderClient({
           <div className="mt-3 rounded-lg bg-primary/10 p-3 text-sm text-on-surface-variant">
             <span className="text-primary">{count} items</span> - {orderType.replace("_", " ")} -{" "}
             {summaryLabel}
+          </div>
+          <div className="mt-3 rounded-lg bg-secondary/10 p-3 text-sm text-on-surface-variant">
+            Payment:{" "}
+            <span className="text-secondary">
+              {paymentMethod === "WALLET" ? "Wallet" : "Pay at counter"}
+            </span>
           </div>
           <p className="mt-3 text-xs text-on-surface-variant">
             Final total is recalculated on the server using current menu prices.

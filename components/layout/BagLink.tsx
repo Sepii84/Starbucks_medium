@@ -24,7 +24,7 @@ export function BagLink({
       aria-label={`Open bag with ${count} items`}
     >
       <ShoppingBag size={compact ? 18 : 16} />
-      {!compact && <span>Bag</span>}
+      <span className={compact ? "text-[10px]" : ""}>Bag</span>
       <span className="min-w-5 rounded-full bg-primary px-1.5 py-0.5 text-center text-[10px] text-on-primary">
         {count}
       </span>

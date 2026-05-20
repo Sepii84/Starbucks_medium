@@ -15,12 +15,16 @@ export async function GET() {
     const featuredMenuItems = await prisma.menuItem.count({
       where: { isFeatured: true }
     });
+    const rewardRules = await prisma.rewardRule.count();
+    const giftCardTemplates = await prisma.giftCardTemplate.count();
 
     return NextResponse.json({
       categories,
       menuItems,
       availableMenuItems,
-      featuredMenuItems
+      featuredMenuItems,
+      rewardRules,
+      giftCardTemplates
     });
   } catch (error) {
     return NextResponse.json(

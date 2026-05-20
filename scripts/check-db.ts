@@ -26,6 +26,9 @@ async function main() {
     const featuredMenuItems = await prisma.menuItem.count({
       where: { isFeatured: true }
     });
+    const rewardRules = await prisma.rewardRule.count();
+    const giftCardTemplates = await prisma.giftCardTemplate.count();
+    const walletTransactions = await prisma.walletTransaction.count();
 
     console.log("Database connected successfully.");
     console.log(`Users: ${users}`);
@@ -33,6 +36,9 @@ async function main() {
     console.log(`Menu items: ${menuItems}`);
     console.log(`Available menu items: ${availableMenuItems}`);
     console.log(`Featured menu items: ${featuredMenuItems}`);
+    console.log(`Reward rules: ${rewardRules}`);
+    console.log(`Gift card templates: ${giftCardTemplates}`);
+    console.log(`Wallet transactions: ${walletTransactions}`);
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
 

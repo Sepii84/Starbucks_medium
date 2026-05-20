@@ -27,19 +27,74 @@ enum OrderStatus {
   CANCELLED
 }
 
-model User {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  role         Role     @default(USER)
-  phone        String?
-  address      String?
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+enum PaymentMethod {
+  PAY_AT_COUNTER
+  WALLET
+}
 
-  orders Order[]
+enum RewardTransactionType {
+  EARNED
+  SPENT
+  ADJUSTED
+  REFUNDED
+}
+
+enum RedemptionStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+enum WalletTransactionType {
+  CHARGE
+  ORDER_PAYMENT
+  GIFT_CARD_PURCHASE
+  GIFT_CARD_RECEIVED
+  ADMIN_ADJUSTMENT
+  REFUND
+}
+
+enum GiftCardDeliveryType {
+  IN_PERSON
+  WEBSITE_EMAIL
+}
+
+enum GiftCardStatus {
+  ACTIVE
+  USED
+  CANCELLED
+  EXPIRED
+}
+
+enum GiftCardTransactionType {
+  CREATED
+  SENT
+  RECEIVED
+  USED
+  CANCELLED
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  role          Role     @default(USER)
+  phone         String?
+  address       String?
+  rewardPoints  Int      @default(0)
+  walletBalance Decimal  @default(0) @db.Decimal(10, 2)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  orders               Order[]
+  rewardRedemptions    RewardRedemption[]
+  rewardTransactions   RewardTransaction[]
+  walletTransactions   WalletTransaction[]
+  boughtGiftCards      GiftCard[]            @relation("GiftCardBuyer")
+  receivedGiftCards    GiftCard[]            @relation("GiftCardRecipient")
+  giftCardTransactions GiftCardTransaction[]
 }
 
 model MenuCategory {
@@ -65,25 +120,30 @@ model MenuItem {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  category   MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  orderItems OrderItem[]
+  category          MenuCategory       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  orderItems        OrderItem[]
+  rewardRules       RewardRule[]
+  rewardRedemptions RewardRedemption[]
 }
 
 model Order {
-  id              String      @id @default(cuid())
+  id              String        @id @default(cuid())
   userId          String
   customerName    String
   orderType       OrderType
   tableNumber     String?
   deliveryAddress String?
-  status          OrderStatus @default(PENDING)
-  totalPrice      Decimal     @db.Decimal(10, 2)
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  paymentMethod   PaymentMethod @default(PAY_AT_COUNTER)
+  status          OrderStatus   @default(PENDING)
+  totalPrice      Decimal       @db.Decimal(10, 2)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items         OrderItem[]
-  notifications Notification[]
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items              OrderItem[]
+  notifications      Notification[]
+  rewardTransactions RewardTransaction[]
+  walletTransactions WalletTransaction[]
 }
 
 model OrderItem {
@@ -121,4 +181,109 @@ model SiteInfo {
   twitterUrl        String?
   mapUrl            String?
   updatedAt         DateTime @updatedAt
+}
+
+model RewardRule {
+  id             String   @id @default(cuid())
+  menuItemId     String
+  pointsRequired Int
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  menuItem    MenuItem           @relation(fields: [menuItemId], references: [id])
+  redemptions RewardRedemption[]
+
+  @@unique([menuItemId])
+}
+
+model RewardRedemption {
+  id           String           @id @default(cuid())
+  userId       String
+  rewardRuleId String
+  menuItemId   String
+  pointsSpent  Int
+  status       RedemptionStatus @default(COMPLETED)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rewardRule   RewardRule          @relation(fields: [rewardRuleId], references: [id])
+  menuItem     MenuItem            @relation(fields: [menuItemId], references: [id])
+  transactions RewardTransaction[]
+}
+
+model RewardTransaction {
+  id           String                @id @default(cuid())
+  userId       String
+  type         RewardTransactionType
+  points       Int
+  orderId      String?
+  redemptionId String?
+  description  String
+  createdAt    DateTime              @default(now())
+
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order      Order?            @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  redemption RewardRedemption? @relation(fields: [redemptionId], references: [id], onDelete: SetNull)
+}
+
+model WalletTransaction {
+  id           String                @id @default(cuid())
+  userId       String
+  type         WalletTransactionType
+  amount       Decimal               @db.Decimal(10, 2)
+  balanceAfter Decimal               @db.Decimal(10, 2)
+  description  String
+  orderId      String?
+  giftCardId   String?
+  createdAt    DateTime              @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order    Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  giftCard GiftCard? @relation(fields: [giftCardId], references: [id], onDelete: SetNull)
+}
+
+model GiftCard {
+  id              String               @id @default(cuid())
+  code            String               @unique
+  buyerId         String
+  recipientUserId String?
+  recipientEmail  String?
+  amount          Decimal              @db.Decimal(10, 2)
+  balance         Decimal              @db.Decimal(10, 2)
+  deliveryType    GiftCardDeliveryType
+  status          GiftCardStatus       @default(ACTIVE)
+  message         String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  buyer              User                  @relation("GiftCardBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  recipientUser      User?                 @relation("GiftCardRecipient", fields: [recipientUserId], references: [id], onDelete: SetNull)
+  walletTransactions WalletTransaction[]
+  transactions       GiftCardTransaction[]
+}
+
+model GiftCardTemplate {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String
+  amount      Decimal  @db.Decimal(10, 2)
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GiftCardTransaction {
+  id          String                  @id @default(cuid())
+  giftCardId  String
+  userId      String
+  type        GiftCardTransactionType
+  amount      Decimal                 @db.Decimal(10, 2)
+  description String
+  createdAt   DateTime                @default(now())
+
+  giftCard GiftCard @relation(fields: [giftCardId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -21,7 +21,13 @@ export default async function OrderPage() {
             order. Prices are validated again on the server.
           </p>
         </div>
-        <OrderClient user={user} />
+        <OrderClient
+          user={{
+            name: user.name,
+            address: user.address,
+            walletBalance: Number(user.walletBalance)
+          }}
+        />
       </div>
     </section>
   );

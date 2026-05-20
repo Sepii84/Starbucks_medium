@@ -40,6 +40,24 @@ export default async function AccountPage({
         </GlassCard>
 
         <div className="space-y-5">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <GlassCard className="p-5">
+              <p className="font-mono text-[10px] font-bold uppercase text-on-surface-variant">
+                Reward points
+              </p>
+              <p className="mt-3 font-display text-3xl font-semibold text-primary">
+                {user.rewardPoints}
+              </p>
+            </GlassCard>
+            <GlassCard className="p-5">
+              <p className="font-mono text-[10px] font-bold uppercase text-on-surface-variant">
+                Wallet balance
+              </p>
+              <p className="mt-3 font-display text-3xl font-semibold text-primary">
+                {formatCurrency(Number(user.walletBalance))}
+              </p>
+            </GlassCard>
+          </div>
           <div>
             <p className="font-mono text-[11px] font-bold uppercase text-primary">
               Recent orders

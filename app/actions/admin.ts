@@ -1,6 +1,12 @@
 "use server";
 
-import { Prisma, Role } from "@prisma/client";
+import {
+  OrderStatus,
+  Prisma,
+  RewardTransactionType,
+  Role,
+  WalletTransactionType
+} from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { requireAdmin, setSessionCookie, verifyPassword, hashPassword } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -195,13 +201,102 @@ export async function updateOrderStatusAction(formData: FormData) {
     return;
   }
 
-  await prisma.order.update({
-    where: { id: parsed.data.id },
-    data: { status: parsed.data.status }
+  await prisma.$transaction(async (tx) => {
+    const existing = await tx.order.findUnique({
+      where: { id: parsed.data.id },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            rewardPoints: true,
+            walletBalance: true
+          }
+        },
+        rewardTransactions: {
+          where: { type: RewardTransactionType.EARNED }
+        },
+        walletTransactions: {
+          where: { type: WalletTransactionType.ORDER_PAYMENT }
+        }
+      }
+    });
+
+    if (!existing) {
+      return;
+    }
+
+    await tx.order.update({
+      where: { id: parsed.data.id },
+      data: { status: parsed.data.status }
+    });
+
+    if (parsed.data.status !== OrderStatus.CANCELLED || existing.status === OrderStatus.CANCELLED) {
+      return;
+    }
+
+    const earnedPoints = existing.rewardTransactions.reduce(
+      (sum, transaction) => sum + Math.max(0, transaction.points),
+      0
+    );
+    const pointsToReverse = Math.min(existing.user.rewardPoints, earnedPoints);
+    const walletRefund = Number(
+      existing.walletTransactions
+        .reduce((sum, transaction) => sum + Math.abs(Number(transaction.amount)), 0)
+        .toFixed(2)
+    );
+    const balanceAfter = Number((Number(existing.user.walletBalance) + walletRefund).toFixed(2));
+
+    if (pointsToReverse > 0 || walletRefund > 0) {
+      await tx.user.update({
+        where: { id: existing.userId },
+        data: {
+          rewardPoints:
+            pointsToReverse > 0 ? { decrement: pointsToReverse } : undefined,
+          walletBalance: walletRefund > 0 ? balanceAfter : undefined
+        }
+      });
+    }
+
+    if (pointsToReverse > 0) {
+      await tx.rewardTransaction.create({
+        data: {
+          userId: existing.userId,
+          type: RewardTransactionType.REFUNDED,
+          points: -pointsToReverse,
+          orderId: existing.id,
+          description: `Reversed ${pointsToReverse} points after order cancellation.`
+        }
+      });
+    }
+
+    if (walletRefund > 0) {
+      await tx.walletTransaction.create({
+        data: {
+          userId: existing.userId,
+          type: WalletTransactionType.REFUND,
+          amount: walletRefund,
+          balanceAfter,
+          orderId: existing.id,
+          description: "Wallet refund after order cancellation."
+        }
+      });
+    }
+
+    await tx.notification.create({
+      data: {
+        type: "ORDER_CANCELLED",
+        message: `${existing.user.name}'s order was cancelled. Wallet and reward reversals were recorded.`,
+        orderId: existing.id
+      }
+    });
   });
 
   revalidatePath("/admin");
   revalidatePath("/admin/orders");
+  revalidatePath("/admin/notifications");
+  revalidatePath("/wallet");
+  revalidatePath("/rewards");
 }
 
 export async function updateSiteInfoAction(_: ActionState, formData: FormData): Promise<ActionState> {

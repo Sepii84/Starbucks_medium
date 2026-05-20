@@ -1,4 +1,10 @@
-import { OrderStatus, OrderType, Role } from "@prisma/client";
+import {
+  GiftCardDeliveryType,
+  OrderStatus,
+  OrderType,
+  PaymentMethod,
+  Role
+} from "@prisma/client";
 import { z } from "zod";
 
 export const loginSchema = z.object({
@@ -82,6 +88,7 @@ export const createOrderSchema = z
     orderType: z.nativeEnum(OrderType),
     tableNumber: z.string().optional(),
     deliveryAddress: z.string().optional(),
+    paymentMethod: z.nativeEnum(PaymentMethod).default(PaymentMethod.PAY_AT_COUNTER),
     items: z.array(orderItemInputSchema).min(1, "Your bag is empty.")
   })
   .superRefine((value, ctx) => {
@@ -109,6 +116,88 @@ export const orderStatusSchema = z.object({
   id: z.string().min(1),
   status: z.nativeEnum(OrderStatus)
 });
+
+export const redeemRewardSchema = z.object({
+  rewardRuleId: z.string().min(1, "Choose a reward.")
+});
+
+export const rewardRuleSchema = z.object({
+  id: z.string().optional(),
+  menuItemId: z.string().min(1, "Choose a menu item."),
+  pointsRequired: z.coerce
+    .number()
+    .int("Points must be a whole number.")
+    .min(1, "Points must be greater than zero.")
+    .max(100000, "Points are too high."),
+  isActive: z.coerce.boolean().default(false)
+});
+
+export const pointAdjustmentSchema = z.object({
+  userId: z.string().min(1, "Choose a user."),
+  points: z.coerce
+    .number()
+    .int("Points must be a whole number.")
+    .min(-100000, "Adjustment is too low.")
+    .max(100000, "Adjustment is too high.")
+    .refine((value) => value !== 0, "Adjustment cannot be zero."),
+  reason: z.string().min(5, "Reason is required.")
+});
+
+export const walletChargeSchema = z.object({
+  amount: z.coerce
+    .number()
+    .min(1, "Minimum charge is $1.")
+    .max(500, "Maximum charge is $500.")
+});
+
+export const walletAdjustmentSchema = z.object({
+  userId: z.string().min(1, "Choose a user."),
+  amount: z.coerce
+    .number()
+    .min(-5000, "Adjustment is too low.")
+    .max(5000, "Adjustment is too high.")
+    .refine((value) => value !== 0, "Adjustment cannot be zero."),
+  reason: z.string().min(5, "Reason is required.")
+});
+
+export const giftCardTemplateSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(2, "Template name is required."),
+  description: z.string().min(8, "Description is required."),
+  amount: z.coerce
+    .number()
+    .min(1, "Amount must be at least $1.")
+    .max(500, "Amount cannot exceed $500."),
+  imageUrl: z.string().optional(),
+  isActive: z.coerce.boolean().default(false)
+});
+
+export const giftCardPurchaseSchema = z
+  .object({
+    templateId: z.string().min(1, "Choose a gift card."),
+    deliveryType: z.nativeEnum(GiftCardDeliveryType),
+    recipientEmail: z.string().optional(),
+    message: z.string().max(240, "Message is too long.").optional()
+  })
+  .superRefine((value, ctx) => {
+    if (value.deliveryType === GiftCardDeliveryType.WEBSITE_EMAIL) {
+      const email = value.recipientEmail?.trim();
+
+      if (!email) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["recipientEmail"],
+          message: "Recipient email is required."
+        });
+      } else if (!z.string().email().safeParse(email).success) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["recipientEmail"],
+          message: "Enter a valid recipient email."
+        });
+      }
+    }
+  });
 
 export const siteInfoSchema = z.object({
   aboutText: z.string().min(20, "About text should be descriptive."),

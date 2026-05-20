@@ -4,7 +4,18 @@ import bcrypt from "bcryptjs";
 
 nextEnv.loadEnvConfig(process.cwd());
 
-const prisma = new PrismaClient();
+const seedDatabaseUrl = process.env.DIRECT_URL ?? process.env.DATABASE_URL;
+const prisma = new PrismaClient(
+  seedDatabaseUrl
+    ? {
+        datasources: {
+          db: {
+            url: seedDatabaseUrl
+          }
+        }
+      }
+    : undefined
+);
 
 type MenuSeedCategory = {
   category: string;
@@ -429,6 +440,8 @@ async function seedUsers() {
       name: "Sepehr",
       passwordHash: userPassword,
       role: Role.USER,
+      rewardPoints: 250,
+      walletBalance: 100,
       isActive: true
     },
     create: {
@@ -436,13 +449,15 @@ async function seedUsers() {
       email: "user@example.com",
       passwordHash: userPassword,
       role: Role.USER,
+      rewardPoints: 250,
+      walletBalance: 100,
       phone: "+1 (206) 555-0199",
       address: "42 Greenhouse Lane, Seattle, WA"
     }
   });
 }
 
-async function seedMenu() {
+function getMenuNameCounts() {
   const nameCounts = new Map<string, number>();
 
   for (const group of MENU_DATA) {
@@ -452,9 +467,14 @@ async function seedMenu() {
     }
   }
 
+  return nameCounts;
+}
+
+async function seedMenuCategories() {
   const categoryRecords = new Map<string, string>();
 
   for (const group of MENU_DATA) {
+    console.log(`  Upserting category: ${group.category}`);
     const category = await prisma.menuCategory.upsert({
       where: { slug: slugify(group.category) },
       update: {
@@ -471,12 +491,20 @@ async function seedMenu() {
     categoryRecords.set(group.category, category.id);
   }
 
+  return categoryRecords;
+}
+
+async function seedMenuItems(categoryRecords: Map<string, string>) {
+  const nameCounts = getMenuNameCounts();
+
   for (const group of MENU_DATA) {
     const categoryId = categoryRecords.get(group.category);
 
     if (!categoryId) {
       throw new Error(`Missing category ${group.category}`);
     }
+
+    console.log(`  Upserting ${group.items.length} menu items for ${group.category}...`);
 
     for (const name of group.items) {
       const slug = itemSlug(name, group.category, nameCounts);
@@ -534,35 +562,153 @@ async function seedSiteInfo() {
   }
 }
 
+const REWARD_RULES = [
+  { itemName: "Caffe Latte", pointsRequired: 100 },
+  { itemName: "Cold Brew", pointsRequired: 120 },
+  { itemName: "Caramel Macchiato", pointsRequired: 150 },
+  { itemName: "Iced Matcha Latte", pointsRequired: 160 },
+  { itemName: "Java Chip Frappuccino", pointsRequired: 180 }
+];
+
+const GIFT_CARD_TEMPLATES = [
+  { name: "$10 Gift Card", amount: 10 },
+  { name: "$25 Gift Card", amount: 25 },
+  { name: "$50 Gift Card", amount: 50 },
+  { name: "$100 Gift Card", amount: 100 }
+];
+
+async function seedRewards() {
+  const menuItems = await prisma.menuItem.findMany();
+
+  for (const rule of REWARD_RULES) {
+    console.log(`  Upserting reward rule: ${rule.itemName} (${rule.pointsRequired} pts)`);
+    const targetSlug = slugify(rule.itemName);
+    const item =
+      menuItems.find((menuItem) => menuItem.slug === targetSlug) ??
+      menuItems.find((menuItem) =>
+        menuItem.name.toLowerCase().includes(rule.itemName.toLowerCase())
+      );
+
+    if (!item) {
+      console.warn(`Skipping reward rule. Menu item not found: ${rule.itemName}`);
+      continue;
+    }
+
+    await prisma.rewardRule.upsert({
+      where: { menuItemId: item.id },
+      update: {
+        pointsRequired: rule.pointsRequired,
+        isActive: true
+      },
+      create: {
+        menuItemId: item.id,
+        pointsRequired: rule.pointsRequired,
+        isActive: true
+      }
+    });
+  }
+}
+
+async function seedGiftCards() {
+  for (const template of GIFT_CARD_TEMPLATES) {
+    console.log(`  Upserting gift card template: ${template.name}`);
+    await prisma.giftCardTemplate.upsert({
+      where: { name: template.name },
+      update: {
+        description: `${template.name} for Starbucks Medium wallet gifting.`,
+        amount: template.amount,
+        imageUrl: "/images/menu/placeholder-drink.jpg",
+        isActive: true
+      },
+      create: {
+        name: template.name,
+        description: `${template.name} for Starbucks Medium wallet gifting.`,
+        amount: template.amount,
+        imageUrl: "/images/menu/placeholder-drink.jpg",
+        isActive: true
+      }
+    });
+  }
+}
+
+async function connectWithRetry() {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      await prisma.$connect();
+      return;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) {
+        await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
+      }
+    }
+  }
+
+  throw lastError;
+}
+
 async function main() {
+  console.log("Starting seed...");
+  console.log("Connecting to database...");
+  console.log(
+    process.env.DIRECT_URL
+      ? "Using DIRECT_URL for seed setup connection."
+      : "Using DATABASE_URL for seed setup connection."
+  );
+  await connectWithRetry();
+
+  console.log("Seeding users...");
   await seedUsers();
-  await seedMenu();
+
+  console.log("Seeding menu categories...");
+  const categoryRecords = await seedMenuCategories();
+
+  console.log("Seeding menu items...");
+  await seedMenuItems(categoryRecords);
+
+  console.log("Seeding site info...");
   await seedSiteInfo();
 
+  console.log("Seeding reward rules...");
+  await seedRewards();
+
+  console.log("Seeding gift card templates...");
+  await seedGiftCards();
+
+  console.log("Counting seeded records...");
   const userCount = await prisma.user.count();
   const categoryCount = await prisma.menuCategory.count();
   const itemCount = await prisma.menuItem.count();
   const featuredItemCount = await prisma.menuItem.count({
     where: { isFeatured: true }
   });
+  const rewardRuleCount = await prisma.rewardRule.count();
+  const giftCardTemplateCount = await prisma.giftCardTemplate.count();
 
   if (itemCount === 0) {
     throw new Error("Seed completed with 0 menu items. Check the menu seed data.");
   }
 
-  console.log("Seed completed.");
-  console.log(`Users: ${userCount}`);
-  console.log(`Categories: ${categoryCount}`);
-  console.log(`Menu items: ${itemCount}`);
-  console.log(`Featured items: ${featuredItemCount}`);
+  console.log("Seed completed successfully.");
+  console.log({
+    userCount,
+    categoryCount,
+    itemCount,
+    featuredItemCount,
+    rewardRuleCount,
+    giftCardTemplateCount
+  });
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect();
+  .catch((error) => {
+    console.error("Seed failed:", error);
+    process.exitCode = 1;
   })
-  .catch(async (error) => {
-    console.error(error);
+  .finally(async () => {
+    console.log("Disconnecting Prisma...");
     await prisma.$disconnect();
-    process.exit(1);
+    console.log("Prisma disconnected.");
   });
