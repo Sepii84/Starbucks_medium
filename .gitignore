@@ -8,4 +8,6 @@ coverage
 prisma/dev.db
 .next-dev.log
 generated-assets/
+temp-images/
+tmp-images/
 *.zip

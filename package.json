@@ -17,6 +17,7 @@
     "images:generate": "tsx scripts/generate-images.ts",
     "images:apply": "tsx scripts/apply-image-paths.ts",
     "images:verify": "tsx scripts/verify-images.ts",
+    "images:audit": "tsx scripts/audit-images.ts",
     "images:apply-named": "tsx scripts/apply-named-images.ts",
     "images:verify-named": "tsx scripts/verify-named-images.ts",
     "images:zip": "tsx scripts/zip-generated-assets.ts",

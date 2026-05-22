@@ -65,7 +65,7 @@ export default async function MenuPage() {
               Order the glow
             </h1>
             <p className="mt-5 text-lg leading-8 text-on-surface-variant">
-              Browse the full menu, filter by category, and add available items to your bag
+              Search the full menu, choose a category, and add available items to your bag
               once you are signed in.
             </p>
           </div>

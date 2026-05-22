@@ -54,8 +54,7 @@ export async function getPublicMenu() {
     include: {
       items: {
         where: { isAvailable: true },
-        orderBy: { name: "asc" },
-        include: { category: true }
+        orderBy: { name: "asc" }
       }
     }
   });
