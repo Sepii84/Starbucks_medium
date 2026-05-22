@@ -99,7 +99,7 @@ function TemplateFields({
         <input
           className={inputClasses}
           name="imageUrl"
-          defaultValue={template?.imageUrl ?? "/images/gift-cards/25-dollar-gift-card.png"}
+          defaultValue={template?.imageUrl ?? "/images/gift-cards/25 dollar gift card.jpg"}
         />
         <FieldError messages={state.errors?.imageUrl} />
       </div>

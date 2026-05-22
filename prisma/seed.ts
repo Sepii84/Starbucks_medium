@@ -2,6 +2,7 @@ import { PrismaClient, Role } from "@prisma/client";
 import * as nextEnv from "@next/env";
 import bcrypt from "bcryptjs";
 import { pathToFileURL } from "node:url";
+import namedProductManifest from "../public/images/named-product-manifest.json";
 
 nextEnv.loadEnvConfig(process.cwd());
 
@@ -22,6 +23,24 @@ export type MenuSeedCategory = {
   category: string;
   items: string[];
 };
+
+type NamedManifestEntry = {
+  displayName: string;
+  kind: "menu-item" | "gift-card";
+  targetPublicPath: string;
+};
+
+const namedImageEntries = namedProductManifest.entries as NamedManifestEntry[];
+const namedMenuImagePaths = new Map(
+  namedImageEntries
+    .filter((entry) => entry.kind === "menu-item")
+    .map((entry) => [entry.displayName, entry.targetPublicPath])
+);
+const namedGiftCardImagePaths = new Map(
+  namedImageEntries
+    .filter((entry) => entry.kind === "gift-card")
+    .map((entry) => [entry.displayName.toLowerCase(), entry.targetPublicPath])
+);
 
 export const MENU_DATA: MenuSeedCategory[] = [
   {
@@ -371,6 +390,26 @@ function categoryDescription(category: string): string {
   return `${category} selections for the Starbucks Medium demo menu.`;
 }
 
+function menuImagePath(name: string) {
+  const imagePath = namedMenuImagePaths.get(name);
+
+  if (!imagePath) {
+    throw new Error(`Missing named menu image manifest entry for ${name}`);
+  }
+
+  return imagePath;
+}
+
+function giftCardImagePath(amount: number) {
+  const imagePath = namedGiftCardImagePaths.get(`${amount} dollar gift card`);
+
+  if (!imagePath) {
+    throw new Error(`Missing named gift-card image manifest entry for ${amount}`);
+  }
+
+  return imagePath;
+}
+
 async function seedUsers() {
   const [adminPassword, userPassword] = await Promise.all([
     bcrypt.hash("Admin123!", 12),
@@ -475,7 +514,7 @@ async function seedMenuItems(categoryRecords: Map<string, string>) {
           name,
           description: `${name} from the ${group.category} menu.`,
           price: placeholderPrice(name, group.category),
-          imageUrl: `/images/menu/${slug}.png`,
+          imageUrl: menuImagePath(name),
           categoryId,
           isAvailable: true,
           isFeatured
@@ -485,7 +524,7 @@ async function seedMenuItems(categoryRecords: Map<string, string>) {
           slug,
           description: `${name} from the ${group.category} menu.`,
           price: placeholderPrice(name, group.category),
-          imageUrl: `/images/menu/${slug}.png`,
+          imageUrl: menuImagePath(name),
           categoryId,
           isAvailable: true,
           isFeatured
@@ -576,14 +615,14 @@ async function seedGiftCards() {
       update: {
         description: `${template.name} for Starbucks Medium wallet gifting.`,
         amount: template.amount,
-        imageUrl: `/images/gift-cards/${template.amount}-dollar-gift-card.png`,
+        imageUrl: giftCardImagePath(template.amount),
         isActive: true
       },
       create: {
         name: template.name,
         description: `${template.name} for Starbucks Medium wallet gifting.`,
         amount: template.amount,
-        imageUrl: `/images/gift-cards/${template.amount}-dollar-gift-card.png`,
+        imageUrl: giftCardImagePath(template.amount),
         isActive: true
       }
     });

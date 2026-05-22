@@ -1,0 +1,2091 @@
+{
+  "totalDatabaseEntries": 208,
+  "uniqueImageFiles": 193,
+  "menuDatabaseEntries": 204,
+  "giftCardDatabaseEntries": 4,
+  "uniqueMenuImageFiles": 189,
+  "uniqueGiftCardImageFiles": 4,
+  "namingRule": "Each image file uses the exact product name provided by the user, with only Windows-illegal characters sanitized if needed.",
+  "entries": [
+    {
+      "entryNumber": 1,
+      "displayName": "Tropical Butterfly Lemonade Refresher",
+      "kind": "menu-item",
+      "fileName": "Tropical Butterfly Lemonade Refresher.jpg",
+      "relativePathInZip": "menu/Tropical Butterfly Lemonade Refresher.jpg",
+      "targetPublicPath": "/images/menu/Tropical Butterfly Lemonade Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 2,
+      "displayName": "Butterfly Drink",
+      "kind": "menu-item",
+      "fileName": "Butterfly Drink.jpg",
+      "relativePathInZip": "menu/Butterfly Drink.jpg",
+      "targetPublicPath": "/images/menu/Butterfly Drink.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 3,
+      "displayName": "Horchata Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Horchata Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Horchata Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Horchata Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 4,
+      "displayName": "Iced Horchata Shaken Espresso",
+      "kind": "menu-item",
+      "fileName": "Iced Horchata Shaken Espresso.jpg",
+      "relativePathInZip": "menu/Iced Horchata Shaken Espresso.jpg",
+      "targetPublicPath": "/images/menu/Iced Horchata Shaken Espresso.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 5,
+      "displayName": "Mango Dragonfruit Energy Refresher",
+      "kind": "menu-item",
+      "fileName": "Mango Dragonfruit Energy Refresher.jpg",
+      "relativePathInZip": "menu/Mango Dragonfruit Energy Refresher.jpg",
+      "targetPublicPath": "/images/menu/Mango Dragonfruit Energy Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 6,
+      "displayName": "Strawberry Acai Energy Refresher",
+      "kind": "menu-item",
+      "fileName": "Strawberry Acai Energy Refresher.jpg",
+      "relativePathInZip": "menu/Strawberry Acai Energy Refresher.jpg",
+      "targetPublicPath": "/images/menu/Strawberry Acai Energy Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 7,
+      "displayName": "Toasted Coconut Cream Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Toasted Coconut Cream Cold Brew.jpg",
+      "relativePathInZip": "menu/Toasted Coconut Cream Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Toasted Coconut Cream Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 8,
+      "displayName": "Iced Brown Sugar Oatmilk Shaken Espresso",
+      "kind": "menu-item",
+      "fileName": "Iced Brown Sugar Oatmilk Shaken Espresso.jpg",
+      "relativePathInZip": "menu/Iced Brown Sugar Oatmilk Shaken Espresso.jpg",
+      "targetPublicPath": "/images/menu/Iced Brown Sugar Oatmilk Shaken Espresso.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 9,
+      "displayName": "Jalapeno Chicken Pocket",
+      "kind": "menu-item",
+      "fileName": "Jalapeno Chicken Pocket.jpg",
+      "relativePathInZip": "menu/Jalapeno Chicken Pocket.jpg",
+      "targetPublicPath": "/images/menu/Jalapeno Chicken Pocket.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 10,
+      "displayName": "Tomato & Mozzarella on Focaccia",
+      "kind": "menu-item",
+      "fileName": "Tomato & Mozzarella on Focaccia.jpg",
+      "relativePathInZip": "menu/Tomato & Mozzarella on Focaccia.jpg",
+      "targetPublicPath": "/images/menu/Tomato & Mozzarella on Focaccia.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 11,
+      "displayName": "Unicorn Cake Pop",
+      "kind": "menu-item",
+      "fileName": "Unicorn Cake Pop.jpg",
+      "relativePathInZip": "menu/Unicorn Cake Pop.jpg",
+      "targetPublicPath": "/images/menu/Unicorn Cake Pop.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 12,
+      "displayName": "Iced Vanilla Protein Latte",
+      "kind": "menu-item",
+      "fileName": "Iced Vanilla Protein Latte.jpg",
+      "relativePathInZip": "menu/Iced Vanilla Protein Latte.jpg",
+      "targetPublicPath": "/images/menu/Iced Vanilla Protein Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 13,
+      "displayName": "Vanilla Protein Latte",
+      "kind": "menu-item",
+      "fileName": "Vanilla Protein Latte.jpg",
+      "relativePathInZip": "menu/Vanilla Protein Latte.jpg",
+      "targetPublicPath": "/images/menu/Vanilla Protein Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 14,
+      "displayName": "Iced Protein Matcha",
+      "kind": "menu-item",
+      "fileName": "Iced Protein Matcha.jpg",
+      "relativePathInZip": "menu/Iced Protein Matcha.jpg",
+      "targetPublicPath": "/images/menu/Iced Protein Matcha.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 15,
+      "displayName": "Protein Matcha",
+      "kind": "menu-item",
+      "fileName": "Protein Matcha.jpg",
+      "relativePathInZip": "menu/Protein Matcha.jpg",
+      "targetPublicPath": "/images/menu/Protein Matcha.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 16,
+      "displayName": "Featured Blonde Roast",
+      "kind": "menu-item",
+      "fileName": "Featured Blonde Roast.jpg",
+      "relativePathInZip": "menu/Featured Blonde Roast.jpg",
+      "targetPublicPath": "/images/menu/Featured Blonde Roast.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 17,
+      "displayName": "Pike Place Roast",
+      "kind": "menu-item",
+      "fileName": "Pike Place Roast.jpg",
+      "relativePathInZip": "menu/Pike Place Roast.jpg",
+      "targetPublicPath": "/images/menu/Pike Place Roast.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 18,
+      "displayName": "Dark Roast Coffee",
+      "kind": "menu-item",
+      "fileName": "Dark Roast Coffee.jpg",
+      "relativePathInZip": "menu/Dark Roast Coffee.jpg",
+      "targetPublicPath": "/images/menu/Dark Roast Coffee.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 19,
+      "displayName": "Caffe Misto",
+      "kind": "menu-item",
+      "fileName": "Caffe Misto.jpg",
+      "relativePathInZip": "menu/Caffe Misto.jpg",
+      "targetPublicPath": "/images/menu/Caffe Misto.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 20,
+      "displayName": "Caffe Americano",
+      "kind": "menu-item",
+      "fileName": "Caffe Americano.jpg",
+      "relativePathInZip": "menu/Caffe Americano.jpg",
+      "targetPublicPath": "/images/menu/Caffe Americano.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 21,
+      "displayName": "Caffe Latte",
+      "kind": "menu-item",
+      "fileName": "Caffe Latte.jpg",
+      "relativePathInZip": "menu/Caffe Latte.jpg",
+      "targetPublicPath": "/images/menu/Caffe Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 22,
+      "displayName": "Cappuccino",
+      "kind": "menu-item",
+      "fileName": "Cappuccino.jpg",
+      "relativePathInZip": "menu/Cappuccino.jpg",
+      "targetPublicPath": "/images/menu/Cappuccino.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 23,
+      "displayName": "Espresso",
+      "kind": "menu-item",
+      "fileName": "Espresso.jpg",
+      "relativePathInZip": "menu/Espresso.jpg",
+      "targetPublicPath": "/images/menu/Espresso.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 24,
+      "displayName": "Espresso Macchiato",
+      "kind": "menu-item",
+      "fileName": "Espresso Macchiato.jpg",
+      "relativePathInZip": "menu/Espresso Macchiato.jpg",
+      "targetPublicPath": "/images/menu/Espresso Macchiato.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 25,
+      "displayName": "Flat White",
+      "kind": "menu-item",
+      "fileName": "Flat White.jpg",
+      "relativePathInZip": "menu/Flat White.jpg",
+      "targetPublicPath": "/images/menu/Flat White.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 26,
+      "displayName": "Cortado",
+      "kind": "menu-item",
+      "fileName": "Cortado.jpg",
+      "relativePathInZip": "menu/Cortado.jpg",
+      "targetPublicPath": "/images/menu/Cortado.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 27,
+      "displayName": "Caramel Macchiato",
+      "kind": "menu-item",
+      "fileName": "Caramel Macchiato.jpg",
+      "relativePathInZip": "menu/Caramel Macchiato.jpg",
+      "targetPublicPath": "/images/menu/Caramel Macchiato.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 28,
+      "displayName": "Caffe Mocha",
+      "kind": "menu-item",
+      "fileName": "Caffe Mocha.jpg",
+      "relativePathInZip": "menu/Caffe Mocha.jpg",
+      "targetPublicPath": "/images/menu/Caffe Mocha.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 29,
+      "displayName": "White Chocolate Mocha",
+      "kind": "menu-item",
+      "fileName": "White Chocolate Mocha.jpg",
+      "relativePathInZip": "menu/White Chocolate Mocha.jpg",
+      "targetPublicPath": "/images/menu/White Chocolate Mocha.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 30,
+      "displayName": "Starbucks Blonde Vanilla Latte",
+      "kind": "menu-item",
+      "fileName": "Starbucks Blonde Vanilla Latte.jpg",
+      "relativePathInZip": "menu/Starbucks Blonde Vanilla Latte.jpg",
+      "targetPublicPath": "/images/menu/Starbucks Blonde Vanilla Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 31,
+      "displayName": "Coffee Traveler - Veranda Blend",
+      "kind": "menu-item",
+      "fileName": "Coffee Traveler - Veranda Blend.jpg",
+      "relativePathInZip": "menu/Coffee Traveler - Veranda Blend.jpg",
+      "targetPublicPath": "/images/menu/Coffee Traveler - Veranda Blend.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 32,
+      "displayName": "Coffee Traveler - Pike Place Roast",
+      "kind": "menu-item",
+      "fileName": "Coffee Traveler - Pike Place Roast.jpg",
+      "relativePathInZip": "menu/Coffee Traveler - Pike Place Roast.jpg",
+      "targetPublicPath": "/images/menu/Coffee Traveler - Pike Place Roast.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 33,
+      "displayName": "Coffee Traveler - Dark Roast",
+      "kind": "menu-item",
+      "fileName": "Coffee Traveler - Dark Roast.jpg",
+      "relativePathInZip": "menu/Coffee Traveler - Dark Roast.jpg",
+      "targetPublicPath": "/images/menu/Coffee Traveler - Dark Roast.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 34,
+      "displayName": "Coffee Traveler - Decaf Pike Place Roast",
+      "kind": "menu-item",
+      "fileName": "Coffee Traveler - Decaf Pike Place Roast.jpg",
+      "relativePathInZip": "menu/Coffee Traveler - Decaf Pike Place Roast.jpg",
+      "targetPublicPath": "/images/menu/Coffee Traveler - Decaf Pike Place Roast.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 35,
+      "displayName": "Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Cold Brew.jpg",
+      "relativePathInZip": "menu/Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 36,
+      "displayName": "Vanilla Sweet Cream Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Vanilla Sweet Cream Cold Brew.jpg",
+      "relativePathInZip": "menu/Vanilla Sweet Cream Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Vanilla Sweet Cream Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 37,
+      "displayName": "Nondairy Vanilla Sweet Cream Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Nondairy Vanilla Sweet Cream Cold Brew.jpg",
+      "relativePathInZip": "menu/Nondairy Vanilla Sweet Cream Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Nondairy Vanilla Sweet Cream Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 38,
+      "displayName": "Salted Caramel Cream Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Salted Caramel Cream Cold Brew.jpg",
+      "relativePathInZip": "menu/Salted Caramel Cream Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Salted Caramel Cream Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 39,
+      "displayName": "Nondairy Salted Caramel Cream Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Nondairy Salted Caramel Cream Cold Brew.jpg",
+      "relativePathInZip": "menu/Nondairy Salted Caramel Cream Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Nondairy Salted Caramel Cream Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 40,
+      "displayName": "Cold Brew with Nondairy Vanilla Sweet Cream Cold Foam",
+      "kind": "menu-item",
+      "fileName": "Cold Brew with Nondairy Vanilla Sweet Cream Cold Foam.jpg",
+      "relativePathInZip": "menu/Cold Brew with Nondairy Vanilla Sweet Cream Cold Foam.jpg",
+      "targetPublicPath": "/images/menu/Cold Brew with Nondairy Vanilla Sweet Cream Cold Foam.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 41,
+      "displayName": "Chocolate Cream Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Chocolate Cream Cold Brew.jpg",
+      "relativePathInZip": "menu/Chocolate Cream Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Chocolate Cream Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 42,
+      "displayName": "Nondairy Chocolate Cream Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Nondairy Chocolate Cream Cold Brew.jpg",
+      "relativePathInZip": "menu/Nondairy Chocolate Cream Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Nondairy Chocolate Cream Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 43,
+      "displayName": "Pistachio Cream Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Pistachio Cream Cold Brew.jpg",
+      "relativePathInZip": "menu/Pistachio Cream Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Pistachio Cream Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 44,
+      "displayName": "Nitro Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Nitro Cold Brew.jpg",
+      "relativePathInZip": "menu/Nitro Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Nitro Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 45,
+      "displayName": "Vanilla Sweet Cream Nitro Cold Brew",
+      "kind": "menu-item",
+      "fileName": "Vanilla Sweet Cream Nitro Cold Brew.jpg",
+      "relativePathInZip": "menu/Vanilla Sweet Cream Nitro Cold Brew.jpg",
+      "targetPublicPath": "/images/menu/Vanilla Sweet Cream Nitro Cold Brew.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 46,
+      "displayName": "Iced Coffee",
+      "kind": "menu-item",
+      "fileName": "Iced Coffee.jpg",
+      "relativePathInZip": "menu/Iced Coffee.jpg",
+      "targetPublicPath": "/images/menu/Iced Coffee.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 47,
+      "displayName": "Iced Coffee with Milk",
+      "kind": "menu-item",
+      "fileName": "Iced Coffee with Milk.jpg",
+      "relativePathInZip": "menu/Iced Coffee with Milk.jpg",
+      "targetPublicPath": "/images/menu/Iced Coffee with Milk.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 48,
+      "displayName": "Iced Espresso",
+      "kind": "menu-item",
+      "fileName": "Iced Espresso.jpg",
+      "relativePathInZip": "menu/Iced Espresso.jpg",
+      "targetPublicPath": "/images/menu/Iced Espresso.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 49,
+      "displayName": "Iced Caffe Americano",
+      "kind": "menu-item",
+      "fileName": "Iced Caffe Americano.jpg",
+      "relativePathInZip": "menu/Iced Caffe Americano.jpg",
+      "targetPublicPath": "/images/menu/Iced Caffe Americano.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 50,
+      "displayName": "Iced Caffe Latte",
+      "kind": "menu-item",
+      "fileName": "Iced Caffe Latte.jpg",
+      "relativePathInZip": "menu/Iced Caffe Latte.jpg",
+      "targetPublicPath": "/images/menu/Iced Caffe Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 51,
+      "displayName": "Iced Starbucks Blonde Vanilla Latte",
+      "kind": "menu-item",
+      "fileName": "Iced Starbucks Blonde Vanilla Latte.jpg",
+      "relativePathInZip": "menu/Iced Starbucks Blonde Vanilla Latte.jpg",
+      "targetPublicPath": "/images/menu/Iced Starbucks Blonde Vanilla Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 52,
+      "displayName": "Iced Caramel Macchiato",
+      "kind": "menu-item",
+      "fileName": "Iced Caramel Macchiato.jpg",
+      "relativePathInZip": "menu/Iced Caramel Macchiato.jpg",
+      "targetPublicPath": "/images/menu/Iced Caramel Macchiato.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 53,
+      "displayName": "Iced Caffe Mocha",
+      "kind": "menu-item",
+      "fileName": "Iced Caffe Mocha.jpg",
+      "relativePathInZip": "menu/Iced Caffe Mocha.jpg",
+      "targetPublicPath": "/images/menu/Iced Caffe Mocha.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 54,
+      "displayName": "Iced White Chocolate Mocha",
+      "kind": "menu-item",
+      "fileName": "Iced White Chocolate Mocha.jpg",
+      "relativePathInZip": "menu/Iced White Chocolate Mocha.jpg",
+      "targetPublicPath": "/images/menu/Iced White Chocolate Mocha.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 55,
+      "displayName": "Iced Shaken Espresso",
+      "kind": "menu-item",
+      "fileName": "Iced Shaken Espresso.jpg",
+      "relativePathInZip": "menu/Iced Shaken Espresso.jpg",
+      "targetPublicPath": "/images/menu/Iced Shaken Espresso.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 56,
+      "displayName": "Iced Brown Sugar Oatmilk Shaken Espresso",
+      "kind": "menu-item",
+      "fileName": "Iced Brown Sugar Oatmilk Shaken Espresso.jpg",
+      "relativePathInZip": "menu/Iced Brown Sugar Oatmilk Shaken Espresso.jpg",
+      "targetPublicPath": "/images/menu/Iced Brown Sugar Oatmilk Shaken Espresso.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 57,
+      "displayName": "Iced Hazelnut Oatmilk Shaken Espresso",
+      "kind": "menu-item",
+      "fileName": "Iced Hazelnut Oatmilk Shaken Espresso.jpg",
+      "relativePathInZip": "menu/Iced Hazelnut Oatmilk Shaken Espresso.jpg",
+      "targetPublicPath": "/images/menu/Iced Hazelnut Oatmilk Shaken Espresso.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 58,
+      "displayName": "Iced Horchata Shaken Espresso",
+      "kind": "menu-item",
+      "fileName": "Iced Horchata Shaken Espresso.jpg",
+      "relativePathInZip": "menu/Iced Horchata Shaken Espresso.jpg",
+      "targetPublicPath": "/images/menu/Iced Horchata Shaken Espresso.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 59,
+      "displayName": "Iced Flat White",
+      "kind": "menu-item",
+      "fileName": "Iced Flat White.jpg",
+      "relativePathInZip": "menu/Iced Flat White.jpg",
+      "targetPublicPath": "/images/menu/Iced Flat White.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 60,
+      "displayName": "Iced Lavender Oatmilk Latte",
+      "kind": "menu-item",
+      "fileName": "Iced Lavender Oatmilk Latte.jpg",
+      "relativePathInZip": "menu/Iced Lavender Oatmilk Latte.jpg",
+      "targetPublicPath": "/images/menu/Iced Lavender Oatmilk Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 61,
+      "displayName": "Matcha Latte",
+      "kind": "menu-item",
+      "fileName": "Matcha Latte.jpg",
+      "relativePathInZip": "menu/Matcha Latte.jpg",
+      "targetPublicPath": "/images/menu/Matcha Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 62,
+      "displayName": "Iced Matcha Latte",
+      "kind": "menu-item",
+      "fileName": "Iced Matcha Latte.jpg",
+      "relativePathInZip": "menu/Iced Matcha Latte.jpg",
+      "targetPublicPath": "/images/menu/Iced Matcha Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 63,
+      "displayName": "Iced Double Berry Matcha",
+      "kind": "menu-item",
+      "fileName": "Iced Double Berry Matcha.jpg",
+      "relativePathInZip": "menu/Iced Double Berry Matcha.jpg",
+      "targetPublicPath": "/images/menu/Iced Double Berry Matcha.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 64,
+      "displayName": "Iced Banana Bread Matcha",
+      "kind": "menu-item",
+      "fileName": "Iced Banana Bread Matcha.jpg",
+      "relativePathInZip": "menu/Iced Banana Bread Matcha.jpg",
+      "targetPublicPath": "/images/menu/Iced Banana Bread Matcha.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 65,
+      "displayName": "Protein Matcha",
+      "kind": "menu-item",
+      "fileName": "Protein Matcha.jpg",
+      "relativePathInZip": "menu/Protein Matcha.jpg",
+      "targetPublicPath": "/images/menu/Protein Matcha.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 66,
+      "displayName": "Iced Protein Matcha",
+      "kind": "menu-item",
+      "fileName": "Iced Protein Matcha.jpg",
+      "relativePathInZip": "menu/Iced Protein Matcha.jpg",
+      "targetPublicPath": "/images/menu/Iced Protein Matcha.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 67,
+      "displayName": "Iced Lavender Cream Oatmilk Matcha",
+      "kind": "menu-item",
+      "fileName": "Iced Lavender Cream Oatmilk Matcha.jpg",
+      "relativePathInZip": "menu/Iced Lavender Cream Oatmilk Matcha.jpg",
+      "targetPublicPath": "/images/menu/Iced Lavender Cream Oatmilk Matcha.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 68,
+      "displayName": "Chai Latte",
+      "kind": "menu-item",
+      "fileName": "Chai Latte.jpg",
+      "relativePathInZip": "menu/Chai Latte.jpg",
+      "targetPublicPath": "/images/menu/Chai Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 69,
+      "displayName": "Earl Grey Tea",
+      "kind": "menu-item",
+      "fileName": "Earl Grey Tea.jpg",
+      "relativePathInZip": "menu/Earl Grey Tea.jpg",
+      "targetPublicPath": "/images/menu/Earl Grey Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 70,
+      "displayName": "Royal English Breakfast Tea",
+      "kind": "menu-item",
+      "fileName": "Royal English Breakfast Tea.jpg",
+      "relativePathInZip": "menu/Royal English Breakfast Tea.jpg",
+      "targetPublicPath": "/images/menu/Royal English Breakfast Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 71,
+      "displayName": "Emperor's Clouds & Mist Tea",
+      "kind": "menu-item",
+      "fileName": "Emperor's Clouds & Mist Tea.jpg",
+      "relativePathInZip": "menu/Emperor's Clouds & Mist Tea.jpg",
+      "targetPublicPath": "/images/menu/Emperor's Clouds & Mist Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 72,
+      "displayName": "Mint Majesty Tea",
+      "kind": "menu-item",
+      "fileName": "Mint Majesty Tea.jpg",
+      "relativePathInZip": "menu/Mint Majesty Tea.jpg",
+      "targetPublicPath": "/images/menu/Mint Majesty Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 73,
+      "displayName": "Peach Tranquility Tea",
+      "kind": "menu-item",
+      "fileName": "Peach Tranquility Tea.jpg",
+      "relativePathInZip": "menu/Peach Tranquility Tea.jpg",
+      "targetPublicPath": "/images/menu/Peach Tranquility Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 74,
+      "displayName": "Chamomile Mint Blossom Tea",
+      "kind": "menu-item",
+      "fileName": "Chamomile Mint Blossom Tea.jpg",
+      "relativePathInZip": "menu/Chamomile Mint Blossom Tea.jpg",
+      "targetPublicPath": "/images/menu/Chamomile Mint Blossom Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 75,
+      "displayName": "Honey Citrus Mint Tea",
+      "kind": "menu-item",
+      "fileName": "Honey Citrus Mint Tea.jpg",
+      "relativePathInZip": "menu/Honey Citrus Mint Tea.jpg",
+      "targetPublicPath": "/images/menu/Honey Citrus Mint Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 76,
+      "displayName": "Iced Chai Latte",
+      "kind": "menu-item",
+      "fileName": "Iced Chai Latte.jpg",
+      "relativePathInZip": "menu/Iced Chai Latte.jpg",
+      "targetPublicPath": "/images/menu/Iced Chai Latte.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 77,
+      "displayName": "Iced Matcha Latte",
+      "kind": "menu-item",
+      "fileName": "Iced Matcha Latte.jpg",
+      "relativePathInZip": "menu/Iced Matcha Latte.jpg",
+      "targetPublicPath": "/images/menu/Iced Matcha Latte.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 78,
+      "displayName": "Iced Black Tea",
+      "kind": "menu-item",
+      "fileName": "Iced Black Tea.jpg",
+      "relativePathInZip": "menu/Iced Black Tea.jpg",
+      "targetPublicPath": "/images/menu/Iced Black Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 79,
+      "displayName": "Iced Black Tea Lemonade",
+      "kind": "menu-item",
+      "fileName": "Iced Black Tea Lemonade.jpg",
+      "relativePathInZip": "menu/Iced Black Tea Lemonade.jpg",
+      "targetPublicPath": "/images/menu/Iced Black Tea Lemonade.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 80,
+      "displayName": "Iced Green Tea",
+      "kind": "menu-item",
+      "fileName": "Iced Green Tea.jpg",
+      "relativePathInZip": "menu/Iced Green Tea.jpg",
+      "targetPublicPath": "/images/menu/Iced Green Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 81,
+      "displayName": "Iced Green Tea Lemonade",
+      "kind": "menu-item",
+      "fileName": "Iced Green Tea Lemonade.jpg",
+      "relativePathInZip": "menu/Iced Green Tea Lemonade.jpg",
+      "targetPublicPath": "/images/menu/Iced Green Tea Lemonade.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 82,
+      "displayName": "Iced Passion Tango Tea",
+      "kind": "menu-item",
+      "fileName": "Iced Passion Tango Tea.jpg",
+      "relativePathInZip": "menu/Iced Passion Tango Tea.jpg",
+      "targetPublicPath": "/images/menu/Iced Passion Tango Tea.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 83,
+      "displayName": "Iced Passion Tango Tea Lemonade",
+      "kind": "menu-item",
+      "fileName": "Iced Passion Tango Tea Lemonade.jpg",
+      "relativePathInZip": "menu/Iced Passion Tango Tea Lemonade.jpg",
+      "targetPublicPath": "/images/menu/Iced Passion Tango Tea Lemonade.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 84,
+      "displayName": "Tropical Butterfly Refresher",
+      "kind": "menu-item",
+      "fileName": "Tropical Butterfly Refresher.jpg",
+      "relativePathInZip": "menu/Tropical Butterfly Refresher.jpg",
+      "targetPublicPath": "/images/menu/Tropical Butterfly Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 85,
+      "displayName": "Tropical Butterfly Lemonade Refresher",
+      "kind": "menu-item",
+      "fileName": "Tropical Butterfly Lemonade Refresher.jpg",
+      "relativePathInZip": "menu/Tropical Butterfly Lemonade Refresher.jpg",
+      "targetPublicPath": "/images/menu/Tropical Butterfly Lemonade Refresher.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 86,
+      "displayName": "Butterfly Drink",
+      "kind": "menu-item",
+      "fileName": "Butterfly Drink.jpg",
+      "relativePathInZip": "menu/Butterfly Drink.jpg",
+      "targetPublicPath": "/images/menu/Butterfly Drink.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 87,
+      "displayName": "Strawberry Acai Refresher",
+      "kind": "menu-item",
+      "fileName": "Strawberry Acai Refresher.jpg",
+      "relativePathInZip": "menu/Strawberry Acai Refresher.jpg",
+      "targetPublicPath": "/images/menu/Strawberry Acai Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 88,
+      "displayName": "Strawberry Acai Lemonade Refresher",
+      "kind": "menu-item",
+      "fileName": "Strawberry Acai Lemonade Refresher.jpg",
+      "relativePathInZip": "menu/Strawberry Acai Lemonade Refresher.jpg",
+      "targetPublicPath": "/images/menu/Strawberry Acai Lemonade Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 89,
+      "displayName": "Pink Drink",
+      "kind": "menu-item",
+      "fileName": "Pink Drink.jpg",
+      "relativePathInZip": "menu/Pink Drink.jpg",
+      "targetPublicPath": "/images/menu/Pink Drink.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 90,
+      "displayName": "Mango Dragonfruit Refresher",
+      "kind": "menu-item",
+      "fileName": "Mango Dragonfruit Refresher.jpg",
+      "relativePathInZip": "menu/Mango Dragonfruit Refresher.jpg",
+      "targetPublicPath": "/images/menu/Mango Dragonfruit Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 91,
+      "displayName": "Mango Dragonfruit Lemonade Refresher",
+      "kind": "menu-item",
+      "fileName": "Mango Dragonfruit Lemonade Refresher.jpg",
+      "relativePathInZip": "menu/Mango Dragonfruit Lemonade Refresher.jpg",
+      "targetPublicPath": "/images/menu/Mango Dragonfruit Lemonade Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 92,
+      "displayName": "Dragon Drink",
+      "kind": "menu-item",
+      "fileName": "Dragon Drink.jpg",
+      "relativePathInZip": "menu/Dragon Drink.jpg",
+      "targetPublicPath": "/images/menu/Dragon Drink.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 93,
+      "displayName": "Mango Strawberry Refresher",
+      "kind": "menu-item",
+      "fileName": "Mango Strawberry Refresher.jpg",
+      "relativePathInZip": "menu/Mango Strawberry Refresher.jpg",
+      "targetPublicPath": "/images/menu/Mango Strawberry Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 94,
+      "displayName": "Mango Strawberry Lemonade Refresher",
+      "kind": "menu-item",
+      "fileName": "Mango Strawberry Lemonade Refresher.jpg",
+      "relativePathInZip": "menu/Mango Strawberry Lemonade Refresher.jpg",
+      "targetPublicPath": "/images/menu/Mango Strawberry Lemonade Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 95,
+      "displayName": "Mango Dream Energy Drink",
+      "kind": "menu-item",
+      "fileName": "Mango Dream Energy Drink.jpg",
+      "relativePathInZip": "menu/Mango Dream Energy Drink.jpg",
+      "targetPublicPath": "/images/menu/Mango Dream Energy Drink.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 96,
+      "displayName": "Mango Dragonfruit Energy Refresher",
+      "kind": "menu-item",
+      "fileName": "Mango Dragonfruit Energy Refresher.jpg",
+      "relativePathInZip": "menu/Mango Dragonfruit Energy Refresher.jpg",
+      "targetPublicPath": "/images/menu/Mango Dragonfruit Energy Refresher.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 97,
+      "displayName": "Mango Dragonfruit Lemonade Energy Refresher",
+      "kind": "menu-item",
+      "fileName": "Mango Dragonfruit Lemonade Energy Refresher.jpg",
+      "relativePathInZip": "menu/Mango Dragonfruit Lemonade Energy Refresher.jpg",
+      "targetPublicPath": "/images/menu/Mango Dragonfruit Lemonade Energy Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 98,
+      "displayName": "Strawberry Acai Energy Refresher",
+      "kind": "menu-item",
+      "fileName": "Strawberry Acai Energy Refresher.jpg",
+      "relativePathInZip": "menu/Strawberry Acai Energy Refresher.jpg",
+      "targetPublicPath": "/images/menu/Strawberry Acai Energy Refresher.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 99,
+      "displayName": "Strawberry Acai Lemonade Energy Refresher",
+      "kind": "menu-item",
+      "fileName": "Strawberry Acai Lemonade Energy Refresher.jpg",
+      "relativePathInZip": "menu/Strawberry Acai Lemonade Energy Refresher.jpg",
+      "targetPublicPath": "/images/menu/Strawberry Acai Lemonade Energy Refresher.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 100,
+      "displayName": "Cannon Ball Drink",
+      "kind": "menu-item",
+      "fileName": "Cannon Ball Drink.jpg",
+      "relativePathInZip": "menu/Cannon Ball Drink.jpg",
+      "targetPublicPath": "/images/menu/Cannon Ball Drink.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 101,
+      "displayName": "Coffee Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Coffee Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Coffee Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Coffee Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 102,
+      "displayName": "Espresso Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Espresso Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Espresso Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Espresso Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 103,
+      "displayName": "Caramel Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Caramel Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Caramel Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Caramel Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 104,
+      "displayName": "Mocha Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Mocha Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Mocha Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Mocha Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 105,
+      "displayName": "Java Chip Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Java Chip Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Java Chip Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Java Chip Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 106,
+      "displayName": "White Chocolate Mocha Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "White Chocolate Mocha Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/White Chocolate Mocha Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/White Chocolate Mocha Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 107,
+      "displayName": "Mocha Cookie Crumble Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Mocha Cookie Crumble Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Mocha Cookie Crumble Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Mocha Cookie Crumble Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 108,
+      "displayName": "Caramel Ribbon Crunch Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Caramel Ribbon Crunch Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Caramel Ribbon Crunch Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Caramel Ribbon Crunch Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 109,
+      "displayName": "Horchata Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Horchata Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Horchata Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Horchata Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 110,
+      "displayName": "Strawberry Shortcake Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Strawberry Shortcake Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Strawberry Shortcake Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Strawberry Shortcake Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 111,
+      "displayName": "Vanilla Bean Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Vanilla Bean Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Vanilla Bean Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Vanilla Bean Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 112,
+      "displayName": "Horchata Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Horchata Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Horchata Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Horchata Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 113,
+      "displayName": "Lavender Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Lavender Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Lavender Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Lavender Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 114,
+      "displayName": "Matcha Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Matcha Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Matcha Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Matcha Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 115,
+      "displayName": "Chai Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Chai Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Chai Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Chai Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 116,
+      "displayName": "Strawberry Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Strawberry Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Strawberry Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Strawberry Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 117,
+      "displayName": "Chocolate Cookie Crumble Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Chocolate Cookie Crumble Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Chocolate Cookie Crumble Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Chocolate Cookie Crumble Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 118,
+      "displayName": "Caramel Ribbon Crunch Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Caramel Ribbon Crunch Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Caramel Ribbon Crunch Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Caramel Ribbon Crunch Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 119,
+      "displayName": "Double Chocolaty Chip Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "Double Chocolaty Chip Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/Double Chocolaty Chip Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/Double Chocolaty Chip Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 120,
+      "displayName": "White Chocolate Creme Frappuccino Blended Beverage",
+      "kind": "menu-item",
+      "fileName": "White Chocolate Creme Frappuccino Blended Beverage.jpg",
+      "relativePathInZip": "menu/White Chocolate Creme Frappuccino Blended Beverage.jpg",
+      "targetPublicPath": "/images/menu/White Chocolate Creme Frappuccino Blended Beverage.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 121,
+      "displayName": "Hot Chocolate",
+      "kind": "menu-item",
+      "fileName": "Hot Chocolate.jpg",
+      "relativePathInZip": "menu/Hot Chocolate.jpg",
+      "targetPublicPath": "/images/menu/Hot Chocolate.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 122,
+      "displayName": "White Hot Chocolate",
+      "kind": "menu-item",
+      "fileName": "White Hot Chocolate.jpg",
+      "relativePathInZip": "menu/White Hot Chocolate.jpg",
+      "targetPublicPath": "/images/menu/White Hot Chocolate.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 123,
+      "displayName": "Caramel Apple Spice",
+      "kind": "menu-item",
+      "fileName": "Caramel Apple Spice.jpg",
+      "relativePathInZip": "menu/Caramel Apple Spice.jpg",
+      "targetPublicPath": "/images/menu/Caramel Apple Spice.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 124,
+      "displayName": "Lemonade",
+      "kind": "menu-item",
+      "fileName": "Lemonade.jpg",
+      "relativePathInZip": "menu/Lemonade.jpg",
+      "targetPublicPath": "/images/menu/Lemonade.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 125,
+      "displayName": "Blended Strawberry Lemonade",
+      "kind": "menu-item",
+      "fileName": "Blended Strawberry Lemonade.jpg",
+      "relativePathInZip": "menu/Blended Strawberry Lemonade.jpg",
+      "targetPublicPath": "/images/menu/Blended Strawberry Lemonade.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 126,
+      "displayName": "Steamed Apple Juice",
+      "kind": "menu-item",
+      "fileName": "Steamed Apple Juice.jpg",
+      "relativePathInZip": "menu/Steamed Apple Juice.jpg",
+      "targetPublicPath": "/images/menu/Steamed Apple Juice.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 127,
+      "displayName": "Vanilla Creme",
+      "kind": "menu-item",
+      "fileName": "Vanilla Creme.jpg",
+      "relativePathInZip": "menu/Vanilla Creme.jpg",
+      "targetPublicPath": "/images/menu/Vanilla Creme.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 128,
+      "displayName": "Ethos Bottled Water",
+      "kind": "menu-item",
+      "fileName": "Ethos Bottled Water.jpg",
+      "relativePathInZip": "menu/Ethos Bottled Water.jpg",
+      "targetPublicPath": "/images/menu/Ethos Bottled Water.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 129,
+      "displayName": "Spindrift Raspberry Lime Sparkling Water",
+      "kind": "menu-item",
+      "fileName": "Spindrift Raspberry Lime Sparkling Water.jpg",
+      "relativePathInZip": "menu/Spindrift Raspberry Lime Sparkling Water.jpg",
+      "targetPublicPath": "/images/menu/Spindrift Raspberry Lime Sparkling Water.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 130,
+      "displayName": "Spindrift Grapefruit Sparkling Water",
+      "kind": "menu-item",
+      "fileName": "Spindrift Grapefruit Sparkling Water.jpg",
+      "relativePathInZip": "menu/Spindrift Grapefruit Sparkling Water.jpg",
+      "targetPublicPath": "/images/menu/Spindrift Grapefruit Sparkling Water.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 131,
+      "displayName": "Koia Vanilla Bean Protein Shake",
+      "kind": "menu-item",
+      "fileName": "Koia Vanilla Bean Protein Shake.jpg",
+      "relativePathInZip": "menu/Koia Vanilla Bean Protein Shake.jpg",
+      "targetPublicPath": "/images/menu/Koia Vanilla Bean Protein Shake.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 132,
+      "displayName": "Horizon Organic Lowfat Milk",
+      "kind": "menu-item",
+      "fileName": "Horizon Organic Lowfat Milk.jpg",
+      "relativePathInZip": "menu/Horizon Organic Lowfat Milk.jpg",
+      "targetPublicPath": "/images/menu/Horizon Organic Lowfat Milk.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 133,
+      "displayName": "Horizon Organic Chocolate Milk",
+      "kind": "menu-item",
+      "fileName": "Horizon Organic Chocolate Milk.jpg",
+      "relativePathInZip": "menu/Horizon Organic Chocolate Milk.jpg",
+      "targetPublicPath": "/images/menu/Horizon Organic Chocolate Milk.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 134,
+      "displayName": "Evolution Fresh Organic Defense Up",
+      "kind": "menu-item",
+      "fileName": "Evolution Fresh Organic Defense Up.jpg",
+      "relativePathInZip": "menu/Evolution Fresh Organic Defense Up.jpg",
+      "targetPublicPath": "/images/menu/Evolution Fresh Organic Defense Up.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 135,
+      "displayName": "Evolution Fresh Orange",
+      "kind": "menu-item",
+      "fileName": "Evolution Fresh Orange.jpg",
+      "relativePathInZip": "menu/Evolution Fresh Orange.jpg",
+      "targetPublicPath": "/images/menu/Evolution Fresh Orange.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 136,
+      "displayName": "Evolution Fresh Mighty Watermelon",
+      "kind": "menu-item",
+      "fileName": "Evolution Fresh Mighty Watermelon.jpg",
+      "relativePathInZip": "menu/Evolution Fresh Mighty Watermelon.jpg",
+      "targetPublicPath": "/images/menu/Evolution Fresh Mighty Watermelon.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 137,
+      "displayName": "Sol-ti Ginger SuperShot",
+      "kind": "menu-item",
+      "fileName": "Sol-ti Ginger SuperShot.jpg",
+      "relativePathInZip": "menu/Sol-ti Ginger SuperShot.jpg",
+      "targetPublicPath": "/images/menu/Sol-ti Ginger SuperShot.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 138,
+      "displayName": "Bacon, Gouda & Egg Sandwich",
+      "kind": "menu-item",
+      "fileName": "Bacon, Gouda & Egg Sandwich.jpg",
+      "relativePathInZip": "menu/Bacon, Gouda & Egg Sandwich.jpg",
+      "targetPublicPath": "/images/menu/Bacon, Gouda & Egg Sandwich.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 139,
+      "displayName": "Double-Smoked Bacon, Cheddar & Egg Sandwich",
+      "kind": "menu-item",
+      "fileName": "Double-Smoked Bacon, Cheddar & Egg Sandwich.jpg",
+      "relativePathInZip": "menu/Double-Smoked Bacon, Cheddar & Egg Sandwich.jpg",
+      "targetPublicPath": "/images/menu/Double-Smoked Bacon, Cheddar & Egg Sandwich.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 140,
+      "displayName": "Sausage, Cheddar & Egg Sandwich",
+      "kind": "menu-item",
+      "fileName": "Sausage, Cheddar & Egg Sandwich.jpg",
+      "relativePathInZip": "menu/Sausage, Cheddar & Egg Sandwich.jpg",
+      "targetPublicPath": "/images/menu/Sausage, Cheddar & Egg Sandwich.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 141,
+      "displayName": "Spinach, Feta & Egg White Wrap",
+      "kind": "menu-item",
+      "fileName": "Spinach, Feta & Egg White Wrap.jpg",
+      "relativePathInZip": "menu/Spinach, Feta & Egg White Wrap.jpg",
+      "targetPublicPath": "/images/menu/Spinach, Feta & Egg White Wrap.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 142,
+      "displayName": "Impossible Breakfast Sandwich",
+      "kind": "menu-item",
+      "fileName": "Impossible Breakfast Sandwich.jpg",
+      "relativePathInZip": "menu/Impossible Breakfast Sandwich.jpg",
+      "targetPublicPath": "/images/menu/Impossible Breakfast Sandwich.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 143,
+      "displayName": "Turkey Bacon, Cheddar & Egg White Sandwich",
+      "kind": "menu-item",
+      "fileName": "Turkey Bacon, Cheddar & Egg White Sandwich.jpg",
+      "relativePathInZip": "menu/Turkey Bacon, Cheddar & Egg White Sandwich.jpg",
+      "targetPublicPath": "/images/menu/Turkey Bacon, Cheddar & Egg White Sandwich.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 144,
+      "displayName": "Bacon & Gruyere Egg Bites",
+      "kind": "menu-item",
+      "fileName": "Bacon & Gruyere Egg Bites.jpg",
+      "relativePathInZip": "menu/Bacon & Gruyere Egg Bites.jpg",
+      "targetPublicPath": "/images/menu/Bacon & Gruyere Egg Bites.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 145,
+      "displayName": "Egg White & Roasted Red Pepper Egg Bites",
+      "kind": "menu-item",
+      "fileName": "Egg White & Roasted Red Pepper Egg Bites.jpg",
+      "relativePathInZip": "menu/Egg White & Roasted Red Pepper Egg Bites.jpg",
+      "targetPublicPath": "/images/menu/Egg White & Roasted Red Pepper Egg Bites.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 146,
+      "displayName": "Kale & Mushroom Egg Bites",
+      "kind": "menu-item",
+      "fileName": "Kale & Mushroom Egg Bites.jpg",
+      "relativePathInZip": "menu/Kale & Mushroom Egg Bites.jpg",
+      "targetPublicPath": "/images/menu/Kale & Mushroom Egg Bites.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 147,
+      "displayName": "Truffle, Mushroom & Brie Egg Bites",
+      "kind": "menu-item",
+      "fileName": "Truffle, Mushroom & Brie Egg Bites.jpg",
+      "relativePathInZip": "menu/Truffle, Mushroom & Brie Egg Bites.jpg",
+      "targetPublicPath": "/images/menu/Truffle, Mushroom & Brie Egg Bites.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 148,
+      "displayName": "Potato, Cheddar & Chive Bakes",
+      "kind": "menu-item",
+      "fileName": "Potato, Cheddar & Chive Bakes.jpg",
+      "relativePathInZip": "menu/Potato, Cheddar & Chive Bakes.jpg",
+      "targetPublicPath": "/images/menu/Potato, Cheddar & Chive Bakes.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 149,
+      "displayName": "Avocado Spread",
+      "kind": "menu-item",
+      "fileName": "Avocado Spread.jpg",
+      "relativePathInZip": "menu/Avocado Spread.jpg",
+      "targetPublicPath": "/images/menu/Avocado Spread.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 150,
+      "displayName": "Butter Croissant",
+      "kind": "menu-item",
+      "fileName": "Butter Croissant.jpg",
+      "relativePathInZip": "menu/Butter Croissant.jpg",
+      "targetPublicPath": "/images/menu/Butter Croissant.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 151,
+      "displayName": "Chocolate Croissant",
+      "kind": "menu-item",
+      "fileName": "Chocolate Croissant.jpg",
+      "relativePathInZip": "menu/Chocolate Croissant.jpg",
+      "targetPublicPath": "/images/menu/Chocolate Croissant.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 152,
+      "displayName": "Ham & Swiss Croissant",
+      "kind": "menu-item",
+      "fileName": "Ham & Swiss Croissant.jpg",
+      "relativePathInZip": "menu/Ham & Swiss Croissant.jpg",
+      "targetPublicPath": "/images/menu/Ham & Swiss Croissant.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 153,
+      "displayName": "Cheese Danish",
+      "kind": "menu-item",
+      "fileName": "Cheese Danish.jpg",
+      "relativePathInZip": "menu/Cheese Danish.jpg",
+      "targetPublicPath": "/images/menu/Cheese Danish.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 154,
+      "displayName": "Cookie Croissant Swirl",
+      "kind": "menu-item",
+      "fileName": "Cookie Croissant Swirl.jpg",
+      "relativePathInZip": "menu/Cookie Croissant Swirl.jpg",
+      "targetPublicPath": "/images/menu/Cookie Croissant Swirl.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 155,
+      "displayName": "Yuzu Citrus Blossom",
+      "kind": "menu-item",
+      "fileName": "Yuzu Citrus Blossom.jpg",
+      "relativePathInZip": "menu/Yuzu Citrus Blossom.jpg",
+      "targetPublicPath": "/images/menu/Yuzu Citrus Blossom.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 156,
+      "displayName": "Blueberry Muffin",
+      "kind": "menu-item",
+      "fileName": "Blueberry Muffin.jpg",
+      "relativePathInZip": "menu/Blueberry Muffin.jpg",
+      "targetPublicPath": "/images/menu/Blueberry Muffin.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 157,
+      "displayName": "Petite Vanilla Bean Scone",
+      "kind": "menu-item",
+      "fileName": "Petite Vanilla Bean Scone.jpg",
+      "relativePathInZip": "menu/Petite Vanilla Bean Scone.jpg",
+      "targetPublicPath": "/images/menu/Petite Vanilla Bean Scone.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 158,
+      "displayName": "Cinnamon Coffee Cake",
+      "kind": "menu-item",
+      "fileName": "Cinnamon Coffee Cake.jpg",
+      "relativePathInZip": "menu/Cinnamon Coffee Cake.jpg",
+      "targetPublicPath": "/images/menu/Cinnamon Coffee Cake.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 159,
+      "displayName": "Banana Walnut & Pecan Loaf",
+      "kind": "menu-item",
+      "fileName": "Banana Walnut & Pecan Loaf.jpg",
+      "relativePathInZip": "menu/Banana Walnut & Pecan Loaf.jpg",
+      "targetPublicPath": "/images/menu/Banana Walnut & Pecan Loaf.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 160,
+      "displayName": "Iced Lemon Loaf",
+      "kind": "menu-item",
+      "fileName": "Iced Lemon Loaf.jpg",
+      "relativePathInZip": "menu/Iced Lemon Loaf.jpg",
+      "targetPublicPath": "/images/menu/Iced Lemon Loaf.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 161,
+      "displayName": "Pumpkin & Pepita Loaf",
+      "kind": "menu-item",
+      "fileName": "Pumpkin & Pepita Loaf.jpg",
+      "relativePathInZip": "menu/Pumpkin & Pepita Loaf.jpg",
+      "targetPublicPath": "/images/menu/Pumpkin & Pepita Loaf.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 162,
+      "displayName": "Chocolate Chip Cookie",
+      "kind": "menu-item",
+      "fileName": "Chocolate Chip Cookie.jpg",
+      "relativePathInZip": "menu/Chocolate Chip Cookie.jpg",
+      "targetPublicPath": "/images/menu/Chocolate Chip Cookie.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 163,
+      "displayName": "Marshmallow Dream Bar",
+      "kind": "menu-item",
+      "fileName": "Marshmallow Dream Bar.jpg",
+      "relativePathInZip": "menu/Marshmallow Dream Bar.jpg",
+      "targetPublicPath": "/images/menu/Marshmallow Dream Bar.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 164,
+      "displayName": "Everything Bagel",
+      "kind": "menu-item",
+      "fileName": "Everything Bagel.jpg",
+      "relativePathInZip": "menu/Everything Bagel.jpg",
+      "targetPublicPath": "/images/menu/Everything Bagel.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 165,
+      "displayName": "Plain Bagel",
+      "kind": "menu-item",
+      "fileName": "Plain Bagel.jpg",
+      "relativePathInZip": "menu/Plain Bagel.jpg",
+      "targetPublicPath": "/images/menu/Plain Bagel.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 166,
+      "displayName": "Unicorn Cake Pop",
+      "kind": "menu-item",
+      "fileName": "Unicorn Cake Pop.jpg",
+      "relativePathInZip": "menu/Unicorn Cake Pop.jpg",
+      "targetPublicPath": "/images/menu/Unicorn Cake Pop.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 167,
+      "displayName": "Frog Cake Pop",
+      "kind": "menu-item",
+      "fileName": "Frog Cake Pop.jpg",
+      "relativePathInZip": "menu/Frog Cake Pop.jpg",
+      "targetPublicPath": "/images/menu/Frog Cake Pop.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 168,
+      "displayName": "Birthday Cake Pop",
+      "kind": "menu-item",
+      "fileName": "Birthday Cake Pop.jpg",
+      "relativePathInZip": "menu/Birthday Cake Pop.jpg",
+      "targetPublicPath": "/images/menu/Birthday Cake Pop.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 169,
+      "displayName": "Chocolate Cake Pop",
+      "kind": "menu-item",
+      "fileName": "Chocolate Cake Pop.jpg",
+      "relativePathInZip": "menu/Chocolate Cake Pop.jpg",
+      "targetPublicPath": "/images/menu/Chocolate Cake Pop.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 170,
+      "displayName": "Cookies & Cream Cake Pop",
+      "kind": "menu-item",
+      "fileName": "Cookies & Cream Cake Pop.jpg",
+      "relativePathInZip": "menu/Cookies & Cream Cake Pop.jpg",
+      "targetPublicPath": "/images/menu/Cookies & Cream Cake Pop.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 171,
+      "displayName": "Double Chocolate Brownie",
+      "kind": "menu-item",
+      "fileName": "Double Chocolate Brownie.jpg",
+      "relativePathInZip": "menu/Double Chocolate Brownie.jpg",
+      "targetPublicPath": "/images/menu/Double Chocolate Brownie.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 172,
+      "displayName": "Chocolate Chip Cookie",
+      "kind": "menu-item",
+      "fileName": "Chocolate Chip Cookie.jpg",
+      "relativePathInZip": "menu/Chocolate Chip Cookie.jpg",
+      "targetPublicPath": "/images/menu/Chocolate Chip Cookie.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 173,
+      "displayName": "Marshmallow Dream Bar",
+      "kind": "menu-item",
+      "fileName": "Marshmallow Dream Bar.jpg",
+      "relativePathInZip": "menu/Marshmallow Dream Bar.jpg",
+      "targetPublicPath": "/images/menu/Marshmallow Dream Bar.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 174,
+      "displayName": "Madeleines",
+      "kind": "menu-item",
+      "fileName": "Madeleines.jpg",
+      "relativePathInZip": "menu/Madeleines.jpg",
+      "targetPublicPath": "/images/menu/Madeleines.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 175,
+      "displayName": "Vanilla Biscotti with Almonds",
+      "kind": "menu-item",
+      "fileName": "Vanilla Biscotti with Almonds.jpg",
+      "relativePathInZip": "menu/Vanilla Biscotti with Almonds.jpg",
+      "targetPublicPath": "/images/menu/Vanilla Biscotti with Almonds.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 176,
+      "displayName": "Dark Chocolate Covered Espresso Beans",
+      "kind": "menu-item",
+      "fileName": "Dark Chocolate Covered Espresso Beans.jpg",
+      "relativePathInZip": "menu/Dark Chocolate Covered Espresso Beans.jpg",
+      "targetPublicPath": "/images/menu/Dark Chocolate Covered Espresso Beans.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 177,
+      "displayName": "Dark Chocolate Grahams",
+      "kind": "menu-item",
+      "fileName": "Dark Chocolate Grahams.jpg",
+      "relativePathInZip": "menu/Dark Chocolate Grahams.jpg",
+      "targetPublicPath": "/images/menu/Dark Chocolate Grahams.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 178,
+      "displayName": "Tomato & Mozzarella on Focaccia",
+      "kind": "menu-item",
+      "fileName": "Tomato & Mozzarella on Focaccia.jpg",
+      "relativePathInZip": "menu/Tomato & Mozzarella on Focaccia.jpg",
+      "targetPublicPath": "/images/menu/Tomato & Mozzarella on Focaccia.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 179,
+      "displayName": "Jalapeno Chicken Pocket",
+      "kind": "menu-item",
+      "fileName": "Jalapeno Chicken Pocket.jpg",
+      "relativePathInZip": "menu/Jalapeno Chicken Pocket.jpg",
+      "targetPublicPath": "/images/menu/Jalapeno Chicken Pocket.jpg",
+      "duplicateOccurrence": 2,
+      "note": "Repeated product name; use the same image file."
+    },
+    {
+      "entryNumber": 180,
+      "displayName": "Crispy Grilled Cheese on Sourdough",
+      "kind": "menu-item",
+      "fileName": "Crispy Grilled Cheese on Sourdough.jpg",
+      "relativePathInZip": "menu/Crispy Grilled Cheese on Sourdough.jpg",
+      "targetPublicPath": "/images/menu/Crispy Grilled Cheese on Sourdough.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 181,
+      "displayName": "Turkey, Provolone & Pesto on Ciabatta",
+      "kind": "menu-item",
+      "fileName": "Turkey, Provolone & Pesto on Ciabatta.jpg",
+      "relativePathInZip": "menu/Turkey, Provolone & Pesto on Ciabatta.jpg",
+      "targetPublicPath": "/images/menu/Turkey, Provolone & Pesto on Ciabatta.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 182,
+      "displayName": "Ham & Swiss on Baguette",
+      "kind": "menu-item",
+      "fileName": "Ham & Swiss on Baguette.jpg",
+      "relativePathInZip": "menu/Ham & Swiss on Baguette.jpg",
+      "targetPublicPath": "/images/menu/Ham & Swiss on Baguette.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 183,
+      "displayName": "Egg, Pesto & Mozzarella Sandwich",
+      "kind": "menu-item",
+      "fileName": "Egg, Pesto & Mozzarella Sandwich.jpg",
+      "relativePathInZip": "menu/Egg, Pesto & Mozzarella Sandwich.jpg",
+      "targetPublicPath": "/images/menu/Egg, Pesto & Mozzarella Sandwich.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 184,
+      "displayName": "PB&J Protein Box",
+      "kind": "menu-item",
+      "fileName": "PB&J Protein Box.jpg",
+      "relativePathInZip": "menu/PB&J Protein Box.jpg",
+      "targetPublicPath": "/images/menu/PB&J Protein Box.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 185,
+      "displayName": "Cheese & Fruit Protein Box",
+      "kind": "menu-item",
+      "fileName": "Cheese & Fruit Protein Box.jpg",
+      "relativePathInZip": "menu/Cheese & Fruit Protein Box.jpg",
+      "targetPublicPath": "/images/menu/Cheese & Fruit Protein Box.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 186,
+      "displayName": "Cheddar & Uncured Salami Protein Box",
+      "kind": "menu-item",
+      "fileName": "Cheddar & Uncured Salami Protein Box.jpg",
+      "relativePathInZip": "menu/Cheddar & Uncured Salami Protein Box.jpg",
+      "targetPublicPath": "/images/menu/Cheddar & Uncured Salami Protein Box.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 187,
+      "displayName": "Eggs & Gouda Protein Box",
+      "kind": "menu-item",
+      "fileName": "Eggs & Gouda Protein Box.jpg",
+      "relativePathInZip": "menu/Eggs & Gouda Protein Box.jpg",
+      "targetPublicPath": "/images/menu/Eggs & Gouda Protein Box.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 188,
+      "displayName": "Starbucks Sunsera Blend",
+      "kind": "menu-item",
+      "fileName": "Starbucks Sunsera Blend.jpg",
+      "relativePathInZip": "menu/Starbucks Sunsera Blend.jpg",
+      "targetPublicPath": "/images/menu/Starbucks Sunsera Blend.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 189,
+      "displayName": "Veranda Blend",
+      "kind": "menu-item",
+      "fileName": "Veranda Blend.jpg",
+      "relativePathInZip": "menu/Veranda Blend.jpg",
+      "targetPublicPath": "/images/menu/Veranda Blend.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 190,
+      "displayName": "Pike Place Roast Whole Bean",
+      "kind": "menu-item",
+      "fileName": "Pike Place Roast Whole Bean.jpg",
+      "relativePathInZip": "menu/Pike Place Roast Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/Pike Place Roast Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 191,
+      "displayName": "House Blend Whole Bean",
+      "kind": "menu-item",
+      "fileName": "House Blend Whole Bean.jpg",
+      "relativePathInZip": "menu/House Blend Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/House Blend Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 192,
+      "displayName": "Caffe Verona Whole Bean",
+      "kind": "menu-item",
+      "fileName": "Caffe Verona Whole Bean.jpg",
+      "relativePathInZip": "menu/Caffe Verona Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/Caffe Verona Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 193,
+      "displayName": "Espresso Roast Whole Bean",
+      "kind": "menu-item",
+      "fileName": "Espresso Roast Whole Bean.jpg",
+      "relativePathInZip": "menu/Espresso Roast Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/Espresso Roast Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 194,
+      "displayName": "Italian Roast Whole Bean",
+      "kind": "menu-item",
+      "fileName": "Italian Roast Whole Bean.jpg",
+      "relativePathInZip": "menu/Italian Roast Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/Italian Roast Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 195,
+      "displayName": "Komodo Dragon Blend Whole Bean",
+      "kind": "menu-item",
+      "fileName": "Komodo Dragon Blend Whole Bean.jpg",
+      "relativePathInZip": "menu/Komodo Dragon Blend Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/Komodo Dragon Blend Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 196,
+      "displayName": "Sumatra Whole Bean",
+      "kind": "menu-item",
+      "fileName": "Sumatra Whole Bean.jpg",
+      "relativePathInZip": "menu/Sumatra Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/Sumatra Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 197,
+      "displayName": "Decaf Pike Place Roast Whole Bean",
+      "kind": "menu-item",
+      "fileName": "Decaf Pike Place Roast Whole Bean.jpg",
+      "relativePathInZip": "menu/Decaf Pike Place Roast Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/Decaf Pike Place Roast Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 198,
+      "displayName": "Siren's Blend Whole Bean",
+      "kind": "menu-item",
+      "fileName": "Siren's Blend Whole Bean.jpg",
+      "relativePathInZip": "menu/Siren's Blend Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/Siren's Blend Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 199,
+      "displayName": "Green Apron Blend Whole Bean",
+      "kind": "menu-item",
+      "fileName": "Green Apron Blend Whole Bean.jpg",
+      "relativePathInZip": "menu/Green Apron Blend Whole Bean.jpg",
+      "targetPublicPath": "/images/menu/Green Apron Blend Whole Bean.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 200,
+      "displayName": "VIA Instant Pike Place Roast",
+      "kind": "menu-item",
+      "fileName": "VIA Instant Pike Place Roast.jpg",
+      "relativePathInZip": "menu/VIA Instant Pike Place Roast.jpg",
+      "targetPublicPath": "/images/menu/VIA Instant Pike Place Roast.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 201,
+      "displayName": "VIA Instant Italian Roast",
+      "kind": "menu-item",
+      "fileName": "VIA Instant Italian Roast.jpg",
+      "relativePathInZip": "menu/VIA Instant Italian Roast.jpg",
+      "targetPublicPath": "/images/menu/VIA Instant Italian Roast.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 202,
+      "displayName": "VIA Instant Veranda Blend",
+      "kind": "menu-item",
+      "fileName": "VIA Instant Veranda Blend.jpg",
+      "relativePathInZip": "menu/VIA Instant Veranda Blend.jpg",
+      "targetPublicPath": "/images/menu/VIA Instant Veranda Blend.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 203,
+      "displayName": "VIA Instant Decaf Italian Roast",
+      "kind": "menu-item",
+      "fileName": "VIA Instant Decaf Italian Roast.jpg",
+      "relativePathInZip": "menu/VIA Instant Decaf Italian Roast.jpg",
+      "targetPublicPath": "/images/menu/VIA Instant Decaf Italian Roast.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 204,
+      "displayName": "VIA Instant Sweetened Iced Coffee",
+      "kind": "menu-item",
+      "fileName": "VIA Instant Sweetened Iced Coffee.jpg",
+      "relativePathInZip": "menu/VIA Instant Sweetened Iced Coffee.jpg",
+      "targetPublicPath": "/images/menu/VIA Instant Sweetened Iced Coffee.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 205,
+      "displayName": "10 dollar gift card",
+      "kind": "gift-card",
+      "fileName": "10 dollar gift card.jpg",
+      "relativePathInZip": "gift-cards/10 dollar gift card.jpg",
+      "targetPublicPath": "/images/gift-cards/10 dollar gift card.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 206,
+      "displayName": "25 dollar gift card",
+      "kind": "gift-card",
+      "fileName": "25 dollar gift card.jpg",
+      "relativePathInZip": "gift-cards/25 dollar gift card.jpg",
+      "targetPublicPath": "/images/gift-cards/25 dollar gift card.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 207,
+      "displayName": "50 dollar gift card",
+      "kind": "gift-card",
+      "fileName": "50 dollar gift card.jpg",
+      "relativePathInZip": "gift-cards/50 dollar gift card.jpg",
+      "targetPublicPath": "/images/gift-cards/50 dollar gift card.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    },
+    {
+      "entryNumber": 208,
+      "displayName": "100 dollar gift card",
+      "kind": "gift-card",
+      "fileName": "100 dollar gift card.jpg",
+      "relativePathInZip": "gift-cards/100 dollar gift card.jpg",
+      "targetPublicPath": "/images/gift-cards/100 dollar gift card.jpg",
+      "duplicateOccurrence": 1,
+      "note": ""
+    }
+  ]
+}
