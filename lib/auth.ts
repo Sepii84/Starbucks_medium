@@ -138,6 +138,47 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   return user;
 }
 
+export async function getSessionUser(): Promise<SessionPayload | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+
+  if (!token) {
+    return null;
+  }
+
+  return verifySessionToken(token);
+}
+
+export async function requireSessionUser() {
+  const session = await getSessionUser();
+
+  if (!session) {
+    redirect("/login?message=Please sign in to continue.");
+  }
+
+  return session;
+}
+
+export async function requireUserSession() {
+  const session = await requireSessionUser();
+
+  if (session.role === Role.ADMIN) {
+    redirect("/admin");
+  }
+
+  return session;
+}
+
+export async function requireAdminSession() {
+  const session = await requireSessionUser();
+
+  if (session.role !== Role.ADMIN) {
+    redirect("/");
+  }
+
+  return session;
+}
+
 export async function requireAuth() {
   const user = await getCurrentUser();
 

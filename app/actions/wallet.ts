@@ -2,64 +2,90 @@
 
 import { WalletTransactionType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireAdmin, requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, normalizeEmail, type ActionState } from "@/lib/utils";
-import { walletAdjustmentSchema, walletChargeSchema } from "@/lib/validations";
+import { walletAdjustmentSchema, walletTopUpSchema } from "@/lib/validations";
+import {
+  cancelWalletTopUp,
+  confirmWalletTopUp,
+  createWalletTopUp,
+  money,
+  WalletTopUpError
+} from "@/lib/wallet/top-up";
 
 class UserFacingError extends Error {}
 
-function money(value: number) {
-  return Number(value.toFixed(2));
-}
-
-export async function chargeWalletAction(
+export async function startWalletTopUpAction(
   _: ActionState,
   formData: FormData
 ): Promise<ActionState> {
   const user = await requireUser();
-  const parsed = walletChargeSchema.safeParse({
+  const parsed = walletTopUpSchema.safeParse({
     amount: String(formData.get("amount") ?? "")
   });
 
   if (!parsed.success) {
-    return { message: "Check the charge amount.", errors: parsed.error.flatten().fieldErrors };
+    return { message: "Check the top-up amount.", errors: parsed.error.flatten().fieldErrors };
   }
 
   const amount = money(parsed.data.amount);
+  let confirmationUrl = "";
 
-  await prisma.$transaction(async (tx) => {
-    const current = await tx.user.findUnique({
-      where: { id: user.id },
-      select: { walletBalance: true }
-    });
+  try {
+    const topUp = await createWalletTopUp(user.id, amount);
+    confirmationUrl = topUp.confirmationUrl;
+  } catch (error) {
+    return {
+      message:
+        error instanceof Error
+          ? error.message
+          : "Could not start the demo wallet top-up."
+    };
+  }
 
-    if (!current) {
-      throw new UserFacingError("User account was not found.");
-    }
+  redirect(confirmationUrl);
+}
 
-    const balanceAfter = money(Number(current.walletBalance) + amount);
+export async function confirmMockTopUpAction(
+  _: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const user = await requireUser();
+  const topUpId = String(formData.get("topUpId") ?? "");
 
-    await tx.user.update({
-      where: { id: user.id },
-      data: { walletBalance: balanceAfter }
-    });
+  if (!topUpId) {
+    return { message: "Wallet top-up reference is missing." };
+  }
 
-    await tx.walletTransaction.create({
-      data: {
-        userId: user.id,
-        type: WalletTransactionType.CHARGE,
-        amount,
-        balanceAfter,
-        description: `Wallet charged by ${formatCurrency(amount)}.`
-      }
-    });
-  });
+  try {
+    await confirmWalletTopUp(user.id, topUpId);
+  } catch (error) {
+    return {
+      message:
+        error instanceof WalletTopUpError
+          ? error.message
+          : "Could not confirm the demo wallet top-up."
+    };
+  }
 
   revalidatePath("/wallet");
   revalidatePath("/account");
   revalidatePath("/admin/wallet");
-  return { ok: true, message: `Wallet charged by ${formatCurrency(amount)}.` };
+  redirect(`/wallet/top-up/success?topUpId=${encodeURIComponent(topUpId)}`);
+}
+
+export async function cancelMockTopUpAction(formData: FormData) {
+  const user = await requireUser();
+  const topUpId = String(formData.get("topUpId") ?? "");
+
+  if (topUpId) {
+    await cancelWalletTopUp(user.id, topUpId).catch(() => undefined);
+  }
+
+  revalidatePath("/wallet");
+  redirect(`/wallet/top-up/cancel?topUpId=${encodeURIComponent(topUpId)}`);
 }
 
 export async function adminAdjustWalletAction(

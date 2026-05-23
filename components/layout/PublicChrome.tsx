@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 import { AppBackground } from "@/components/layout/AppBackground";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Navbar } from "@/components/layout/Navbar";
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
+import { serializeSessionUserForClient } from "@/lib/serializers";
 
 export async function PublicChrome({
   children,
@@ -12,7 +13,8 @@ export async function PublicChrome({
   children: React.ReactNode;
   redirectAdmins?: boolean;
 }) {
-  const user = await getCurrentUser();
+  const user = await getSessionUser();
+  const clientUser = user ? serializeSessionUserForClient(user) : null;
 
   if (redirectAdmins && user?.role === Role.ADMIN) {
     redirect("/admin");
@@ -21,8 +23,8 @@ export async function PublicChrome({
   return (
     <AppBackground>
       <div className="flex min-h-screen flex-col">
-        <Navbar user={user} />
-        <MobileNav user={user} />
+        <Navbar user={clientUser} />
+        <MobileNav user={clientUser} />
         {children}
       </div>
     </AppBackground>

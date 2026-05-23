@@ -1,22 +1,46 @@
 import { ArrowDownCircle, ArrowUpCircle, History, WalletCards } from "lucide-react";
-import { WalletChargeForm } from "@/components/wallet/WalletChargeForm";
+import { WalletTopUpForm } from "@/components/wallet/WalletChargeForm";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { requireUser } from "@/lib/auth";
+import { requireUserSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function WalletPage() {
-  const user = await requireUser();
-  const transactions = await prisma.walletTransaction.findMany({
-    where: { userId: user.id },
-    orderBy: { createdAt: "desc" },
-    take: 60
-  });
+  const session = await requireUserSession();
+  const [user, transactions] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: session.userId },
+      select: {
+        id: true,
+        role: true,
+        isActive: true,
+        walletBalance: true
+      }
+    }),
+    prisma.walletTransaction.findMany({
+      where: { userId: session.userId },
+      select: {
+        id: true,
+        type: true,
+        amount: true,
+        balanceAfter: true,
+        description: true,
+        createdAt: true
+      },
+      orderBy: { createdAt: "desc" },
+      take: 60
+    })
+  ]);
+
+  if (!user?.isActive || user.role !== "USER") {
+    redirect("/login?message=Please sign in to continue.");
+  }
 
   const totalCharged = transactions
-    .filter((transaction) => transaction.type === "CHARGE")
+    .filter((transaction) => transaction.type === "CHARGE" || transaction.type === "TOP_UP")
     .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
   const totalSpent = transactions
     .filter((transaction) => Number(transaction.amount) < 0)
@@ -32,7 +56,7 @@ export default async function WalletPage() {
       icon: WalletCards
     },
     {
-      label: "Total charged",
+      label: "Total topped up",
       value: formatCurrency(totalCharged),
       icon: ArrowUpCircle
     },
@@ -64,8 +88,8 @@ export default async function WalletPage() {
             In-website balance
           </h1>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-on-surface-variant">
-            Charge fake wallet balance, pay for orders, buy gift cards, and review
-            every balance change in one place.
+            Add demo funds through a mock confirmation flow, pay for orders, buy
+            gift cards, and review every balance change in one place.
           </p>
         </div>
 
@@ -89,9 +113,9 @@ export default async function WalletPage() {
 
         <div className="grid gap-8 xl:grid-cols-[0.8fr_1.2fr]">
           <GlassCard className="h-fit p-6">
-            <h2 className="font-display text-2xl font-semibold">Charge wallet</h2>
+            <h2 className="font-display text-2xl font-semibold">Top up wallet</h2>
             <div className="mt-5">
-              <WalletChargeForm />
+              <WalletTopUpForm />
             </div>
           </GlassCard>
 

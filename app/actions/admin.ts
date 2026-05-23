@@ -7,8 +7,17 @@ import {
   Role,
   WalletTransactionType
 } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import {
+  deleteManagedStoragePath,
+  deleteUploadedImageIfUnused,
+  getOptionalImageFile,
+  StorageImageError,
+  uploadAdminImageFile,
+  type UploadedImage
+} from "@/lib/admin/storage-images";
 import { requireAdmin, setSessionCookie, verifyPassword, hashPassword } from "@/lib/auth";
+import { PUBLIC_MENU_TAG, SITE_INFO_TAG } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 import { normalizeEmail, slugify, type ActionState } from "@/lib/utils";
 import {
@@ -31,6 +40,14 @@ function dbErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
+function storageErrorMessage(error: unknown, fallback: string) {
+  if (error instanceof StorageImageError) {
+    return error.message;
+  }
+
+  return dbErrorMessage(error, fallback);
+}
+
 function menuFormData(formData: FormData) {
   return {
     id: String(formData.get("id") ?? ""),
@@ -47,43 +64,91 @@ function menuFormData(formData: FormData) {
 
 export async function createMenuItemAction(_: ActionState, formData: FormData): Promise<ActionState> {
   await requireAdmin();
-  const parsed = menuItemSchema.safeParse(menuFormData(formData));
+  const imageFile = getOptionalImageFile(formData);
+  const rawData = menuFormData(formData);
+  const parsed = menuItemSchema.safeParse({
+    ...rawData,
+    imageUrl: rawData.imageUrl || (imageFile ? "/pending-admin-upload" : "")
+  });
 
   if (!parsed.success) {
     return { message: "Check the menu item fields.", errors: parsed.error.flatten().fieldErrors };
   }
 
+  let uploadedImage: UploadedImage | null = null;
+
   try {
+    if (imageFile) {
+      uploadedImage = await uploadAdminImageFile(
+        imageFile,
+        "menu-items",
+        parsed.data.slug || parsed.data.name
+      );
+    }
+
     await prisma.menuItem.create({
       data: {
         name: parsed.data.name,
         slug: slugify(parsed.data.slug || parsed.data.name),
         description: parsed.data.description,
         price: parsed.data.price,
-        imageUrl: parsed.data.imageUrl,
+        imageUrl: uploadedImage?.url ?? parsed.data.imageUrl,
         categoryId: parsed.data.categoryId,
         isAvailable: parsed.data.isAvailable,
         isFeatured: parsed.data.isFeatured
       }
     });
   } catch (error) {
-    return { message: dbErrorMessage(error, "Could not create menu item.") };
+    if (uploadedImage) {
+      await deleteManagedStoragePath(uploadedImage.path).catch(() => undefined);
+    }
+
+    return { message: storageErrorMessage(error, "Could not create menu item.") };
   }
 
   revalidatePath("/menu");
   revalidatePath("/admin/menu");
-  return { ok: true, message: "Menu item created." };
+  revalidateTag(PUBLIC_MENU_TAG);
+  return {
+    ok: true,
+    message: uploadedImage ? "Image uploaded and menu item created." : "Menu item created."
+  };
 }
 
 export async function updateMenuItemAction(_: ActionState, formData: FormData): Promise<ActionState> {
   await requireAdmin();
-  const parsed = menuItemSchema.safeParse(menuFormData(formData));
+  const imageFile = getOptionalImageFile(formData);
+  const rawData = menuFormData(formData);
+  const parsed = menuItemSchema.safeParse({
+    ...rawData,
+    imageUrl: rawData.imageUrl || (imageFile ? "/pending-admin-upload" : "")
+  });
 
   if (!parsed.success || !parsed.data.id) {
     return { message: "Check the menu item fields.", errors: parsed.success ? {} : parsed.error.flatten().fieldErrors };
   }
 
+  let uploadedImage: UploadedImage | null = null;
+  let finalImageUrl = parsed.data.imageUrl;
+  const existing = await prisma.menuItem.findUnique({
+    where: { id: parsed.data.id },
+    select: { imageUrl: true }
+  });
+
+  if (!existing) {
+    return { message: "Menu item was not found." };
+  }
+
   try {
+    if (imageFile) {
+      uploadedImage = await uploadAdminImageFile(
+        imageFile,
+        "menu-items",
+        parsed.data.slug || parsed.data.name
+      );
+      finalImageUrl = uploadedImage.url;
+    }
+
     await prisma.menuItem.update({
       where: { id: parsed.data.id },
       data: {
@@ -91,19 +156,31 @@ export async function updateMenuItemAction(_: ActionState, formData: FormData): 
         slug: slugify(parsed.data.slug || parsed.data.name),
         description: parsed.data.description,
         price: parsed.data.price,
-        imageUrl: parsed.data.imageUrl,
+        imageUrl: finalImageUrl,
         categoryId: parsed.data.categoryId,
         isAvailable: parsed.data.isAvailable,
         isFeatured: parsed.data.isFeatured
       }
     });
   } catch (error) {
-    return { message: dbErrorMessage(error, "Could not update menu item.") };
+    if (uploadedImage) {
+      await deleteManagedStoragePath(uploadedImage.path).catch(() => undefined);
+    }
+
+    return { message: storageErrorMessage(error, "Could not update menu item.") };
+  }
+
+  if (existing.imageUrl !== finalImageUrl) {
+    await deleteUploadedImageIfUnused(existing.imageUrl).catch(() => undefined);
   }
 
   revalidatePath("/menu");
   revalidatePath("/admin/menu");
-  return { ok: true, message: "Menu item updated." };
+  revalidateTag(PUBLIC_MENU_TAG);
+  return {
+    ok: true,
+    message: uploadedImage ? "Image uploaded and menu item saved." : "Menu item updated."
+  };
 }
 
 export async function deleteMenuItemAction(formData: FormData) {
@@ -111,11 +188,21 @@ export async function deleteMenuItemAction(formData: FormData) {
   const id = String(formData.get("id") ?? "");
 
   if (id) {
+    const existing = await prisma.menuItem.findUnique({
+      where: { id },
+      select: { imageUrl: true }
+    });
+
     await prisma.menuItem.delete({ where: { id } });
+
+    if (existing?.imageUrl) {
+      await deleteUploadedImageIfUnused(existing.imageUrl).catch(() => undefined);
+    }
   }
 
   revalidatePath("/menu");
   revalidatePath("/admin/menu");
+  revalidateTag(PUBLIC_MENU_TAG);
 }
 
 export async function createCategoryAction(_: ActionState, formData: FormData): Promise<ActionState> {
@@ -144,6 +231,7 @@ export async function createCategoryAction(_: ActionState, formData: FormData): 
 
   revalidatePath("/menu");
   revalidatePath("/admin/menu");
+  revalidateTag(PUBLIC_MENU_TAG);
   return { ok: true, message: "Category created." };
 }
 
@@ -175,6 +263,7 @@ export async function updateCategoryAction(_: ActionState, formData: FormData): 
 
   revalidatePath("/menu");
   revalidatePath("/admin/menu");
+  revalidateTag(PUBLIC_MENU_TAG);
   return { ok: true, message: "Category updated." };
 }
 
@@ -188,6 +277,7 @@ export async function deleteCategoryAction(formData: FormData) {
 
   revalidatePath("/menu");
   revalidatePath("/admin/menu");
+  revalidateTag(PUBLIC_MENU_TAG);
 }
 
 export async function updateOrderStatusAction(formData: FormData) {
@@ -335,6 +425,7 @@ export async function updateSiteInfoAction(_: ActionState, formData: FormData): 
   revalidatePath("/about");
   revalidatePath("/location");
   revalidatePath("/admin/site-info");
+  revalidateTag(SITE_INFO_TAG);
   return { ok: true, message: "Website information updated." };
 }
 

@@ -96,6 +96,66 @@ npm run images:zip
 
 Use `--force` to regenerate existing files, `--limit=10` for a small batch, or `--only=menu`, `--only=gift-cards`, or `--only=site` to focus one asset type. The final zip is written to `generated-assets/product-images.zip`.
 
+## Admin Image Uploads
+
+Admin menu item and gift card template forms support either a pasted image URL/path or a direct upload from the device. File selection only creates a local browser preview; the image is uploaded when the admin saves the form. Runtime uploads are sent through protected server-side admin logic and stored in Supabase Storage; they are not written to `/public` because Vercel runtime storage is not persistent.
+
+Add these values to `.env` for uploads:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL="https://PROJECT_REF.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="replace-with-supabase-service-role-key"
+SUPABASE_STORAGE_BUCKET="site-images"
+```
+
+Create the `site-images` bucket in Supabase Storage, or set `SUPABASE_STORAGE_BUCKET` to the bucket you want to use. The app uploads to:
+
+- `menu-items/...` for menu item images
+- `gift-cards/...` for gift card template images
+
+The upload route checks the logged-in account is an ADMIN before accepting a file. Keep `SUPABASE_SERVICE_ROLE_KEY` server-side only and never expose it to client code. Make the bucket publicly readable if you want uploaded image URLs to display directly in the browser.
+
+If an uploaded image is replaced or its record is deleted, the app removes the old Supabase object only after the database change succeeds and only when no other menu item or gift card template still references it. Local named images such as `/images/menu/Caffe Latte.jpg` and `/images/gift-cards/25 dollar gift card.jpg` are never deleted by this cleanup.
+
+To inspect existing Supabase upload folders without deleting anything:
+
+```bash
+npm run storage:audit
+```
+
+To delete orphaned files under the managed `menu-items/` and `gift-cards/` folders:
+
+```bash
+npm run storage:cleanup
+```
+
+## Demo Wallet Top-Ups
+
+Wallet top-ups use an internal MOCK provider only. No Stripe, Iyzico, PayTR,
+PayPal, card form, bank form, or real checkout session is connected.
+
+Set the provider in `.env`:
+
+```bash
+PAYMENT_PROVIDER="mock"
+```
+
+If `PAYMENT_PROVIDER` is missing, the app defaults safely to `mock`. Setting it
+explicitly is still recommended for Vercel and other deployments so the demo
+payment mode is obvious.
+
+The flow is:
+
+1. A USER starts a top-up from `/wallet`.
+2. The server creates a `PENDING` `WalletTopUp`.
+3. The user confirms on `/wallet/top-up/mock-confirm`.
+4. The server marks the top-up `SUCCEEDED`, increases `User.walletBalance`,
+   and creates a `WalletTransaction` with type `TOP_UP` inside one Prisma
+   transaction.
+
+Refreshing the success/confirmation flow will not credit the wallet twice.
+Admin wallet view shows recent demo top-ups for audit visibility.
+
 ## Seed Credentials
 
 Admin:
@@ -123,6 +183,7 @@ User:
 - `/account` protected user account
 - `/order` protected user bag and checkout
 - `/wallet` protected fake in-website wallet
+- `/wallet/top-up/mock-confirm` protected MOCK wallet top-up confirmation
 - `/admin` protected admin dashboard
 - `/admin/orders` order management
 - `/admin/menu` menu and category management

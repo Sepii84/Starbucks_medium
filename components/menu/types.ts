@@ -3,6 +3,7 @@ export type PublicCategory = {
   name: string;
   slug: string;
   description?: string | null;
+  itemCount?: number;
 };
 
 export type PublicMenuItem = {

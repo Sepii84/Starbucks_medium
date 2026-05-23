@@ -1,25 +1,24 @@
-import { Award, Coffee, Gift, LogOut, Shield, UserCircle, WalletCards } from "lucide-react";
+import { Award, Gift, LogOut, Shield, UserCircle, WalletCards } from "lucide-react";
 import Link from "next/link";
 import { logoutAction } from "@/app/actions/auth";
 import { BagLink } from "@/components/layout/BagLink";
+import { BrandMark } from "@/components/layout/BrandMark";
 import { Button, LinkButton } from "@/components/ui/Button";
-import type { SessionUser } from "@/lib/auth";
+import type { ClientUser } from "@/lib/serializers";
 
-export function Navbar({ user }: { user: SessionUser | null }) {
+export function Navbar({ user }: { user: ClientUser | null }) {
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-surface/35 px-5 py-4 shadow-2xl backdrop-blur-3xl md:px-16">
+    <header className="fixed top-0 z-50 w-full overflow-x-clip border-b border-white/10 bg-surface/35 px-5 py-4 shadow-2xl backdrop-blur-3xl md:px-16">
       <a
         href="#main-content"
         className="focus-ring sr-only rounded-full bg-background px-4 py-3 text-sm text-primary focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         Skip to content
       </a>
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-5">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary shadow-glow">
-            <Coffee size={20} />
-          </span>
-          <span className="font-display text-xl font-extrabold uppercase text-primary md:text-2xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 md:gap-5">
+        <Link href="/" className="flex min-w-0 items-center gap-3">
+          <BrandMark />
+          <span className="truncate font-display text-xl font-extrabold uppercase text-primary md:text-2xl">
             Starbucks
           </span>
         </Link>
@@ -64,23 +63,28 @@ export function Navbar({ user }: { user: SessionUser | null }) {
           )}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
-          {user?.role === "USER" && <BagLink />}
+        <div className="flex shrink-0 items-center gap-2 md:gap-3">
+          {user?.role === "USER" && (
+            <>
+              <BagLink iconOnly compact className="md:hidden" />
+              <BagLink className="hidden md:inline-flex" />
+            </>
+          )}
           {user?.role === "ADMIN" && (
-            <LinkButton href="/admin" variant="secondary">
+            <LinkButton href="/admin" variant="secondary" className="hidden md:inline-flex">
               <Shield size={16} />
               Admin
             </LinkButton>
           )}
           {user ? (
-            <form action={logoutAction}>
+            <form action={logoutAction} className="hidden md:block">
               <Button type="submit" variant="ghost">
                 <LogOut size={16} />
                 Logout
               </Button>
             </form>
           ) : (
-            <LinkButton href="/login" variant="secondary">
+            <LinkButton href="/login" variant="secondary" className="hidden md:inline-flex">
               <UserCircle size={16} />
               Login
             </LinkButton>

@@ -6,8 +6,8 @@ import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { LinkButton } from "@/components/ui/Button";
 import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { getCurrentUser } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { getCurrentUser, getSessionUser } from "@/lib/auth";
+import { getActiveGiftCardTemplates } from "@/lib/data";
 import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -19,24 +19,22 @@ export const metadata: Metadata = {
 };
 
 export default async function GiftCardsPage() {
-  const [user, templates] = await Promise.all([
-    getCurrentUser(),
-    prisma.giftCardTemplate.findMany({
-      where: { isActive: true },
-      orderBy: { amount: "asc" }
-    })
-  ]);
+  const session = await getSessionUser();
 
-  if (user?.role === "ADMIN") {
+  if (session?.role === "ADMIN") {
     redirect("/admin");
   }
 
+  const [user, templates] = await Promise.all([
+    session?.role === "USER" ? getCurrentUser() : Promise.resolve(null),
+    getActiveGiftCardTemplates()
+  ]);
   const isUser = user?.role === "USER";
   const simpleTemplates = templates.map((template) => ({
     id: template.id,
     name: template.name,
     description: template.description,
-    amount: Number(template.amount),
+    amount: template.amount,
     imageUrl: template.imageUrl
   }));
 
@@ -117,12 +115,12 @@ export default async function GiftCardsPage() {
                 simpleTemplates.map((template) => (
                   <div
                     key={template.id}
-                    className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]"
+                    className="group overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] transition duration-300 ease-out hover:-translate-y-1 hover:border-primary/35 hover:shadow-glow active:scale-[0.99] motion-reduce:transform-none motion-reduce:transition-none"
                   >
                     <FallbackImage
                       src={template.imageUrl ?? ""}
                       alt={template.name}
-                      className="h-36 w-full object-cover"
+                      className="h-36 w-full object-cover transition duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
                     />
                     <div className="p-4">
                       <p className="font-display text-xl font-semibold text-primary">

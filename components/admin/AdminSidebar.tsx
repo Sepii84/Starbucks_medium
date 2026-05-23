@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { logoutAction } from "@/app/actions/auth";
 import { NotificationBell } from "@/components/admin/NotificationBell";
 import { cn } from "@/lib/utils";
@@ -117,8 +117,39 @@ function SidebarContent({
   );
 }
 
-export function AdminSidebar({ unreadCount }: { unreadCount: number }) {
+export function AdminSidebar({ initialUnreadCount }: { initialUnreadCount: number }) {
   const [open, setOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(initialUnreadCount);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadUnreadCount() {
+      try {
+        const response = await fetch("/api/admin/notifications/count", {
+          cache: "no-store"
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data = (await response.json()) as { count?: number };
+
+        if (!ignore) {
+          setUnreadCount(Number(data.count ?? 0));
+        }
+      } catch {
+        // The badge is progressive enhancement; navigation still works.
+      }
+    }
+
+    void loadUnreadCount();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return (
     <>

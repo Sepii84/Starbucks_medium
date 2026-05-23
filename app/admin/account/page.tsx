@@ -1,6 +1,7 @@
 import { AdminAccountForm } from "@/components/admin/AdminAccountForm";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { requireAdmin } from "@/lib/auth";
+import { serializeUserForClient } from "@/lib/serializers";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export default async function AdminAccountPage() {
         </h1>
       </div>
       <GlassCard className="max-w-3xl p-5">
-        <AdminAccountForm admin={admin} />
+        <AdminAccountForm admin={serializeUserForClient(admin)} />
       </GlassCard>
     </div>
   );

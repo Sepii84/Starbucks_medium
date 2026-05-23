@@ -2,6 +2,7 @@ import { PrismaClient, Role } from "@prisma/client";
 import * as nextEnv from "@next/env";
 import bcrypt from "bcryptjs";
 import { pathToFileURL } from "node:url";
+import { DEFAULT_SOCIAL_LINKS } from "../lib/site-config";
 import namedProductManifest from "../public/images/named-product-manifest.json";
 
 nextEnv.loadEnvConfig(process.cwd());
@@ -545,8 +546,8 @@ async function seedSiteInfo() {
     phone: "+1 (206) 555-0147",
     email: "hello@starbucksmedium.com",
     openingHours: "Mon-Sun 7:00 AM - 10:00 PM",
-    instagramUrl: "https://instagram.com/starbucksmedium",
-    twitterUrl: "https://twitter.com/starbucksmedium",
+    instagramUrl: DEFAULT_SOCIAL_LINKS.instagramUrl,
+    twitterUrl: DEFAULT_SOCIAL_LINKS.twitterUrl,
     mapUrl: "https://maps.google.com"
   };
 

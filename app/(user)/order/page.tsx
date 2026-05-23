@@ -1,10 +1,26 @@
 import { OrderClient } from "@/components/order/OrderClient";
-import { requireUser } from "@/lib/auth";
+import { requireUserSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function OrderPage() {
-  const user = await requireUser();
+  const session = await requireUserSession();
+  const user = await prisma.user.findUnique({
+    where: { id: session.userId },
+    select: {
+      name: true,
+      address: true,
+      walletBalance: true,
+      role: true,
+      isActive: true
+    }
+  });
+
+  if (!user?.isActive || user.role !== "USER") {
+    redirect("/login?message=Please sign in to continue.");
+  }
 
   return (
     <section className="px-5 py-14 md:px-16">

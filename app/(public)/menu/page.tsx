@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { MenuBrowser } from "@/components/menu/MenuBrowser";
-import type { PublicMenuItem } from "@/components/menu/types";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { getCurrentUser } from "@/lib/auth";
-import { getPublicMenu } from "@/lib/data";
+import { getSessionUser } from "@/lib/auth";
+import { getPublicMenuCategories } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -16,38 +15,15 @@ export const metadata: Metadata = {
 };
 
 export default async function MenuPage() {
-  const user = await getCurrentUser().catch(() => null);
-  const menuResult = await getPublicMenu()
+  const user = await getSessionUser().catch(() => null);
+  const menuResult = await getPublicMenuCategories()
     .then((categories) => ({ categories, error: null as string | null }))
     .catch((error) => ({
       categories: [],
       error: error instanceof Error ? error.message : "Unknown database error"
     }));
   const categories = menuResult.categories;
-  const categoryList = categories.map((category) => ({
-    id: category.id,
-    name: category.name,
-    slug: category.slug,
-    description: category.description
-  }));
-  const items: PublicMenuItem[] = categories.flatMap((category) =>
-    category.items.map((item) => ({
-      id: item.id,
-      slug: item.slug,
-      name: item.name,
-      description: item.description,
-      price: Number(item.price),
-      imageUrl: item.imageUrl,
-      isAvailable: item.isAvailable,
-      isFeatured: item.isFeatured,
-      category: {
-        id: category.id,
-        name: category.name,
-        slug: category.slug,
-        description: category.description
-      }
-    }))
-  );
+  const totalItems = categories.reduce((sum, category) => sum + category.itemCount, 0);
   const showDevelopmentHint = process.env.NODE_ENV === "development";
   const emptyDatabaseMessage = !process.env.DATABASE_URL
     ? "DATABASE_URL is missing. Create `.env` in the project root and add a valid PostgreSQL connection string."
@@ -85,7 +61,7 @@ npm run db:check`}
                 </pre>
               )}
             </GlassCard>
-          ) : items.length === 0 ? (
+          ) : totalItems === 0 ? (
             <GlassCard className="p-6">
               <h2 className="font-display text-2xl font-semibold">No menu items found</h2>
               <p className="mt-3 text-on-surface-variant">
@@ -102,7 +78,7 @@ npm run db:check`}
               )}
             </GlassCard>
           ) : (
-            <MenuBrowser categories={categoryList} items={items} role={user?.role ?? null} />
+            <MenuBrowser categories={categories} role={user?.role ?? null} />
           )}
         </div>
       </section>

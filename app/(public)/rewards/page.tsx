@@ -5,8 +5,8 @@ import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { RewardRedeemForm } from "@/components/rewards/RewardRedeemForm";
 import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { getCurrentUser } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { getCurrentUser, getSessionUser } from "@/lib/auth";
+import { getActiveRewardRules } from "@/lib/data";
 import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -18,22 +18,16 @@ export const metadata: Metadata = {
 };
 
 export default async function RewardsPage() {
-  const [user, rewardRules] = await Promise.all([
-    getCurrentUser(),
-    prisma.rewardRule.findMany({
-      where: {
-        isActive: true,
-        menuItem: { isAvailable: true }
-      },
-      include: { menuItem: { include: { category: true } } },
-      orderBy: [{ pointsRequired: "asc" }, { createdAt: "asc" }]
-    })
-  ]);
+  const session = await getSessionUser();
 
-  if (user?.role === "ADMIN") {
+  if (session?.role === "ADMIN") {
     redirect("/admin");
   }
 
+  const [user, rewardRules] = await Promise.all([
+    session?.role === "USER" ? getCurrentUser() : Promise.resolve(null),
+    getActiveRewardRules()
+  ]);
   const isUser = user?.role === "USER";
   const points = isUser ? user.rewardPoints : 0;
   const nextReward =
@@ -138,11 +132,14 @@ export default async function RewardsPage() {
               const missingPoints = Math.max(0, rule.pointsRequired - points);
 
               return (
-                <GlassCard key={rule.id} className="flex flex-col overflow-hidden">
+                <GlassCard
+                  key={rule.id}
+                  className="group flex flex-col overflow-hidden transition duration-300 ease-out hover:-translate-y-1 hover:border-primary/35 hover:shadow-glow active:scale-[0.99] motion-reduce:transform-none motion-reduce:transition-none"
+                >
                   <FallbackImage
                     src={rule.menuItem.imageUrl}
                     alt={rule.menuItem.name}
-                    className="h-52 w-full object-cover"
+                    className="h-52 w-full object-cover transition duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
                   />
                   <div className="flex flex-1 flex-col p-5">
                     <p className="font-mono text-[10px] font-bold uppercase text-primary">
@@ -158,7 +155,7 @@ export default async function RewardsPage() {
                       <div className="rounded-lg border border-white/10 bg-black/20 p-3">
                         <p className="text-on-surface-variant">Price</p>
                         <p className="mt-1 text-primary">
-                          {formatCurrency(Number(rule.menuItem.price))}
+                          {formatCurrency(rule.menuItem.price)}
                         </p>
                       </div>
                       <div className="rounded-lg border border-white/10 bg-black/20 p-3">

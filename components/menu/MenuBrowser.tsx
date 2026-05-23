@@ -1,12 +1,14 @@
 "use client";
 
 import { ArrowLeft, Coffee, PackageOpen, Search, Utensils } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MenuCard } from "@/components/menu/MenuCard";
 import type { PublicCategory, PublicMenuItem } from "@/components/menu/types";
+import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { inputClasses } from "@/components/ui/Form";
 import { cn } from "@/lib/utils";
+import { useHideOnScroll } from "@/lib/useHideOnScroll";
 
 type MenuView = "categories" | "all" | string;
 
@@ -44,68 +46,97 @@ const drinkItemPattern =
 
 export function MenuBrowser({
   categories,
-  items,
   role
 }: {
   categories: PublicCategory[];
-  items: PublicMenuItem[];
   role?: "USER" | "ADMIN" | null;
 }) {
   const [query, setQuery] = useState("");
   const [view, setView] = useState<MenuView>("categories");
+  const [loadedItems, setLoadedItems] = useState<PublicMenuItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [displayLimit, setDisplayLimit] = useState(36);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const hideSearch = useHideOnScroll({ threshold: 128, disabled: searchFocused });
 
   const normalizedQuery = query.trim().toLowerCase();
   const hasSearch = normalizedQuery.length > 0;
+  const isBrowsingItems = hasSearch || view !== "categories";
 
   const categoryCounts = useMemo(() => {
     const counts = new Map<string, number>();
-    for (const item of items) {
-      counts.set(item.category.id, (counts.get(item.category.id) ?? 0) + 1);
+    for (const category of categories) {
+      counts.set(category.id, category.itemCount ?? 0);
     }
     return counts;
-  }, [items]);
+  }, [categories]);
 
   const selectedCategory = useMemo(
     () => categories.find((category) => category.slug === view) ?? null,
     [categories, view]
   );
 
-  const searchResults = useMemo(() => {
-    if (!hasSearch) {
-      return [];
+  useEffect(() => {
+    if (!isBrowsingItems) {
+      setLoadedItems([]);
+      setLoading(false);
+      setLoadError(null);
+      return;
     }
 
-    return sortItemsForAllView(
-      items.filter((item) => {
-        const searchable = [
-          item.name,
-          item.description,
-          item.category.name,
-          item.category.description ?? ""
-        ]
-          .join(" ")
-          .toLowerCase();
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => {
+      setLoading(true);
+      setLoadError(null);
+      const params = new URLSearchParams();
 
-        return searchable.includes(normalizedQuery);
+      if (hasSearch) {
+        params.set("q", query.trim());
+      } else {
+        params.set("category", view);
+      }
+
+      fetch(`/api/menu/browse?${params.toString()}`, {
+        signal: controller.signal
       })
-    );
-  }, [hasSearch, items, normalizedQuery]);
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error("Menu items could not be loaded.");
+          }
+
+          return (await response.json()) as { items: PublicMenuItem[] };
+        })
+        .then((data) => {
+          setLoadedItems(data.items);
+          setDisplayLimit(36);
+        })
+        .catch((error) => {
+          if (!controller.signal.aborted) {
+            setLoadError(error instanceof Error ? error.message : "Menu items could not be loaded.");
+          }
+        })
+        .finally(() => {
+          if (!controller.signal.aborted) {
+            setLoading(false);
+          }
+        });
+    }, hasSearch ? 250 : 0);
+
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [hasSearch, isBrowsingItems, query, view]);
 
   const visibleItems = useMemo(() => {
-    if (hasSearch) {
-      return searchResults;
+    if (hasSearch || view === "all") {
+      return sortItemsForAllView(loadedItems);
     }
 
-    if (view === "all") {
-      return sortItemsForAllView(items);
-    }
-
-    if (selectedCategory) {
-      return items.filter((item) => item.category.id === selectedCategory.id);
-    }
-
-    return [];
-  }, [hasSearch, items, searchResults, selectedCategory, view]);
+    return loadedItems;
+  }, [hasSearch, loadedItems, view]);
+  const displayedItems = visibleItems.slice(0, displayLimit);
 
   const visibleSections = useMemo(() => {
     if (!hasSearch && selectedCategory) {
@@ -113,7 +144,7 @@ export function MenuBrowser({
         {
           id: selectedCategory.id,
           title: selectedCategory.name,
-          items: visibleItems
+          items: displayedItems
         }
       ];
     }
@@ -125,13 +156,13 @@ export function MenuBrowser({
       { id: "other", title: "Other favorites", rank: 3, items: [] as PublicMenuItem[] }
     ];
 
-    for (const item of visibleItems) {
+    for (const item of displayedItems) {
       const rank = itemRank(item);
       sections.find((section) => section.rank === rank)?.items.push(item);
     }
 
     return sections.filter((section) => section.items.length > 0);
-  }, [hasSearch, selectedCategory, visibleItems]);
+  }, [displayedItems, hasSearch, selectedCategory]);
 
   const categoryCards = useMemo(() => {
     const sortedCategories = [...categories].sort(
@@ -144,7 +175,7 @@ export function MenuBrowser({
         name: "All",
         slug: "all",
         description: "Every available menu item, ordered with drinks first.",
-        count: items.length,
+        count: categories.reduce((sum, category) => sum + (category.itemCount ?? 0), 0),
         tone: "all" as const
       },
       ...sortedCategories.map((category) => ({
@@ -156,7 +187,7 @@ export function MenuBrowser({
         tone: categoryTone(category.name)
       }))
     ];
-  }, [categories, categoryCounts, items.length]);
+  }, [categories, categoryCounts]);
 
   function handleSearchChange(value: string) {
     setQuery(value);
@@ -170,7 +201,6 @@ export function MenuBrowser({
     setView(slug);
   }
 
-  const isBrowsingItems = hasSearch || view !== "categories";
   const heading = hasSearch
     ? `Search results for "${query.trim()}"`
     : view === "all"
@@ -184,7 +214,14 @@ export function MenuBrowser({
 
   return (
     <div className="space-y-10">
-      <div className="glass-card sticky top-24 z-20 rounded-xl p-4">
+      <div
+        className={cn(
+          "glass-card sticky top-24 z-20 rounded-xl p-4 transition duration-300 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none",
+          hideSearch
+            ? "-translate-y-3 opacity-35 shadow-none md:-translate-y-1 md:opacity-70"
+            : "translate-y-0 opacity-100"
+        )}
+      >
         <label htmlFor="menu-search" className="sr-only">
           Search the full menu
         </label>
@@ -199,6 +236,8 @@ export function MenuBrowser({
             placeholder="Search coffee, matcha, dessert..."
             value={query}
             onChange={(event) => handleSearchChange(event.target.value)}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
             autoComplete="off"
           />
         </div>
@@ -281,7 +320,18 @@ export function MenuBrowser({
             </button>
           </div>
 
-          {visibleItems.length ? (
+          {loading ? (
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="h-80 animate-pulse rounded-2xl border border-white/10 bg-white/[0.04]"
+                />
+              ))}
+            </div>
+          ) : loadError ? (
+            <EmptyState title="Menu could not load" description={loadError} />
+          ) : visibleItems.length ? (
             <div className="space-y-14">
               {visibleSections.map((section) => (
                 <section key={section.id} className="scroll-mt-40">
@@ -300,6 +350,17 @@ export function MenuBrowser({
                   </div>
                 </section>
               ))}
+              {visibleItems.length > displayLimit && (
+                <div className="flex justify-center">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setDisplayLimit((current) => current + 36)}
+                  >
+                    Load more
+                  </Button>
+                </div>
+              )}
             </div>
           ) : (
             <EmptyState

@@ -4,6 +4,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { inputClasses } from "@/components/ui/Form";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { serializeUserForClient } from "@/lib/serializers";
 
 export const dynamic = "force-dynamic";
 
@@ -49,7 +50,11 @@ export default async function AdminUsersPage({
       <div className="space-y-4">
         {users.length ? (
           users.map((user) => (
-            <AdminUserForm key={user.id} user={user} currentAdminId={admin.id} />
+            <AdminUserForm
+              key={user.id}
+              user={serializeUserForClient(user)}
+              currentAdminId={admin.id}
+            />
           ))
         ) : (
           <GlassCard className="p-8 text-on-surface-variant">No matching users.</GlassCard>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { Pencil, X } from "lucide-react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { updateSiteInfoAction } from "@/app/actions/admin";
 import { Button } from "@/components/ui/Button";
 import { FieldError, FormMessage, inputClasses, labelClasses } from "@/components/ui/Form";
@@ -20,10 +21,54 @@ type SiteInfoFormData = {
 
 export function AdminSiteInfoForm({ siteInfo }: { siteInfo: SiteInfoFormData }) {
   const [state, action, pending] = useActionState(updateSiteInfoAction, emptyActionState);
+  const [isEditing, setIsEditing] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (state.ok) {
+      setIsEditing(false);
+    }
+  }, [state.ok]);
+
+  function cancelEdit() {
+    formRef.current?.reset();
+    setIsEditing(false);
+  }
 
   return (
-    <form action={action} className="grid gap-5">
+    <form
+      ref={formRef}
+      action={action}
+      onSubmit={(event) => {
+        if (!isEditing) {
+          event.preventDefault();
+        }
+      }}
+      className="grid gap-5"
+    >
       <FormMessage message={state.message} ok={state.ok} />
+      <div className="flex justify-end">
+        {!isEditing ? (
+          <button
+            type="button"
+            className="focus-ring inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-2 font-mono text-[11px] font-bold uppercase text-primary transition hover:bg-primary/15"
+            onClick={() => setIsEditing(true)}
+            aria-label="Edit site information"
+          >
+            <Pencil size={14} />
+            Edit
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="focus-ring inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 font-mono text-[11px] font-bold uppercase text-on-surface-variant transition hover:text-primary"
+            onClick={cancelEdit}
+          >
+            <X size={14} />
+            Cancel
+          </button>
+        )}
+      </div>
       <div>
         <label className={labelClasses} htmlFor="aboutText">
           About us text
@@ -34,6 +79,7 @@ export function AdminSiteInfoForm({ siteInfo }: { siteInfo: SiteInfoFormData }) 
           name="aboutText"
           rows={6}
           defaultValue={siteInfo.aboutText}
+          readOnly={!isEditing}
         />
         <FieldError messages={state.errors?.aboutText} />
       </div>
@@ -47,6 +93,7 @@ export function AdminSiteInfoForm({ siteInfo }: { siteInfo: SiteInfoFormData }) 
           name="footerDescription"
           rows={3}
           defaultValue={siteInfo.footerDescription}
+          readOnly={!isEditing}
         />
         <FieldError messages={state.errors?.footerDescription} />
       </div>
@@ -64,14 +111,22 @@ export function AdminSiteInfoForm({ siteInfo }: { siteInfo: SiteInfoFormData }) 
             <label className={labelClasses} htmlFor={name}>
               {label}
             </label>
-            <input className={inputClasses} id={name} name={name} defaultValue={value} />
+            <input
+              className={inputClasses}
+              id={name}
+              name={name}
+              defaultValue={value}
+              readOnly={!isEditing}
+            />
             <FieldError messages={state.errors?.[name]} />
           </div>
         ))}
       </div>
-      <Button disabled={pending} type="submit">
-        {pending ? "Saving..." : "Save Website Information"}
-      </Button>
+      {isEditing && (
+        <Button disabled={pending} type="submit">
+          {pending ? "Saving..." : "Save Website Information"}
+        </Button>
+      )}
     </form>
   );
 }

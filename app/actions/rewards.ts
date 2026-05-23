@@ -1,8 +1,9 @@
 "use server";
 
 import { Prisma, RedemptionStatus, RewardTransactionType } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin, requireUser } from "@/lib/auth";
+import { REWARDS_TAG } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 import { type ActionState } from "@/lib/utils";
 import { pointAdjustmentSchema, redeemRewardSchema, rewardRuleSchema } from "@/lib/validations";
@@ -139,6 +140,7 @@ export async function createRewardRuleAction(
 
   revalidatePath("/rewards");
   revalidatePath("/admin/rewards");
+  revalidateTag(REWARDS_TAG);
   return { ok: true, message: "Reward rule created." };
 }
 
@@ -171,6 +173,7 @@ export async function updateRewardRuleAction(
 
   revalidatePath("/rewards");
   revalidatePath("/admin/rewards");
+  revalidateTag(REWARDS_TAG);
   return { ok: true, message: "Reward rule updated." };
 }
 
@@ -194,6 +197,7 @@ export async function deleteRewardRuleAction(formData: FormData) {
   await prisma.rewardRule.delete({ where: { id } });
   revalidatePath("/rewards");
   revalidatePath("/admin/rewards");
+  revalidateTag(REWARDS_TAG);
 }
 
 export async function adjustUserPointsAction(

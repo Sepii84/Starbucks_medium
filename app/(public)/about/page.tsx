@@ -58,8 +58,8 @@ export default async function AboutPage() {
         </div>
         <GlassCard className="overflow-hidden rounded-[2rem]">
           <Image
-            src="/images/site/about-coffee-bar.png"
-            alt="Coffee shop bar"
+            src="/images/site/about-coffee-shop-ambiance.png"
+            alt="Green-toned premium coffee shop interior"
             width={900}
             height={1100}
             className="aspect-[4/5] w-full object-cover"

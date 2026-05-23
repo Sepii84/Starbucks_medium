@@ -96,11 +96,14 @@ export default async function HomePage() {
 
           <div className="grid gap-8 md:grid-cols-3">
             {featured.map((item) => (
-              <GlassCard key={item.id} className="overflow-hidden rounded-2xl">
+              <GlassCard
+                key={item.id}
+                className="group overflow-hidden rounded-2xl transition duration-300 ease-out hover:-translate-y-1 hover:border-primary/35 hover:shadow-glow active:scale-[0.99] motion-reduce:transform-none motion-reduce:transition-none"
+              >
                 <FallbackImage
                   src={item.imageUrl}
                   alt={item.name}
-                  className="h-56 w-full object-cover"
+                  className="h-56 w-full object-cover transition duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
                 />
                 <div className="space-y-3 p-5">
                   <div className="flex items-start justify-between gap-4">

@@ -9,8 +9,17 @@ import {
   Role,
   WalletTransactionType
 } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import {
+  deleteManagedStoragePath,
+  deleteUploadedImageIfUnused,
+  getOptionalImageFile,
+  StorageImageError,
+  uploadAdminImageFile,
+  type UploadedImage
+} from "@/lib/admin/storage-images";
 import { requireAdmin, requireUser } from "@/lib/auth";
+import { GIFT_CARDS_TAG } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, normalizeEmail, type ActionState } from "@/lib/utils";
 import { giftCardPurchaseSchema, giftCardTemplateSchema } from "@/lib/validations";
@@ -61,6 +70,14 @@ function dbErrorMessage(error: unknown, fallback: string) {
   }
 
   return fallback;
+}
+
+function storageErrorMessage(error: unknown, fallback: string) {
+  if (error instanceof StorageImageError) {
+    return error.message;
+  }
+
+  return dbErrorMessage(error, fallback);
 }
 
 export async function buyGiftCardAction(
@@ -265,29 +282,52 @@ export async function createGiftCardTemplateAction(
   formData: FormData
 ): Promise<ActionState> {
   await requireAdmin();
+  const imageFile = getOptionalImageFile(formData);
   const parsed = giftCardTemplateSchema.safeParse(templateFormData(formData));
 
   if (!parsed.success) {
     return { message: "Check the gift card template.", errors: parsed.error.flatten().fieldErrors };
   }
 
+  let uploadedImage: UploadedImage | null = null;
+
   try {
+    if (imageFile) {
+      uploadedImage = await uploadAdminImageFile(
+        imageFile,
+        "gift-cards",
+        parsed.data.name || `gift-card-${parsed.data.amount}`
+      );
+    }
+
     await prisma.giftCardTemplate.create({
       data: {
         name: parsed.data.name,
         description: parsed.data.description,
         amount: money(parsed.data.amount),
-        imageUrl: parsed.data.imageUrl || null,
+        imageUrl: uploadedImage?.url ?? (parsed.data.imageUrl || null),
         isActive: parsed.data.isActive
       }
     });
   } catch (error) {
-    return { message: dbErrorMessage(error, "Could not create gift card template.") };
+    if (uploadedImage) {
+      await deleteManagedStoragePath(uploadedImage.path).catch(() => undefined);
+    }
+
+    return {
+      message: storageErrorMessage(error, "Could not create gift card template.")
+    };
   }
 
   revalidatePath("/gift-cards");
   revalidatePath("/admin/gift-cards");
-  return { ok: true, message: "Gift card template created." };
+  revalidateTag(GIFT_CARDS_TAG);
+  return {
+    ok: true,
+    message: uploadedImage
+      ? "Image uploaded and gift card template created."
+      : "Gift card template created."
+  };
 }
 
 export async function updateGiftCardTemplateAction(
@@ -295,6 +335,7 @@ export async function updateGiftCardTemplateAction(
   formData: FormData
 ): Promise<ActionState> {
   await requireAdmin();
+  const imageFile = getOptionalImageFile(formData);
   const parsed = giftCardTemplateSchema.safeParse(templateFormData(formData));
 
   if (!parsed.success || !parsed.data.id) {
@@ -304,24 +345,60 @@ export async function updateGiftCardTemplateAction(
     };
   }
 
+  let uploadedImage: UploadedImage | null = null;
+  let finalImageUrl = parsed.data.imageUrl || null;
+  const existing = await prisma.giftCardTemplate.findUnique({
+    where: { id: parsed.data.id },
+    select: { imageUrl: true }
+  });
+
+  if (!existing) {
+    return { message: "Gift card template was not found." };
+  }
+
   try {
+    if (imageFile) {
+      uploadedImage = await uploadAdminImageFile(
+        imageFile,
+        "gift-cards",
+        parsed.data.name || `gift-card-${parsed.data.amount}`
+      );
+      finalImageUrl = uploadedImage.url;
+    }
+
     await prisma.giftCardTemplate.update({
       where: { id: parsed.data.id },
       data: {
         name: parsed.data.name,
         description: parsed.data.description,
         amount: money(parsed.data.amount),
-        imageUrl: parsed.data.imageUrl || null,
+        imageUrl: finalImageUrl,
         isActive: parsed.data.isActive
       }
     });
   } catch (error) {
-    return { message: dbErrorMessage(error, "Could not update gift card template.") };
+    if (uploadedImage) {
+      await deleteManagedStoragePath(uploadedImage.path).catch(() => undefined);
+    }
+
+    return {
+      message: storageErrorMessage(error, "Could not update gift card template.")
+    };
+  }
+
+  if (existing.imageUrl && existing.imageUrl !== finalImageUrl) {
+    await deleteUploadedImageIfUnused(existing.imageUrl).catch(() => undefined);
   }
 
   revalidatePath("/gift-cards");
   revalidatePath("/admin/gift-cards");
-  return { ok: true, message: "Gift card template updated." };
+  revalidateTag(GIFT_CARDS_TAG);
+  return {
+    ok: true,
+    message: uploadedImage
+      ? "Image uploaded and gift card template saved."
+      : "Gift card template updated."
+  };
 }
 
 export async function cancelGiftCardAction(formData: FormData) {

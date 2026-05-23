@@ -13,8 +13,11 @@ type SiteInfo = {
 };
 
 export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
+  const instagramIsExternal = siteInfo.instagramUrl && siteInfo.instagramUrl !== "#";
+  const twitterIsExternal = siteInfo.twitterUrl && siteInfo.twitterUrl !== "#";
+
   return (
-    <footer className="bg-surface-dim/70 px-5 pb-32 pt-20 md:px-16 md:pb-12">
+    <footer className="w-full overflow-x-clip bg-surface-dim/70 px-5 pb-32 pt-20 md:px-16 md:pb-12">
       <div className="mx-auto max-w-7xl border-t border-white/5 pt-12">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="space-y-5">
@@ -30,6 +33,8 @@ export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
                   aria-label="Instagram"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-primary transition hover:border-primary/40"
                   href={siteInfo.instagramUrl}
+                  target={instagramIsExternal ? "_blank" : undefined}
+                  rel={instagramIsExternal ? "noreferrer" : undefined}
                 >
                   <Instagram size={18} />
                 </Link>
@@ -39,6 +44,8 @@ export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
                   aria-label="Twitter"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-primary transition hover:border-primary/40"
                   href={siteInfo.twitterUrl}
+                  target={twitterIsExternal ? "_blank" : undefined}
+                  rel={twitterIsExternal ? "noreferrer" : undefined}
                 >
                   <Twitter size={18} />
                 </Link>
@@ -79,9 +86,9 @@ export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
               Location
             </h3>
             <div className="space-y-3 text-sm text-on-surface-variant">
-              <p className="flex gap-2">
+              <p className="flex min-w-0 gap-2">
                 <MapPin className="mt-0.5 shrink-0 text-primary" size={16} />
-                {siteInfo.address}
+                <span className="min-w-0 break-words">{siteInfo.address}</span>
               </p>
               <p>{siteInfo.openingHours}</p>
             </div>
@@ -92,13 +99,13 @@ export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
               Contact
             </h3>
             <div className="space-y-3 text-sm text-on-surface-variant">
-              <p className="flex gap-2">
+              <p className="flex min-w-0 gap-2">
                 <Phone className="mt-0.5 shrink-0 text-primary" size={16} />
-                {siteInfo.phone}
+                <span className="min-w-0 break-words">{siteInfo.phone}</span>
               </p>
-              <p className="flex gap-2">
+              <p className="flex min-w-0 gap-2">
                 <Mail className="mt-0.5 shrink-0 text-primary" size={16} />
-                {siteInfo.email}
+                <span className="min-w-0 break-all">{siteInfo.email}</span>
               </p>
             </div>
           </div>

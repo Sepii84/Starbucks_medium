@@ -6,6 +6,7 @@ import {
   Role
 } from "@prisma/client";
 import { z } from "zod";
+import { isAllowedSocialLink } from "@/lib/site-config";
 
 export const loginSchema = z.object({
   email: z.string().email("Enter a valid email address."),
@@ -143,11 +144,11 @@ export const pointAdjustmentSchema = z.object({
   reason: z.string().min(5, "Reason is required.")
 });
 
-export const walletChargeSchema = z.object({
+export const walletTopUpSchema = z.object({
   amount: z.coerce
     .number()
-    .min(1, "Minimum charge is $1.")
-    .max(500, "Maximum charge is $500.")
+    .min(1, "Minimum top-up is $1.")
+    .max(500, "Maximum top-up is $500.")
 });
 
 export const walletAdjustmentSchema = z.object({
@@ -206,8 +207,14 @@ export const siteInfoSchema = z.object({
   phone: z.string().min(5, "Phone number is required."),
   email: z.string().email("Enter a valid email address."),
   openingHours: z.string().min(5, "Opening hours are required."),
-  instagramUrl: z.string().url("Use a valid Instagram URL.").optional().or(z.literal("")),
-  twitterUrl: z.string().url("Use a valid X/Twitter URL.").optional().or(z.literal("")),
+  instagramUrl: z
+    .string()
+    .refine(isAllowedSocialLink, "Use a valid Instagram URL or #.")
+    .optional(),
+  twitterUrl: z
+    .string()
+    .refine(isAllowedSocialLink, "Use a valid X/Twitter URL or #.")
+    .optional(),
   mapUrl: z.string().url("Use a valid map URL.").optional().or(z.literal(""))
 });
 

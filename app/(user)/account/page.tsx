@@ -1,8 +1,10 @@
 import { ProfileForm } from "@/components/account/ProfileForm";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { requireUser } from "@/lib/auth";
+import { requireUserSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { serializeUserForClient } from "@/lib/serializers";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -11,13 +13,47 @@ export default async function AccountPage({
 }: {
   searchParams: Promise<{ message?: string }>;
 }) {
-  const [user, params] = await Promise.all([requireUser(), searchParams]);
-  const orders = await prisma.order.findMany({
-    where: { userId: user.id },
-    include: { items: { include: { menuItem: true } } },
-    orderBy: { createdAt: "desc" },
-    take: 8
-  });
+  const [session, params] = await Promise.all([requireUserSession(), searchParams]);
+  const [user, orders] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: session.userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        phone: true,
+        address: true,
+        rewardPoints: true,
+        walletBalance: true,
+        isActive: true
+      }
+    }),
+    prisma.order.findMany({
+      where: { userId: session.userId },
+      select: {
+        id: true,
+        status: true,
+        orderType: true,
+        totalPrice: true,
+        createdAt: true,
+        items: {
+          select: {
+            quantity: true,
+            menuItem: { select: { name: true } }
+          }
+        }
+      },
+      orderBy: { createdAt: "desc" },
+      take: 8
+    })
+  ]);
+
+  if (!user?.isActive || user.role !== "USER") {
+    redirect("/login?message=Please sign in to continue.");
+  }
+
+  const clientUser = serializeUserForClient(user);
 
   return (
     <section className="px-5 py-14 md:px-16">
@@ -36,7 +72,7 @@ export default async function AccountPage({
               </p>
             )}
           </div>
-          <ProfileForm user={user} />
+          <ProfileForm user={clientUser} />
         </GlassCard>
 
         <div className="space-y-5">

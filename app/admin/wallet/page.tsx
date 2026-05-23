@@ -27,7 +27,7 @@ export default async function AdminWalletPage({
       : {})
   };
 
-  const [users, allUsers, transactions, balanceAggregate] = await Promise.all([
+  const [users, allUsers, transactions, balanceAggregate, topUps] = await Promise.all([
     prisma.user.findMany({
       where: userWhere,
       select: { id: true, name: true, email: true, walletBalance: true },
@@ -47,6 +47,15 @@ export default async function AdminWalletPage({
     prisma.user.aggregate({
       where: { role: "USER" },
       _sum: { walletBalance: true }
+    }),
+    prisma.walletTopUp.findMany({
+      include: {
+        user: {
+          select: { name: true, email: true }
+        }
+      },
+      orderBy: { createdAt: "desc" },
+      take: 30
     })
   ]);
 
@@ -58,7 +67,7 @@ export default async function AdminWalletPage({
   }));
 
   const totalCharged = transactions
-    .filter((transaction) => transaction.type === "CHARGE")
+    .filter((transaction) => transaction.type === "CHARGE" || transaction.type === "TOP_UP")
     .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
   const totalSpent = transactions
     .filter((transaction) => Number(transaction.amount) < 0)
@@ -73,12 +82,16 @@ export default async function AdminWalletPage({
         </h1>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {[
           { label: "Wallet users", value: allUsers.length },
           { label: "Total balance", value: formatCurrency(Number(balanceAggregate._sum.walletBalance ?? 0)) },
-          { label: "Total charged", value: formatCurrency(totalCharged) },
-          { label: "Total spent", value: formatCurrency(totalSpent) }
+          { label: "Total topped up", value: formatCurrency(totalCharged) },
+          { label: "Total spent", value: formatCurrency(totalSpent) },
+          {
+            label: "Pending top-ups",
+            value: topUps.filter((topUp) => topUp.status === "PENDING").length
+          }
         ].map((card) => (
           <GlassCard key={card.label} className="p-5">
             <div className="flex items-center justify-between gap-4">
@@ -101,6 +114,39 @@ export default async function AdminWalletPage({
           <GlassCard className="p-5">
             <h2 className="mb-5 font-display text-2xl font-semibold">Adjust balance</h2>
             <AdminWalletAdjustmentForm users={simpleUsers} />
+          </GlassCard>
+
+          <GlassCard className="p-5">
+            <h2 className="mb-5 font-display text-2xl font-semibold">Demo top-ups</h2>
+            <div className="space-y-3">
+              {topUps.length ? (
+                topUps.map((topUp) => (
+                  <div
+                    key={topUp.id}
+                    className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-primary">{topUp.user.name}</p>
+                        <p className="text-on-surface-variant">{topUp.user.email}</p>
+                        <p className="mt-2 font-mono text-[10px] uppercase text-on-surface-variant">
+                          {topUp.provider} - {topUp.status}
+                        </p>
+                      </div>
+                      <p className="font-display text-lg font-semibold text-primary">
+                        {formatCurrency(Number(topUp.amount))}
+                      </p>
+                    </div>
+                    <p className="mt-2 text-xs text-on-surface-variant">
+                      Created {formatDate(topUp.createdAt)}
+                      {topUp.confirmedAt ? ` - Confirmed ${formatDate(topUp.confirmedAt)}` : ""}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-on-surface-variant">No wallet top-ups yet.</p>
+              )}
+            </div>
           </GlassCard>
 
           <GlassCard className="p-5">

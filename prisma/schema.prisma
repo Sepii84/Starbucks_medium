@@ -47,11 +47,23 @@ enum RedemptionStatus {
 
 enum WalletTransactionType {
   CHARGE
+  TOP_UP
   ORDER_PAYMENT
   GIFT_CARD_PURCHASE
   GIFT_CARD_RECEIVED
   ADMIN_ADJUSTMENT
   REFUND
+}
+
+enum WalletTopUpStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELED
+}
+
+enum WalletTopUpProvider {
+  MOCK
 }
 
 enum GiftCardDeliveryType {
@@ -92,6 +104,7 @@ model User {
   rewardRedemptions    RewardRedemption[]
   rewardTransactions   RewardTransaction[]
   walletTransactions   WalletTransaction[]
+  walletTopUps         WalletTopUp[]
   boughtGiftCards      GiftCard[]            @relation("GiftCardBuyer")
   receivedGiftCards    GiftCard[]            @relation("GiftCardRecipient")
   giftCardTransactions GiftCardTransaction[]
@@ -237,11 +250,31 @@ model WalletTransaction {
   description  String
   orderId      String?
   giftCardId   String?
+  topUpId      String?               @unique
   createdAt    DateTime              @default(now())
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  order    Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  giftCard GiftCard? @relation(fields: [giftCardId], references: [id], onDelete: SetNull)
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order    Order?       @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  giftCard GiftCard?    @relation(fields: [giftCardId], references: [id], onDelete: SetNull)
+  topUp    WalletTopUp? @relation(fields: [topUpId], references: [id], onDelete: SetNull)
+}
+
+model WalletTopUp {
+  id                String              @id @default(cuid())
+  userId            String
+  amount            Decimal             @db.Decimal(10, 2)
+  currency          String              @default("USD")
+  status            WalletTopUpStatus   @default(PENDING)
+  provider          WalletTopUpProvider @default(MOCK)
+  providerSessionId String              @unique
+  providerPaymentId String?
+  idempotencyKey    String              @unique
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  confirmedAt       DateTime?
+
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  walletTransaction WalletTransaction?
 }
 
 model GiftCard {

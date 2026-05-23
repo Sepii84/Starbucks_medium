@@ -29,6 +29,7 @@ async function main() {
     const rewardRules = await prisma.rewardRule.count();
     const giftCardTemplates = await prisma.giftCardTemplate.count();
     const walletTransactions = await prisma.walletTransaction.count();
+    const walletTopUps = await prisma.walletTopUp.count();
 
     console.log("Database connected successfully.");
     console.log(`Users: ${users}`);
@@ -39,6 +40,7 @@ async function main() {
     console.log(`Reward rules: ${rewardRules}`);
     console.log(`Gift card templates: ${giftCardTemplates}`);
     console.log(`Wallet transactions: ${walletTransactions}`);
+    console.log(`Wallet top-ups: ${walletTopUps}`);
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
 

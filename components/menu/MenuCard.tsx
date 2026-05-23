@@ -14,13 +14,13 @@ export function MenuCard({
   role?: "USER" | "ADMIN" | null;
 }) {
   return (
-    <article className="group flex h-full flex-col">
-      <GlassCard className="relative mb-5 aspect-[4/5] overflow-hidden rounded-2xl p-4">
+    <article className="group flex h-full min-w-0 flex-col rounded-[1.25rem] transition duration-300 ease-out hover:-translate-y-1 active:scale-[0.99] motion-reduce:transform-none motion-reduce:transition-none">
+      <GlassCard className="relative mb-5 aspect-[4/5] overflow-hidden rounded-2xl p-4 transition duration-300 ease-out group-hover:border-primary/35 group-hover:shadow-glow motion-reduce:transition-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container/60" />
         <FallbackImage
           src={item.imageUrl}
           alt={item.name}
-          className="h-full w-full rounded-xl object-cover transition duration-500 group-hover:scale-105"
+          className="h-full w-full rounded-xl object-cover transition duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
         />
         <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-white/10 bg-surface/75 px-3 py-2 text-primary backdrop-blur-md">
           <Sparkles size={14} />

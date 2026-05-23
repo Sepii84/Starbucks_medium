@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useRef, useState, useTransition } from "react";
 import { createOrderAction, type CreateOrderResult } from "@/app/actions/order";
 import { useCart } from "@/components/order/CartProvider";
 import { Button, LinkButton } from "@/components/ui/Button";
@@ -31,6 +31,8 @@ export function OrderClient({
   const [tableNumber, setTableNumber] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState(user.address ?? "");
   const [result, setResult] = useState<CreateOrderResult | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const submitLockRef = useRef(false);
   const [pending, startTransition] = useTransition();
 
   const summaryLabel = useMemo(() => {
@@ -42,25 +44,44 @@ export function OrderClient({
   }, [deliveryAddress, orderType, tableNumber]);
 
   function submitOrder() {
+    if (submitLockRef.current || pending || submitting || !items.length) {
+      return;
+    }
+
+    submitLockRef.current = true;
+    setSubmitting(true);
     setResult(null);
+    const orderItems = items.map((item) => ({
+      menuItemId: item.menuItemId,
+      quantity: item.quantity
+    }));
+
     startTransition(async () => {
-      const response = await createOrderAction({
-        customerName,
-        orderType,
-        paymentMethod,
-        tableNumber,
-        deliveryAddress,
-        items: items.map((item) => ({
-          menuItemId: item.menuItemId,
-          quantity: item.quantity
-        }))
-      });
+      try {
+        const response = await createOrderAction({
+          customerName,
+          orderType,
+          paymentMethod,
+          tableNumber,
+          deliveryAddress,
+          items: orderItems
+        });
 
-      setResult(response);
+        setResult(response);
 
-      if (response.ok) {
-        clear();
+        if (response.ok) {
+          clear();
+          return;
+        }
+      } catch {
+        setResult({
+          ok: false,
+          message: "Order could not be placed. Please try again."
+        });
       }
+
+      submitLockRef.current = false;
+      setSubmitting(false);
     });
   }
 
@@ -95,14 +116,14 @@ export function OrderClient({
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-      <div className="space-y-4">
+    <div className="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+      <div className="min-w-0 space-y-4">
         {items.map((item) => (
-          <GlassCard key={item.menuItemId} className="flex gap-4 p-4">
+          <GlassCard key={item.menuItemId} className="flex min-w-0 gap-4 p-4">
             <FallbackImage
               src={item.imageUrl}
               alt={item.name}
-              className="h-24 w-24 rounded-lg object-cover"
+              className="h-24 w-24 shrink-0 rounded-lg object-cover"
             />
             <div className="flex min-w-0 flex-1 flex-col justify-between gap-3">
               <div>
@@ -147,7 +168,7 @@ export function OrderClient({
         ))}
       </div>
 
-      <GlassCard className="h-fit p-6">
+      <GlassCard className="min-w-0 h-fit p-6">
         <div className="mb-6">
           <p className="font-mono text-[11px] font-bold uppercase text-primary">
             Finalize order
@@ -261,11 +282,11 @@ export function OrderClient({
         <div className="my-6 border-t border-white/10 pt-6">
           <div className="space-y-3 text-sm">
             {items.map((item) => (
-              <div key={item.menuItemId} className="flex justify-between gap-3">
-                <span className="text-on-surface-variant">
+              <div key={item.menuItemId} className="flex min-w-0 justify-between gap-3">
+                <span className="min-w-0 break-words text-on-surface-variant">
                   {item.quantity}x {item.name}
                 </span>
-                <span>{formatCurrency(item.quantity * item.price)}</span>
+                <span className="shrink-0">{formatCurrency(item.quantity * item.price)}</span>
               </div>
             ))}
           </div>
@@ -288,8 +309,12 @@ export function OrderClient({
           </p>
         </div>
 
-        <Button className="w-full" disabled={pending || !items.length} onClick={submitOrder}>
-          {pending ? "Submitting..." : "Place Order"}
+        <Button
+          className="w-full"
+          disabled={pending || submitting || !items.length}
+          onClick={submitOrder}
+        >
+          {pending || submitting ? "Submitting..." : "Place Order"}
         </Button>
         <Link
           href="/menu"
