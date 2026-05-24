@@ -3,7 +3,7 @@
 import { OrderStatus } from "@prisma/client";
 import { updateOrderStatusAction } from "@/app/actions/admin";
 import { Button } from "@/components/ui/Button";
-import { inputClasses } from "@/components/ui/Form";
+import { selectClasses } from "@/components/ui/Form";
 
 const statuses = Object.values(OrderStatus);
 
@@ -17,7 +17,7 @@ export function AdminOrderStatusForm({
   return (
     <form action={updateOrderStatusAction} className="flex flex-wrap items-center gap-2">
       <input type="hidden" name="id" value={id} />
-      <select className={`${inputClasses} w-auto min-w-40`} name="status" defaultValue={status}>
+      <select className={`${selectClasses} w-auto min-w-40`} name="status" defaultValue={status}>
         {statuses.map((item) => (
           <option key={item} value={item}>
             {item}

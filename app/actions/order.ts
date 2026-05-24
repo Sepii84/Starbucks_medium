@@ -4,6 +4,7 @@ import { PaymentMethod, RewardTransactionType, WalletTransactionType } from "@pr
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit, rateLimitMessage } from "@/lib/rate-limit";
 import { createOrderSchema } from "@/lib/validations";
 
 class UserFacingError extends Error {}
@@ -26,6 +27,15 @@ export type CreateOrderResult =
 
 export async function createOrderAction(input: unknown): Promise<CreateOrderResult> {
   const user = await requireUser();
+  const rate = checkRateLimit(`order-action:${user.id}`, { limit: 12, windowMs: 60_000 });
+
+  if (!rate.ok) {
+    return {
+      ok: false,
+      message: rateLimitMessage(rate.retryAfter)
+    };
+  }
+
   const parsed = createOrderSchema.safeParse(input);
 
   if (!parsed.success) {

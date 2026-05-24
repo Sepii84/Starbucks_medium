@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Role } from "@prisma/client";
 import { apiUser } from "@/lib/api";
+import { checkRateLimit, rateLimitMessage } from "@/lib/rate-limit";
 import { walletTopUpSchema } from "@/lib/validations";
-import { createWalletTopUp } from "@/lib/wallet/top-up";
+import { createWalletTopUp, WalletTopUpError } from "@/lib/wallet/top-up";
 
 export const runtime = "nodejs";
 
@@ -12,6 +13,11 @@ export async function POST(request: NextRequest) {
 
   if (user.role !== Role.USER) {
     return NextResponse.json({ error: "User account required." }, { status: 403 });
+  }
+
+  const rate = checkRateLimit(`wallet-top-up-api:${user.id}`, { limit: 10, windowMs: 60_000 });
+  if (!rate.ok) {
+    return NextResponse.json({ error: rateLimitMessage(rate.retryAfter) }, { status: 429 });
   }
 
   const body = (await request.json().catch(() => ({}))) as { amount?: unknown };
@@ -39,7 +45,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error:
-          error instanceof Error
+          error instanceof WalletTopUpError
             ? error.message
             : "Could not start the demo wallet top-up."
       },

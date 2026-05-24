@@ -12,7 +12,7 @@ import {
 } from "@/app/actions/admin";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { Button } from "@/components/ui/Button";
-import { FieldError, FormMessage, inputClasses, labelClasses } from "@/components/ui/Form";
+import { FieldError, FormMessage, inputClasses, labelClasses, selectClasses } from "@/components/ui/Form";
 import { emptyActionState, formatCurrency } from "@/lib/utils";
 
 type Category = {
@@ -44,7 +44,7 @@ function CategorySelect({
   disabled?: boolean;
 }) {
   return (
-    <select className={inputClasses} name="categoryId" defaultValue={defaultValue} disabled={disabled}>
+    <select className={selectClasses} name="categoryId" defaultValue={defaultValue} disabled={disabled}>
       <option value="">Choose category</option>
       {categories.map((category) => (
         <option key={category.id} value={category.id}>

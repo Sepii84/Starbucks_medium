@@ -24,7 +24,8 @@
     "images:all": "npm run images:manifest && npm run images:generate && npm run images:apply && npm run images:verify && npm run images:zip",
     "storage:audit": "tsx scripts/audit-storage-images.ts",
     "storage:cleanup": "tsx scripts/audit-storage-images.ts --delete",
-    "perf:routes": "tsx scripts/measure-routes.ts"
+    "perf:routes": "tsx scripts/measure-routes.ts",
+    "security:audit": "tsx scripts/security-audit.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

@@ -1,7 +1,8 @@
 import { ArrowDownCircle, ArrowUpCircle, History, WalletCards } from "lucide-react";
 import { WalletTopUpForm } from "@/components/wallet/WalletChargeForm";
+import { LinkButton } from "@/components/ui/Button";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { requireUserSession } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
 import { redirect } from "next/navigation";
@@ -9,7 +10,38 @@ import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 export default async function WalletPage() {
-  const session = await requireUserSession();
+  const session = await getSessionUser();
+
+  if (!session) {
+    return (
+      <section className="px-5 py-14 md:px-16">
+        <div className="mx-auto max-w-3xl">
+          <GlassCard className="p-8">
+            <p className="font-mono text-[11px] font-bold uppercase text-primary">
+              Wallet
+            </p>
+            <h1 className="mt-3 font-display text-4xl font-extrabold uppercase md:text-5xl">
+              Log in to view your wallet
+            </h1>
+            <p className="mt-5 text-lg leading-8 text-on-surface-variant">
+              Sign in to view your wallet balance, start a mock demo top-up,
+              review transactions, and use wallet options for orders and gift
+              cards. No private wallet data is shown while you are logged out.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <LinkButton href="/login?message=Please sign in to view your wallet.&next=/wallet">
+                Login
+              </LinkButton>
+              <LinkButton href="/register" variant="secondary">
+                Register
+              </LinkButton>
+            </div>
+          </GlassCard>
+        </div>
+      </section>
+    );
+  }
+
   const [user, transactions] = await Promise.all([
     prisma.user.findUnique({
       where: { id: session.userId },

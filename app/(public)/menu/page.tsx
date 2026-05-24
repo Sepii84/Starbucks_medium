@@ -1,17 +1,23 @@
 import type { Metadata } from "next";
 import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { MenuBrowser } from "@/components/menu/MenuBrowser";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { getSessionUser } from "@/lib/auth";
 import { getPublicMenuCategories } from "@/lib/data";
+import { createPageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Menu | Starbucks Medium",
-  description:
-    "Browse the live Starbucks Medium demo menu with database-driven categories, product cards, and ordering for signed-in users."
+  ...createPageMetadata({
+    title: "Menu | Starbucks Medium",
+    description:
+      "Browse coffee, espresso drinks, refreshers, teas, frappuccinos, bakery items, breakfast favorites, and more.",
+    path: "/menu"
+  })
 };
 
 export default async function MenuPage() {
@@ -31,6 +37,12 @@ export default async function MenuPage() {
 
   return (
     <PublicPageFrame>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Menu", path: "/menu" }
+        ])}
+      />
       <section className="px-5 py-14 md:px-16">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">

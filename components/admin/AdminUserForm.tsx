@@ -5,7 +5,7 @@ import { Pencil, X } from "lucide-react";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { deactivateUserAction, updateUserAction } from "@/app/actions/admin";
 import { Button } from "@/components/ui/Button";
-import { FieldError, FormMessage, inputClasses, labelClasses } from "@/components/ui/Form";
+import { FieldError, FormMessage, inputClasses, labelClasses, selectClasses } from "@/components/ui/Form";
 import type { ClientUser } from "@/lib/serializers";
 import { emptyActionState } from "@/lib/utils";
 
@@ -80,7 +80,7 @@ export function AdminUserForm({
         <div>
           <label className={labelClasses}>Name</label>
           <input
-            className={inputClasses}
+            className={selectClasses}
             name="name"
             defaultValue={user.name ?? ""}
             readOnly={!isEditing}

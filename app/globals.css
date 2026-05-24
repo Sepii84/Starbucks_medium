@@ -32,6 +32,25 @@ textarea {
   font: inherit;
 }
 
+select {
+  color-scheme: dark;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(135, 215, 173, 0.95) 50%),
+    linear-gradient(135deg, rgba(135, 215, 173, 0.95) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 13px) 50%;
+  background-repeat: no-repeat;
+  background-size:
+    5px 5px,
+    5px 5px;
+}
+
+select option {
+  background: #20201c;
+  color: #e5e2db;
+}
+
 ::selection {
   background: rgba(135, 215, 173, 0.35);
   color: #ffffff;

@@ -26,12 +26,15 @@ export default async function AdminRewardsPage() {
     }),
     prisma.rewardRedemption.findMany({
       take: 12,
-      include: { user: true, menuItem: true },
+      include: {
+        user: { select: { id: true, name: true, email: true } },
+        menuItem: true
+      },
       orderBy: { createdAt: "desc" }
     }),
     prisma.rewardTransaction.findMany({
       take: 14,
-      include: { user: true },
+      include: { user: { select: { id: true, name: true, email: true } } },
       orderBy: { createdAt: "desc" }
     }),
     prisma.user.findMany({

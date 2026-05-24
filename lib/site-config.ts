@@ -37,5 +37,16 @@ export function normalizeSocialLink(
 }
 
 export function isAllowedSocialLink(value: string) {
-  return value === "#" || value === "" || URL.canParse(value);
+  const trimmed = value.trim();
+
+  if (trimmed === "#" || trimmed === "") {
+    return true;
+  }
+
+  if (!URL.canParse(trimmed)) {
+    return false;
+  }
+
+  const url = new URL(trimmed);
+  return url.protocol === "https:";
 }

@@ -2,7 +2,10 @@ import { PaymentMethod, RewardTransactionType, Role, WalletTransactionType } fro
 import { NextRequest, NextResponse } from "next/server";
 import { apiUser, jsonError } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit, rateLimitMessage } from "@/lib/rate-limit";
 import { createOrderSchema } from "@/lib/validations";
+
+class UserFacingError extends Error {}
 
 function money(value: number) {
   return Number(value.toFixed(2));
@@ -14,7 +17,45 @@ export async function GET() {
 
   const orders = await prisma.order.findMany({
     where: user.role === Role.ADMIN ? undefined : { userId: user.id },
-    include: { user: true, items: { include: { menuItem: true } } },
+    select: {
+      id: true,
+      userId: true,
+      customerName: true,
+      orderType: true,
+      tableNumber: true,
+      deliveryAddress: true,
+      paymentMethod: true,
+      status: true,
+      totalPrice: true,
+      createdAt: true,
+      updatedAt: true,
+      user: {
+        select: { id: true, name: true, email: true, role: true }
+      },
+      items: {
+        select: {
+          id: true,
+          orderId: true,
+          menuItemId: true,
+          quantity: true,
+          unitPrice: true,
+          subtotal: true,
+          menuItem: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              description: true,
+              price: true,
+              imageUrl: true,
+              isAvailable: true,
+              isFeatured: true,
+              categoryId: true
+            }
+          }
+        }
+      }
+    },
     orderBy: { createdAt: "desc" }
   });
 
@@ -25,7 +66,11 @@ export async function GET() {
       items: order.items.map((item) => ({
         ...item,
         unitPrice: Number(item.unitPrice),
-        subtotal: Number(item.subtotal)
+        subtotal: Number(item.subtotal),
+        menuItem: {
+          ...item.menuItem,
+          price: Number(item.menuItem.price)
+        }
       }))
     }))
   });
@@ -39,7 +84,12 @@ export async function POST(request: NextRequest) {
     return jsonError("Only user accounts can place orders.", 403);
   }
 
-  const parsed = createOrderSchema.safeParse(await request.json());
+  const rate = checkRateLimit(`order-api:${user.id}`, { limit: 12, windowMs: 60_000 });
+  if (!rate.ok) {
+    return jsonError(rateLimitMessage(rate.retryAfter), 429);
+  }
+
+  const parsed = createOrderSchema.safeParse(await request.json().catch(() => null));
 
   if (!parsed.success) {
     return NextResponse.json({ errors: parsed.error.flatten().fieldErrors }, { status: 422 });
@@ -112,7 +162,7 @@ export async function POST(request: NextRequest) {
           });
 
           if (!updated.count) {
-            throw new Error("Your wallet balance is too low for this order.");
+            throw new UserFacingError("Your wallet balance is too low for this order.");
           }
 
           const updatedUser = await tx.user.findUnique({
@@ -121,7 +171,7 @@ export async function POST(request: NextRequest) {
           });
 
           if (!updatedUser) {
-            throw new Error("User account was not found.");
+            throw new UserFacingError("User account was not found.");
           }
 
           walletBalanceAfter = money(Number(updatedUser.walletBalance));
@@ -199,7 +249,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ order: { ...order, totalPrice: Number(order.totalPrice) } }, { status: 201 });
   } catch (error) {
     return jsonError(
-      error instanceof Error ? error.message : "Order could not be placed. Please try again.",
+      error instanceof UserFacingError
+        ? error.message
+        : "Order could not be placed. Please try again.",
       409
     );
   }

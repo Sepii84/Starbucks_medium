@@ -1,16 +1,22 @@
 import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { LinkButton } from "@/components/ui/Button";
 import { getSiteInfo } from "@/lib/data";
+import { createPageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Location | Starbucks Medium",
-  description:
-    "Find the Starbucks Medium demo location, opening hours, contact details, and map preview."
+  ...createPageMetadata({
+    title: "Locations | Starbucks Medium",
+    description:
+      "Find Starbucks Medium cafe location information, opening details, and contact options.",
+    path: "/location"
+  })
 };
 
 export default async function LocationPage() {
@@ -18,6 +24,12 @@ export default async function LocationPage() {
 
   return (
     <PublicPageFrame siteInfo={siteInfo}>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Locations", path: "/location" }
+        ])}
+      />
       <section className="px-5 py-14 md:px-16">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 max-w-3xl">

@@ -1,16 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { getSessionUser } from "@/lib/auth";
+import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Register | Starbucks Medium",
-  description:
-    "Create a Starbucks Medium demo user account for ordering, rewards, wallet, and gift cards."
+  ...createPageMetadata({
+    title: "Create Account | Starbucks Medium",
+    description:
+      "Create a Starbucks Medium demo user account for ordering, rewards, wallet, and gift cards.",
+    path: "/register",
+    noIndex: true
+  })
 };
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  const session = await getSessionUser();
+
+  if (session) {
+    redirect(session.role === "ADMIN" ? "/admin" : "/account");
+  }
+
   return (
     <PublicPageFrame>
       <section className="flex min-h-[calc(100vh-5rem)] items-center justify-center px-5 py-14">

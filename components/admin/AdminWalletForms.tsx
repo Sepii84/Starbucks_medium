@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { adminAdjustWalletAction } from "@/app/actions/wallet";
 import { Button } from "@/components/ui/Button";
-import { FieldError, FormMessage, inputClasses, labelClasses } from "@/components/ui/Form";
+import { FieldError, FormMessage, inputClasses, labelClasses, selectClasses } from "@/components/ui/Form";
 import { emptyActionState, formatCurrency } from "@/lib/utils";
 
 type UserOption = {
@@ -21,7 +21,7 @@ export function AdminWalletAdjustmentForm({ users }: { users: UserOption[] }) {
       <FormMessage message={state.message} ok={state.ok} />
       <div>
         <label className={labelClasses}>User</label>
-        <select className={inputClasses} name="userId">
+        <select className={selectClasses} name="userId">
           <option value="">Choose user</option>
           {users.map((user) => (
             <option key={user.id} value={user.id}>

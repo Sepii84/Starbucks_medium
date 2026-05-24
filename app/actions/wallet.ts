@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin, requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit, rateLimitMessage } from "@/lib/rate-limit";
 import { formatCurrency, normalizeEmail, type ActionState } from "@/lib/utils";
 import { walletAdjustmentSchema, walletTopUpSchema } from "@/lib/validations";
 import {
@@ -30,6 +31,14 @@ export async function startWalletTopUpAction(
     return { message: "Check the top-up amount.", errors: parsed.error.flatten().fieldErrors };
   }
 
+  const rate = checkRateLimit(`wallet-top-up-action:${user.id}`, {
+    limit: 10,
+    windowMs: 60_000
+  });
+  if (!rate.ok) {
+    return { message: rateLimitMessage(rate.retryAfter) };
+  }
+
   const amount = money(parsed.data.amount);
   let confirmationUrl = "";
 
@@ -39,7 +48,7 @@ export async function startWalletTopUpAction(
   } catch (error) {
     return {
       message:
-        error instanceof Error
+        error instanceof WalletTopUpError
           ? error.message
           : "Could not start the demo wallet top-up."
     };

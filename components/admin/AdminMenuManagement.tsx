@@ -1,7 +1,7 @@
 "use client";
 
 import { FolderTree, ListFilter, Search } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CreateCategoryForm,
   CreateMenuItemForm,
@@ -9,7 +9,7 @@ import {
   EditMenuItemForm
 } from "@/components/admin/AdminMenuForms";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { inputClasses, labelClasses } from "@/components/ui/Form";
+import { inputClasses, labelClasses, selectClasses } from "@/components/ui/Form";
 import { cn, formatCurrency } from "@/lib/utils";
 
 type Category = {
@@ -46,6 +46,9 @@ export function AdminMenuManagement({
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>("all");
   const [selectedItemId, setSelectedItemId] = useState(items[0]?.id ?? "");
+  const [editorScrollRequest, setEditorScrollRequest] = useState(0);
+  const [highlightEditor, setHighlightEditor] = useState(false);
+  const selectedEditorRef = useRef<HTMLDivElement>(null);
 
   const filteredItems = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -72,6 +75,34 @@ export function AdminMenuManagement({
       setSelectedItemId(filteredItems[0].id);
     }
   }, [filteredItems, selectedItemId]);
+
+  useEffect(() => {
+    if (!editorScrollRequest) {
+      return;
+    }
+
+    const target = selectedEditorRef.current;
+    if (!target) {
+      return;
+    }
+
+    const rect = target.getBoundingClientRect();
+    const isVisible = rect.top >= 96 && rect.bottom <= window.innerHeight;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!isVisible) {
+      target.scrollIntoView({
+        behavior: reducedMotion ? "auto" : "smooth",
+        block: "start"
+      });
+    }
+
+    target.focus({ preventScroll: true });
+    setHighlightEditor(true);
+    const timeout = window.setTimeout(() => setHighlightEditor(false), 1600);
+
+    return () => window.clearTimeout(timeout);
+  }, [editorScrollRequest]);
 
   return (
     <div className="space-y-6">
@@ -178,7 +209,7 @@ export function AdminMenuManagement({
                   </label>
                   <select
                     id="admin-category-filter"
-                    className={inputClasses}
+                    className={selectClasses}
                     value={categoryFilter}
                     onChange={(event) => setCategoryFilter(event.target.value)}
                   >
@@ -196,7 +227,7 @@ export function AdminMenuManagement({
                   </label>
                   <select
                     id="admin-availability-filter"
-                    className={inputClasses}
+                    className={selectClasses}
                     value={availabilityFilter}
                     onChange={(event) =>
                       setAvailabilityFilter(event.target.value as AvailabilityFilter)
@@ -217,7 +248,10 @@ export function AdminMenuManagement({
                       <button
                         key={item.id}
                         type="button"
-                        onClick={() => setSelectedItemId(item.id)}
+                        onClick={() => {
+                          setSelectedItemId(item.id);
+                          setEditorScrollRequest((value) => value + 1);
+                        }}
                         className={cn(
                           "focus-ring w-full rounded-xl border p-4 text-left text-sm transition",
                           selectedItem?.id === item.id
@@ -238,7 +272,14 @@ export function AdminMenuManagement({
                       </button>
                     ))}
                   </div>
-                  <div>
+                  <div
+                    ref={selectedEditorRef}
+                    tabIndex={-1}
+                    className={cn(
+                      "scroll-mt-28 rounded-xl transition duration-300",
+                      highlightEditor && "ring-2 ring-primary/55 shadow-glow"
+                    )}
+                  >
                     {selectedItem && (
                       <EditMenuItemForm
                         key={selectedItem.id}

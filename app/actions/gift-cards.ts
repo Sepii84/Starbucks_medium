@@ -21,6 +21,7 @@ import {
 import { requireAdmin, requireUser } from "@/lib/auth";
 import { GIFT_CARDS_TAG } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit, rateLimitMessage } from "@/lib/rate-limit";
 import { formatCurrency, normalizeEmail, type ActionState } from "@/lib/utils";
 import { giftCardPurchaseSchema, giftCardTemplateSchema } from "@/lib/validations";
 
@@ -94,6 +95,11 @@ export async function buyGiftCardAction(
 
   if (!parsed.success) {
     return { message: "Check the gift card details.", errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const rate = checkRateLimit(`gift-card-buy:${user.id}`, { limit: 10, windowMs: 60_000 });
+  if (!rate.ok) {
+    return { message: rateLimitMessage(rate.retryAfter) };
   }
 
   const code = await generateGiftCardCode();
@@ -412,7 +418,11 @@ export async function cancelGiftCardAction(formData: FormData) {
   await prisma.$transaction(async (tx) => {
     const giftCard = await tx.giftCard.findUnique({
       where: { id },
-      include: { buyer: true }
+      include: {
+        buyer: {
+          select: { id: true, walletBalance: true }
+        }
+      }
     });
 
     if (!giftCard || giftCard.status === GiftCardStatus.CANCELLED) {

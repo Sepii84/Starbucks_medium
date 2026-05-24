@@ -14,14 +14,66 @@ export async function GET(
   const { id } = await context.params;
   const order = await prisma.order.findUnique({
     where: { id },
-    include: { user: true, items: { include: { menuItem: true } } }
+    select: {
+      id: true,
+      userId: true,
+      customerName: true,
+      orderType: true,
+      tableNumber: true,
+      deliveryAddress: true,
+      paymentMethod: true,
+      status: true,
+      totalPrice: true,
+      createdAt: true,
+      updatedAt: true,
+      user: {
+        select: { id: true, name: true, email: true, role: true }
+      },
+      items: {
+        select: {
+          id: true,
+          orderId: true,
+          menuItemId: true,
+          quantity: true,
+          unitPrice: true,
+          subtotal: true,
+          menuItem: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              description: true,
+              price: true,
+              imageUrl: true,
+              categoryId: true,
+              isAvailable: true,
+              isFeatured: true
+            }
+          }
+        }
+      }
+    }
   });
 
   if (!order) {
     return jsonError("Order not found.", 404);
   }
 
-  return NextResponse.json({ order });
+  return NextResponse.json({
+    order: {
+      ...order,
+      totalPrice: Number(order.totalPrice),
+      items: order.items.map((item) => ({
+        ...item,
+        unitPrice: Number(item.unitPrice),
+        subtotal: Number(item.subtotal),
+        menuItem: {
+          ...item.menuItem,
+          price: Number(item.menuItem.price)
+        }
+      }))
+    }
+  });
 }
 
 export async function PATCH(
@@ -60,7 +112,12 @@ export async function PATCH(
 
     const updated = await tx.order.update({
       where: { id },
-      data: { status: parsed.data.status }
+      data: { status: parsed.data.status },
+      select: {
+        id: true,
+        status: true,
+        updatedAt: true
+      }
     });
 
     if (parsed.data.status === OrderStatus.CANCELLED && existing.status !== OrderStatus.CANCELLED) {

@@ -35,6 +35,8 @@ export function FormMessage({
 }
 
 export const inputClasses =
-  "focus-ring w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/60 disabled:cursor-not-allowed disabled:opacity-60 read-only:opacity-80";
+  "focus-ring w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 pr-10 text-sm text-on-surface placeholder:text-on-surface-variant/60 disabled:cursor-not-allowed disabled:opacity-60 read-only:opacity-80";
+
+export const selectClasses = cn(inputClasses, "cursor-pointer");
 
 export const labelClasses = "font-mono text-[11px] font-bold uppercase text-on-surface-variant";

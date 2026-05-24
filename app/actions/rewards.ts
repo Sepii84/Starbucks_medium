@@ -5,6 +5,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin, requireUser } from "@/lib/auth";
 import { REWARDS_TAG } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit, rateLimitMessage } from "@/lib/rate-limit";
 import { type ActionState } from "@/lib/utils";
 import { pointAdjustmentSchema, redeemRewardSchema, rewardRuleSchema } from "@/lib/validations";
 
@@ -41,6 +42,11 @@ export async function redeemRewardAction(
 
   if (!parsed.success) {
     return { message: "Choose a reward to redeem.", errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const rate = checkRateLimit(`reward-redeem:${user.id}`, { limit: 10, windowMs: 60_000 });
+  if (!rate.ok) {
+    return { message: rateLimitMessage(rate.retryAfter) };
   }
 
   try {
@@ -213,6 +219,11 @@ export async function adjustUserPointsAction(
 
   if (!parsed.success) {
     return { message: "Check the point adjustment.", errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const rate = checkRateLimit(`admin-points:${admin.id}`, { limit: 30, windowMs: 60_000 });
+  if (!rate.ok) {
+    return { message: rateLimitMessage(rate.retryAfter) };
   }
 
   try {

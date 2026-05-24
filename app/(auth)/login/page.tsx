@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { getSessionUser } from "@/lib/auth";
+import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Login | Starbucks Medium",
-  description:
-    "Sign in to Starbucks Medium to access ordering, wallet, rewards, gift cards, or the admin dashboard."
+  ...createPageMetadata({
+    title: "Login | Starbucks Medium",
+    description:
+      "Sign in to Starbucks Medium to access ordering, wallet, rewards, gift cards, or the admin dashboard.",
+    path: "/login",
+    noIndex: true
+  })
 };
 
 export default async function LoginPage({
@@ -15,7 +22,11 @@ export default async function LoginPage({
 }: {
   searchParams: Promise<{ message?: string; next?: string }>;
 }) {
-  const params = await searchParams;
+  const [params, session] = await Promise.all([searchParams, getSessionUser()]);
+
+  if (session) {
+    redirect(session.role === "ADMIN" ? "/admin" : "/account");
+  }
 
   return (
     <PublicPageFrame>

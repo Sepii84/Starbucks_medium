@@ -1,16 +1,32 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { getSiteInfo } from "@/lib/data";
+import { createPageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, cafeJsonLd } from "@/lib/structured-data";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
+const legacyMetadata: Metadata = {
   title: "About | Starbucks Medium",
   description:
     "Learn about the Starbucks Medium demo coffee shop experience, from premium café craft to live digital ordering."
 };
+
+export const metadata: Metadata = createPageMetadata({
+  title: "About | Starbucks Medium",
+  description:
+    "Learn about Starbucks Medium, a premium coffee experience built around quality, comfort, rewards, and modern cafe service.",
+  path: "/about",
+  image: {
+    url: "/images/site/about-coffee-shop-ambiance.png",
+    width: 1122,
+    height: 1402,
+    alt: "Green-toned premium Starbucks Medium coffee shop interior"
+  }
+});
 
 const featureBlocks = [
   {
@@ -35,6 +51,15 @@ export default async function AboutPage() {
 
   return (
     <PublicPageFrame siteInfo={siteInfo}>
+      <JsonLd
+        data={[
+          cafeJsonLd(siteInfo),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "About", path: "/about" }
+          ])
+        ]}
+      />
       <section className="px-5 py-14 md:px-16">
       <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
         <div className="space-y-6">

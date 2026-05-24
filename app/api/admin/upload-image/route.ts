@@ -2,15 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { apiAdmin } from "@/lib/api";
 import {
   getOptionalImageFile,
+  StorageImageError,
   type UploadFolder,
   uploadAdminImageFile
 } from "@/lib/admin/storage-images";
+import { checkRateLimit, rateLimitMessage } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
-  const { response } = await apiAdmin();
+  const { user, response } = await apiAdmin();
   if (response) return response;
+
+  const rate = checkRateLimit(`admin-upload:${user.id}`, { limit: 20, windowMs: 60_000 });
+  if (!rate.ok) {
+    return NextResponse.json({ error: rateLimitMessage(rate.retryAfter) }, { status: 429 });
+  }
 
   const formData = await request.formData();
   const file = getOptionalImageFile(formData, "file");
@@ -25,7 +32,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(await uploadAdminImageFile(file, folder, nameHint));
   } catch (error) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Image upload failed." },
+      {
+        error:
+          error instanceof StorageImageError
+            ? error.message
+            : "Image upload failed."
+      },
       { status: 400 }
     );
   }

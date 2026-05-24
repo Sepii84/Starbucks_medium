@@ -2,18 +2,24 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { ArrowRight, Leaf, Sparkles, Zap } from "lucide-react";
 import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { LinkButton } from "@/components/ui/Button";
 import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { getFeaturedMenuItems, getSiteInfo } from "@/lib/data";
+import { createPageMetadata } from "@/lib/seo";
+import { cafeJsonLd, websiteJsonLd } from "@/lib/structured-data";
 import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Starbucks Medium | Premium Coffee Ordering Demo",
-  description:
-    "Explore a dark luxury coffee ordering demo with live menu browsing, rewards, gift cards, and smooth pickup flows."
+  ...createPageMetadata({
+    title: "Starbucks Medium | Premium Coffee Experience",
+    description:
+      "Discover a premium coffee experience with handcrafted drinks, seasonal favorites, rewards, gift cards, and a modern cafe atmosphere.",
+    path: "/"
+  })
 };
 
 const signatureDropImage = "/images/menu/Iced Lavender Oatmilk Latte.jpg";
@@ -24,6 +30,7 @@ export default async function HomePage() {
 
   return (
     <PublicPageFrame siteInfo={siteInfo}>
+      <JsonLd data={[websiteJsonLd(), cafeJsonLd(siteInfo)]} />
       <section className="relative min-h-[88vh] overflow-hidden px-5 md:px-16">
         <div className="mx-auto grid min-h-[88vh] max-w-7xl items-center gap-12 py-12 md:grid-cols-2">
           <div className="space-y-8">

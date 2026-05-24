@@ -195,6 +195,24 @@ User:
 - `/admin/notifications` admin notifications
 - `/admin/account` admin profile and password
 
+## SEO and Search Visibility
+
+Set `NEXT_PUBLIC_APP_URL` to the deployed canonical origin in Vercel, for example:
+
+```bash
+NEXT_PUBLIC_APP_URL="https://starbucks-medium.vercel.app"
+```
+
+After deployment, check:
+
+- `/sitemap.xml` includes only public pages.
+- `/robots.txt` allows public pages and blocks admin, API, wallet, account, and order routes.
+- Public pages have page-specific titles, descriptions, canonical URLs, Open Graph tags, Twitter/X card tags, and lightweight JSON-LD.
+- Private/user/admin pages are marked `noindex`.
+- Social links should be changed from `#` to real project links before adding them to structured-data `sameAs`.
+
+Submit `/sitemap.xml` in Google Search Console after each production deployment and validate key pages with the URL Inspection tool.
+
 ## Notes
 
 - Public visitors can browse menu and site pages but cannot order.

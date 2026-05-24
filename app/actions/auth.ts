@@ -3,6 +3,7 @@
 import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit, rateLimitMessage } from "@/lib/rate-limit";
 import {
   authRedirectFor,
   clearSessionCookie,
@@ -44,8 +45,21 @@ export async function loginAction(_: ActionState, formData: FormData): Promise<A
     };
   }
 
+  const rate = checkRateLimit(`login:${parsed.data.email}`, { limit: 8, windowMs: 5 * 60_000 });
+  if (!rate.ok) {
+    return { message: rateLimitMessage(rate.retryAfter) };
+  }
+
   const user = await prisma.user.findUnique({
-    where: { email: parsed.data.email }
+    where: { email: parsed.data.email },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      passwordHash: true,
+      isActive: true
+    }
   });
 
   if (!user || !user.isActive) {
@@ -78,6 +92,14 @@ export async function registerAction(_: ActionState, formData: FormData): Promis
     };
   }
 
+  const rate = checkRateLimit(`register:${parsed.data.email}`, {
+    limit: 4,
+    windowMs: 10 * 60_000
+  });
+  if (!rate.ok) {
+    return { message: rateLimitMessage(rate.retryAfter) };
+  }
+
   const existing = await prisma.user.findUnique({
     where: { email: parsed.data.email },
     select: { id: true }
@@ -95,7 +117,8 @@ export async function registerAction(_: ActionState, formData: FormData): Promis
       role: Role.USER,
       phone: parsed.data.phone || null,
       address: parsed.data.address || null
-    }
+    },
+    select: { id: true, name: true, email: true, role: true }
   });
 
   await setSessionCookie(user);

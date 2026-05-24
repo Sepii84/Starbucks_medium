@@ -9,7 +9,7 @@ import {
   updateRewardRuleAction
 } from "@/app/actions/rewards";
 import { Button } from "@/components/ui/Button";
-import { FieldError, FormMessage, inputClasses, labelClasses } from "@/components/ui/Form";
+import { FieldError, FormMessage, inputClasses, labelClasses, selectClasses } from "@/components/ui/Form";
 import { emptyActionState } from "@/lib/utils";
 
 type MenuItemOption = {
@@ -43,7 +43,7 @@ function MenuItemSelect({
   disabled?: boolean;
 }) {
   return (
-    <select className={inputClasses} name="menuItemId" defaultValue={defaultValue} disabled={disabled}>
+    <select className={selectClasses} name="menuItemId" defaultValue={defaultValue} disabled={disabled}>
       <option value="">Choose menu item</option>
       {menuItems.map((item) => (
         <option key={item.id} value={item.id}>
@@ -202,7 +202,7 @@ export function AdjustPointsForm({ users }: { users: UserOption[] }) {
       <FormMessage message={state.message} ok={state.ok} />
       <div>
         <label className={labelClasses}>User</label>
-        <select className={inputClasses} name="userId">
+        <select className={selectClasses} name="userId">
           <option value="">Choose user</option>
           {users.map((user) => (
             <option key={user.id} value={user.id}>

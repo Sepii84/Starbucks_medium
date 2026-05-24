@@ -8,36 +8,101 @@ import {
 import { z } from "zod";
 import { isAllowedSocialLink } from "@/lib/site-config";
 
+const unsafeTextPattern = /<\s*\/?\s*script|javascript:|data:text\/html|on[a-z]+\s*=/i;
+const unsafeUrlSchemes = new Set(["javascript:", "file:", "data:"]);
+
+function safeText(value: string) {
+  return !unsafeTextPattern.test(value);
+}
+
+function textField(min: number, max: number, requiredMessage: string) {
+  return z
+    .string()
+    .trim()
+    .min(min, requiredMessage)
+    .max(max, "Text is too long.")
+    .refine(safeText, "Remove scripts or unsafe markup.");
+}
+
+function optionalTextField(max: number) {
+  return z
+    .string()
+    .trim()
+    .max(max, "Text is too long.")
+    .refine(safeText, "Remove scripts or unsafe markup.")
+    .optional();
+}
+
+function isSafeImageUrl(value: string) {
+  const trimmed = value.trim();
+
+  if (!trimmed || trimmed.length > 500 || trimmed.includes("\0")) {
+    return false;
+  }
+
+  if (trimmed === "/pending-admin-upload") {
+    return true;
+  }
+
+  if (trimmed.startsWith("/")) {
+    return (
+      trimmed.startsWith("/images/") &&
+      !trimmed.includes("..") &&
+      !trimmed.includes("//") &&
+      /\.(jpe?g|png|webp|svg)$/i.test(trimmed)
+    );
+  }
+
+  if (!URL.canParse(trimmed)) {
+    return false;
+  }
+
+  const url = new URL(trimmed);
+  if (unsafeUrlSchemes.has(url.protocol)) {
+    return false;
+  }
+
+  return url.protocol === "https:" && safeText(trimmed);
+}
+
 export const loginSchema = z.object({
-  email: z.string().email("Enter a valid email address."),
-  password: z.string().min(1, "Password is required."),
-  next: z.string().optional()
+  email: z.string().trim().email("Enter a valid email address.").max(254),
+  password: z.string().min(1, "Password is required.").max(200),
+  next: z
+    .string()
+    .trim()
+    .max(300)
+    .refine((value) => !value || (value.startsWith("/") && !value.startsWith("//")), {
+      message: "Use a relative redirect path."
+    })
+    .optional()
 });
 
 export const registerSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  email: z.string().email("Enter a valid email address."),
+  name: textField(2, 80, "Name must be at least 2 characters."),
+  email: z.string().trim().email("Enter a valid email address.").max(254),
   password: z
     .string()
     .min(8, "Password must be at least 8 characters.")
+    .max(128, "Password is too long.")
     .regex(/[A-Z]/, "Password needs one uppercase letter.")
     .regex(/[0-9]/, "Password needs one number."),
-  phone: z.string().optional(),
-  address: z.string().optional()
+  phone: optionalTextField(40),
+  address: optionalTextField(240)
 });
 
 export const profileSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  phone: z.string().max(40).optional(),
-  address: z.string().max(240).optional()
+  name: textField(2, 80, "Name must be at least 2 characters."),
+  phone: optionalTextField(40),
+  address: optionalTextField(240)
 });
 
 export const adminAccountSchema = z
   .object({
-    name: z.string().min(2, "Name must be at least 2 characters."),
-    email: z.string().email("Enter a valid email address."),
-    currentPassword: z.string().optional(),
-    newPassword: z.string().optional()
+    name: textField(2, 80, "Name must be at least 2 characters."),
+    email: z.string().trim().email("Enter a valid email address.").max(254),
+    currentPassword: z.string().max(200).optional(),
+    newPassword: z.string().max(128).optional()
   })
   .refine(
     (value) =>
@@ -55,17 +120,23 @@ export const adminAccountSchema = z
 
 export const menuItemSchema = z.object({
   id: z.string().optional(),
-  name: z.string().min(2, "Name is required."),
-  slug: z.string().optional(),
-  description: z.string().min(8, "Description is required."),
-  price: z.coerce.number().positive("Price must be greater than zero."),
+  name: textField(2, 120, "Name is required."),
+  slug: z
+    .string()
+    .trim()
+    .max(140, "Slug is too long.")
+    .regex(/^[a-z0-9-]*$/i, "Slug can only use letters, numbers, and hyphens.")
+    .optional(),
+  description: textField(8, 800, "Description is required."),
+  price: z.coerce
+    .number()
+    .positive("Price must be greater than zero.")
+    .max(1000, "Price is too high."),
   imageUrl: z
     .string()
+    .trim()
     .min(1, "Image URL or path is required.")
-    .refine(
-      (value) => value.startsWith("/") || z.string().url().safeParse(value).success,
-      "Use a valid image URL or local path."
-    ),
+    .refine(isSafeImageUrl, "Use a safe HTTPS image URL or local /images path."),
   categoryId: z.string().min(1, "Choose a category."),
   isAvailable: z.coerce.boolean().default(false),
   isFeatured: z.coerce.boolean().default(false)
@@ -73,9 +144,14 @@ export const menuItemSchema = z.object({
 
 export const categorySchema = z.object({
   id: z.string().optional(),
-  name: z.string().min(2, "Category name is required."),
-  slug: z.string().optional(),
-  description: z.string().optional()
+  name: textField(2, 100, "Category name is required."),
+  slug: z
+    .string()
+    .trim()
+    .max(120, "Slug is too long.")
+    .regex(/^[a-z0-9-]*$/i, "Slug can only use letters, numbers, and hyphens.")
+    .optional(),
+  description: optionalTextField(300)
 });
 
 export const orderItemInputSchema = z.object({
@@ -85,10 +161,10 @@ export const orderItemInputSchema = z.object({
 
 export const createOrderSchema = z
   .object({
-    customerName: z.string().min(2, "Customer name is required."),
+    customerName: textField(2, 80, "Customer name is required."),
     orderType: z.nativeEnum(OrderType),
-    tableNumber: z.string().optional(),
-    deliveryAddress: z.string().optional(),
+    tableNumber: optionalTextField(30),
+    deliveryAddress: optionalTextField(240),
     paymentMethod: z.nativeEnum(PaymentMethod).default(PaymentMethod.PAY_AT_COUNTER),
     items: z.array(orderItemInputSchema).min(1, "Your bag is empty.")
   })
@@ -141,7 +217,7 @@ export const pointAdjustmentSchema = z.object({
     .min(-100000, "Adjustment is too low.")
     .max(100000, "Adjustment is too high.")
     .refine((value) => value !== 0, "Adjustment cannot be zero."),
-  reason: z.string().min(5, "Reason is required.")
+  reason: textField(5, 240, "Reason is required.")
 });
 
 export const walletTopUpSchema = z.object({
@@ -158,18 +234,22 @@ export const walletAdjustmentSchema = z.object({
     .min(-5000, "Adjustment is too low.")
     .max(5000, "Adjustment is too high.")
     .refine((value) => value !== 0, "Adjustment cannot be zero."),
-  reason: z.string().min(5, "Reason is required.")
+  reason: textField(5, 240, "Reason is required.")
 });
 
 export const giftCardTemplateSchema = z.object({
   id: z.string().optional(),
-  name: z.string().min(2, "Template name is required."),
-  description: z.string().min(8, "Description is required."),
+  name: textField(2, 100, "Template name is required."),
+  description: textField(8, 500, "Description is required."),
   amount: z.coerce
     .number()
     .min(1, "Amount must be at least $1.")
     .max(500, "Amount cannot exceed $500."),
-  imageUrl: z.string().optional(),
+  imageUrl: z
+    .string()
+    .trim()
+    .refine((value) => !value || isSafeImageUrl(value), "Use a safe HTTPS image URL or local /images path.")
+    .optional(),
   isActive: z.coerce.boolean().default(false)
 });
 
@@ -177,8 +257,14 @@ export const giftCardPurchaseSchema = z
   .object({
     templateId: z.string().min(1, "Choose a gift card."),
     deliveryType: z.nativeEnum(GiftCardDeliveryType),
-    recipientEmail: z.string().optional(),
-    message: z.string().max(240, "Message is too long.").optional()
+    recipientEmail: z
+      .string()
+      .trim()
+      .email("Enter a valid recipient email.")
+      .max(254)
+      .optional()
+      .or(z.literal("")),
+    message: optionalTextField(240)
   })
   .superRefine((value, ctx) => {
     if (value.deliveryType === GiftCardDeliveryType.WEBSITE_EMAIL) {
@@ -201,12 +287,12 @@ export const giftCardPurchaseSchema = z
   });
 
 export const siteInfoSchema = z.object({
-  aboutText: z.string().min(20, "About text should be descriptive."),
-  footerDescription: z.string().min(10, "Footer description is required."),
-  address: z.string().min(5, "Address is required."),
-  phone: z.string().min(5, "Phone number is required."),
-  email: z.string().email("Enter a valid email address."),
-  openingHours: z.string().min(5, "Opening hours are required."),
+  aboutText: textField(20, 1200, "About text should be descriptive."),
+  footerDescription: textField(10, 600, "Footer description is required."),
+  address: textField(5, 240, "Address is required."),
+  phone: textField(5, 40, "Phone number is required."),
+  email: z.string().trim().email("Enter a valid email address.").max(254),
+  openingHours: textField(5, 120, "Opening hours are required."),
   instagramUrl: z
     .string()
     .refine(isAllowedSocialLink, "Use a valid Instagram URL or #.")
@@ -215,15 +301,20 @@ export const siteInfoSchema = z.object({
     .string()
     .refine(isAllowedSocialLink, "Use a valid X/Twitter URL or #.")
     .optional(),
-  mapUrl: z.string().url("Use a valid map URL.").optional().or(z.literal(""))
+  mapUrl: z
+    .string()
+    .trim()
+    .refine((value) => !value || (URL.canParse(value) && new URL(value).protocol === "https:"), "Use a valid HTTPS map URL.")
+    .optional()
+    .or(z.literal(""))
 });
 
 export const adminUserSchema = z.object({
   id: z.string().min(1),
-  name: z.string().min(2, "Name is required."),
-  email: z.string().email("Enter a valid email address."),
-  phone: z.string().optional(),
-  address: z.string().optional(),
+  name: textField(2, 80, "Name is required."),
+  email: z.string().trim().email("Enter a valid email address.").max(254),
+  phone: optionalTextField(40),
+  address: optionalTextField(240),
   role: z.nativeEnum(Role),
   isActive: z.coerce.boolean().default(false)
 });

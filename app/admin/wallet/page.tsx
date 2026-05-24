@@ -40,7 +40,7 @@ export default async function AdminWalletPage({
       orderBy: { name: "asc" }
     }),
     prisma.walletTransaction.findMany({
-      include: { user: true },
+      include: { user: { select: { id: true, name: true, email: true } } },
       orderBy: { createdAt: "desc" },
       take: 60
     }),

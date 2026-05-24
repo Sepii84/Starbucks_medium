@@ -12,7 +12,13 @@ type SiteInfo = {
   twitterUrl?: string | null;
 };
 
-export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
+export function Footer({
+  siteInfo,
+  isLoggedIn = false
+}: {
+  siteInfo: SiteInfo;
+  isLoggedIn?: boolean;
+}) {
   const instagramIsExternal = siteInfo.instagramUrl && siteInfo.instagramUrl !== "#";
   const twitterIsExternal = siteInfo.twitterUrl && siteInfo.twitterUrl !== "#";
 
@@ -74,9 +80,15 @@ export function Footer({ siteInfo }: { siteInfo: SiteInfo }) {
                 </Link>
               </li>
               <li>
-                <Link className="hover:text-primary" href="/login">
-                  Login
-                </Link>
+                {isLoggedIn ? (
+                  <Link className="hover:text-primary" href="/account">
+                    Account
+                  </Link>
+                ) : (
+                  <Link className="hover:text-primary" href="/login">
+                    Login
+                  </Link>
+                )}
               </li>
             </ul>
           </div>

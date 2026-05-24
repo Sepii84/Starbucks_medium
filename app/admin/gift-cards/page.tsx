@@ -14,12 +14,18 @@ export default async function AdminGiftCardsPage() {
   const [templates, giftCards, transactions] = await Promise.all([
     prisma.giftCardTemplate.findMany({ orderBy: { amount: "asc" } }),
     prisma.giftCard.findMany({
-      include: { buyer: true, recipientUser: true },
+      include: {
+        buyer: { select: { id: true, name: true, email: true } },
+        recipientUser: { select: { id: true, name: true, email: true } }
+      },
       orderBy: { createdAt: "desc" },
       take: 40
     }),
     prisma.giftCardTransaction.findMany({
-      include: { giftCard: true, user: true },
+      include: {
+        giftCard: true,
+        user: { select: { id: true, name: true, email: true } }
+      },
       orderBy: { createdAt: "desc" },
       take: 30
     })

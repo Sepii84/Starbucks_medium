@@ -17,11 +17,12 @@ function NavItem({
   icon: React.ElementType;
 }) {
   const pathname = usePathname();
-  const active = pathname === href;
+  const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
     <Link
       href={href}
+      aria-current={active ? "page" : undefined}
       className={cn(
         "flex min-w-0 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-2 text-[9px] font-bold uppercase leading-none transition",
         active
@@ -51,8 +52,8 @@ export function MobileNav({ user }: { user: ClientUser | null }) {
         <NavItem href="/menu" label="Menu" icon={Menu} />
         <NavItem href="/rewards" label="Reward" icon={Award} />
         <NavItem href="/gift-cards" label="Gift Card" icon={Gift} />
-        <NavItem href={user?.role === "USER" ? "/wallet" : "/login"} label="Wallet" icon={WalletCards} />
-        <NavItem href={user?.role === "USER" ? "/account" : "/login"} label="Me" icon={UserCircle} />
+        <NavItem href="/wallet" label="Wallet" icon={WalletCards} />
+        <NavItem href="/account" label="Me" icon={UserCircle} />
       </div>
     </nav>
   );

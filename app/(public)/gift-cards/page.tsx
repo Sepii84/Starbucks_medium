@@ -1,21 +1,26 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { CreditCard, Gift, Mail, WalletCards } from "lucide-react";
-import { GiftCardPurchaseForm } from "@/components/gift-cards/GiftCardPurchaseForm";
+import { GiftCardsClient } from "@/components/gift-cards/GiftCardsClient";
 import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { LinkButton } from "@/components/ui/Button";
-import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { getCurrentUser, getSessionUser } from "@/lib/auth";
 import { getActiveGiftCardTemplates } from "@/lib/data";
+import { createPageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Gift Cards | Starbucks Medium",
-  description:
-    "Buy in-person pickup gift cards or send demo wallet credit to another registered Starbucks Medium user."
+  ...createPageMetadata({
+    title: "Gift Cards | Starbucks Medium",
+    description:
+      "Buy and send Starbucks Medium gift cards for coffee lovers, friends, and family.",
+    path: "/gift-cards"
+  })
 };
 
 export default async function GiftCardsPage() {
@@ -63,6 +68,12 @@ export default async function GiftCardsPage() {
 
   return (
     <PublicPageFrame>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Gift Cards", path: "/gift-cards" }
+        ])}
+      />
       <section className="px-5 py-14 md:px-16">
       <div className="mx-auto max-w-7xl space-y-10">
         <div className="max-w-3xl">
@@ -107,50 +118,7 @@ export default async function GiftCardsPage() {
           ))}
         </div>
 
-        <div className="grid gap-8 xl:grid-cols-[1fr_0.9fr]">
-          <GlassCard className="p-6">
-            <h2 className="font-display text-2xl font-semibold">Choose a card</h2>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              {simpleTemplates.length ? (
-                simpleTemplates.map((template) => (
-                  <div
-                    key={template.id}
-                    className="group overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] transition duration-300 ease-out hover:-translate-y-1 hover:border-primary/35 hover:shadow-glow active:scale-[0.99] motion-reduce:transform-none motion-reduce:transition-none"
-                  >
-                    <FallbackImage
-                      src={template.imageUrl ?? ""}
-                      alt={template.name}
-                      className="h-36 w-full object-cover transition duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
-                    />
-                    <div className="p-4">
-                      <p className="font-display text-xl font-semibold text-primary">
-                        {formatCurrency(template.amount)}
-                      </p>
-                      <h3 className="mt-2 font-semibold">{template.name}</h3>
-                      <p className="mt-2 text-sm leading-6 text-on-surface-variant">
-                        {template.description}
-                      </p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-on-surface-variant">No gift card options are active yet.</p>
-              )}
-            </div>
-          </GlassCard>
-
-          <GlassCard className="h-fit p-6">
-            <h2 className="font-display text-2xl font-semibold">Buy or send</h2>
-            <p className="mt-3 text-sm leading-6 text-on-surface-variant">
-              In-person cards create a pickup code. Website-email cards move the
-              amount directly into the recipient's wallet balance. Recipient must
-              have a registered account on this site.
-            </p>
-            <div className="mt-6">
-              <GiftCardPurchaseForm templates={simpleTemplates} loggedIn={isUser} />
-            </div>
-          </GlassCard>
-        </div>
+        <GiftCardsClient templates={simpleTemplates} loggedIn={isUser} />
       </div>
       </section>
     </PublicPageFrame>

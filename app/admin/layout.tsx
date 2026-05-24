@@ -1,10 +1,13 @@
+import type { Metadata } from "next";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AppBackground } from "@/components/layout/AppBackground";
 import { requireAdminSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { noIndexMetadata } from "@/lib/seo";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = noIndexMetadata;
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await requireAdminSession();

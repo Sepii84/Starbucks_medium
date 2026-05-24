@@ -66,6 +66,17 @@ export function Navbar({ user }: { user: ClientUser | null }) {
         <div className="flex shrink-0 items-center gap-2 md:gap-3">
           {user?.role === "USER" && (
             <>
+              <form action={logoutAction} className="md:hidden">
+                <Button
+                  type="submit"
+                  variant="ghost"
+                  className="h-11 w-11 p-0"
+                  aria-label="Log out"
+                >
+                  <LogOut size={18} />
+                  <span className="sr-only">Logout</span>
+                </Button>
+              </form>
               <BagLink iconOnly compact className="md:hidden" />
               <BagLink className="hidden md:inline-flex" />
             </>

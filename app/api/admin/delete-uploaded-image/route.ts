@@ -1,12 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { apiAdmin } from "@/lib/api";
-import { deleteUploadedImageIfUnused } from "@/lib/admin/storage-images";
+import { deleteUploadedImageIfUnused, StorageImageError } from "@/lib/admin/storage-images";
+import { checkRateLimit, rateLimitMessage } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
-  const { response } = await apiAdmin();
+  const { user, response } = await apiAdmin();
   if (response) return response;
+
+  const rate = checkRateLimit(`admin-delete-upload:${user.id}`, {
+    limit: 30,
+    windowMs: 60_000
+  });
+  if (!rate.ok) {
+    return NextResponse.json(
+      { deleted: false, reason: rateLimitMessage(rate.retryAfter) },
+      { status: 429 }
+    );
+  }
 
   const body = (await request.json().catch(() => ({}))) as {
     imageUrl?: string;
@@ -28,7 +40,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         deleted: false,
-        reason: error instanceof Error ? error.message : "Could not delete uploaded image."
+        reason:
+          error instanceof StorageImageError
+            ? error.message
+            : "Could not delete uploaded image."
       },
       { status: 400 }
     );

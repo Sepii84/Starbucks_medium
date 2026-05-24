@@ -3,18 +3,24 @@ import { redirect } from "next/navigation";
 import { Award, BadgeCheck, Gift, Sparkles } from "lucide-react";
 import { PublicPageFrame } from "@/components/layout/PublicPageFrame";
 import { RewardRedeemForm } from "@/components/rewards/RewardRedeemForm";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { FallbackImage } from "@/components/ui/FallbackImage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { getCurrentUser, getSessionUser } from "@/lib/auth";
 import { getActiveRewardRules } from "@/lib/data";
+import { createPageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Rewards | Starbucks Medium",
-  description:
-    "See available reward items, track points, and redeem rewards in the Starbucks Medium demo."
+  ...createPageMetadata({
+    title: "Rewards | Starbucks Medium",
+    description:
+      "Earn points on orders and redeem rewards for selected drinks and menu favorites.",
+    path: "/rewards"
+  })
 };
 
 export default async function RewardsPage() {
@@ -62,6 +68,12 @@ export default async function RewardsPage() {
 
   return (
     <PublicPageFrame>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Rewards", path: "/rewards" }
+        ])}
+      />
       <section className="px-5 py-14 md:px-16">
       <div className="mx-auto max-w-7xl space-y-10">
         <div className="max-w-3xl">

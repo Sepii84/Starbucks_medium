@@ -75,9 +75,8 @@ export async function uploadAdminImageFile(
   });
 
   if (!uploadResponse.ok) {
-    const details = await uploadResponse.text().catch(() => "");
     throw new StorageImageError(
-      details || "Image upload failed. Check the Supabase Storage bucket and credentials."
+      "Image upload failed. Check the Supabase Storage bucket and credentials."
     );
   }
 
@@ -118,10 +117,9 @@ export async function deleteManagedStoragePath(path: string): Promise<DeleteImag
   });
 
   if (!response.ok) {
-    const details = await response.text().catch(() => "");
     return {
       deleted: false,
-      reason: details || "Supabase Storage delete request failed.",
+      reason: "Supabase Storage delete request failed.",
       path: safePath
     };
   }

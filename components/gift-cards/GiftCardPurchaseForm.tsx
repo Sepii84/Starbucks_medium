@@ -1,10 +1,10 @@
 "use client";
 
 import { Gift, Send } from "lucide-react";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { buyGiftCardAction, type GiftCardActionState } from "@/app/actions/gift-cards";
 import { Button, LinkButton } from "@/components/ui/Button";
-import { FieldError, FormMessage, inputClasses, labelClasses } from "@/components/ui/Form";
+import { FieldError, FormMessage, inputClasses, labelClasses, selectClasses } from "@/components/ui/Form";
 import { cn, formatCurrency } from "@/lib/utils";
 
 type DeliveryType = "IN_PERSON" | "WEBSITE_EMAIL";
@@ -20,14 +20,37 @@ const initialState: GiftCardActionState = {};
 
 export function GiftCardPurchaseForm({
   templates,
-  loggedIn
+  loggedIn,
+  selectedTemplateId,
+  onTemplateChange
 }: {
   templates: Template[];
   loggedIn: boolean;
+  selectedTemplateId?: string;
+  onTemplateChange?: (templateId: string) => void;
 }) {
   const [state, action, pending] = useActionState(buyGiftCardAction, initialState);
   const [deliveryType, setDeliveryType] = useState<DeliveryType>("IN_PERSON");
-  const [templateId, setTemplateId] = useState(templates[0]?.id ?? "");
+  const [internalTemplateId, setInternalTemplateId] = useState(templates[0]?.id ?? "");
+  const templateId = selectedTemplateId ?? internalTemplateId;
+
+  useEffect(() => {
+    if (!templateId && templates[0]?.id) {
+      if (onTemplateChange) {
+        onTemplateChange(templates[0].id);
+      } else {
+        setInternalTemplateId(templates[0].id);
+      }
+    }
+  }, [onTemplateChange, templateId, templates]);
+
+  function handleTemplateChange(value: string) {
+    if (onTemplateChange) {
+      onTemplateChange(value);
+    } else {
+      setInternalTemplateId(value);
+    }
+  }
 
   if (!loggedIn) {
     return (
@@ -85,11 +108,11 @@ export function GiftCardPurchaseForm({
           Gift card option
         </label>
         <select
-          className={inputClasses}
+          className={selectClasses}
           id="gift-card-template"
           name="templateId"
           value={templateId}
-          onChange={(event) => setTemplateId(event.target.value)}
+          onChange={(event) => handleTemplateChange(event.target.value)}
         >
           {templates.map((template) => (
             <option key={template.id} value={template.id}>
